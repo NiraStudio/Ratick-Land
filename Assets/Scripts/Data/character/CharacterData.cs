@@ -1,0 +1,32 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[System.Serializable]
+public class CharacterData:ScriptableObject
+{
+    public string characterName;
+    public GameObject prefab;
+    public int id;
+    public Sprite icon;
+    public float speed;
+    public float attackSpeed;
+    public float hitPoint;
+    public float damage;
+    public string description;
+
+    public CharacterData(string characterName, GameObject prefab, int id, Sprite icon, float speed, float attackSpeed, float hitPoint, float damage, string description)
+    {
+        this.characterName = characterName;
+        this.prefab = prefab;
+        this.id = id;
+        this.icon = icon;
+        this.speed = speed;
+        this.attackSpeed = attackSpeed;
+        this.hitPoint = hitPoint;
+        this.damage = damage;
+        this.description = description;
+
+    }
+    public CharacterData() { }
+}
