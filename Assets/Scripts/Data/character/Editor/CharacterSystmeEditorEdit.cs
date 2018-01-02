@@ -10,7 +10,7 @@ public class CharacterSystmeEditorEdit : EditorWindow
     public const string FULL_PATH = @"Assets/" + FOLDER_NAME + "/" + FILE_NAME;
 
     CharacterDataBase dataBase,db;
-    static Vector2 WindowSize = new Vector2(1100, 500);
+    static Vector2 WindowSize = new Vector2(1500, 500);
     static Vector2 IconButtonSize = new Vector2(50, 50);
     static Vector2 Scrollpos;
     Texture2D ItemIcon;
@@ -115,13 +115,14 @@ public class CharacterSystmeEditorEdit : EditorWindow
             #region Name ,Shape
             GUILayout.BeginHorizontal();
 
-            GUILayout.Label("Character Name:", GUILayout.Width(250));
-            temp.name= temp.characterName = GUILayout.TextField(temp.characterName, GUILayout.Width(250));
+            GUILayout.Label("Character Name:");
+            temp.name= temp.characterName = GUILayout.TextField(temp.characterName, GUILayout.Width(200));
 
-            GUILayout.Label("Character Shape:", GUILayout.Width(200));
-            temp.prefab = EditorGUILayout.ObjectField(temp.prefab, typeof(GameObject), GUILayout.Width(200)) as GameObject;
+            GUILayout.Label("Character Shape:");
+            temp.prefab = EditorGUILayout.ObjectField(temp.prefab, typeof(GameObject)) as GameObject;
 
-            
+            GUILayout.Label("Character Type:");
+            temp.type = (CharacterData.Type)EditorGUILayout.EnumPopup(temp.type);
 
             if (GUILayout.Button("X", GUILayout.Width(20), GUILayout.Height(20)))
             {
@@ -160,6 +161,13 @@ public class CharacterSystmeEditorEdit : EditorWindow
 
             //Speed
             temp.attackSpeed = EditorGUILayout.FloatField("Attack Speed:", temp.attackSpeed, GUILayout.Width(300));
+
+            //maxLevel
+            temp.maxLevel = EditorGUILayout.IntField("Max Level:", temp.maxLevel, GUILayout.Width(300));
+
+            //Range
+            temp.attackRange = EditorGUILayout.FloatField("Attack range:", temp.attackRange, GUILayout.Width(300));
+
 
             GUILayout.EndHorizontal();
 

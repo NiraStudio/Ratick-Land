@@ -11,6 +11,7 @@ public class Cage : MonoBehaviour, IHitable
     // Use this for initialization
     void Start()
     {
+        transform.position = new Vector2(Random.Range(-100, 100), Random.Range(-100, 100));
         addCharacters();
     }
 

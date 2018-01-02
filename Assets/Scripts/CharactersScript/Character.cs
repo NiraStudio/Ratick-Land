@@ -19,11 +19,12 @@ public class Character : MainBehavior
     protected ObscuredFloat hitPoint;
     protected ObscuredFloat damage;
     protected ObscuredFloat speed;
+    protected ObscuredFloat attackRange;
 
 
     Vector2 t, tt;
     protected bool free;
-    
+    protected bool right;
     // Use this for initialization
     void Start()
     {
@@ -77,6 +78,7 @@ public class Character : MainBehavior
         attackSpeed = data.attackSpeed;
         hitPoint = data.hitPoint;
         damage = data.damage;
+        attackRange = data.attackRange;
     }
     public void Release(bool state)
     {

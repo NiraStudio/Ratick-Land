@@ -34,9 +34,22 @@ public class CharacterDataBase : ScriptableObject {
     public void AddCharacter(CharacterData data)
     {
         DataBase.Add(data);
+        setDirty();
     }
     public void RemoveCharacter(CharacterData data)
     {
         DataBase.Remove(data);
+        setDirty();
+
+    }
+    public CharacterData.Type giveCharacterMode(int id)
+    {
+        return GiveByID(id).type;
+    }
+    void setDirty()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorUtility.SetDirty(this);
+#endif
     }
 }

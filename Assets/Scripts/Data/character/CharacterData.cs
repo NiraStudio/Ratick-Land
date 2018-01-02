@@ -7,11 +7,14 @@ public class CharacterData:ScriptableObject
 {
     public string characterName;
     public GameObject prefab;
+    public Type type;
     public int id;
+    public int maxLevel;
     public Sprite icon;
     public float speed;
     public float attackSpeed;
     public float hitPoint;
+    public float attackRange;
     public float damage;
     public string description;
 
@@ -29,4 +32,12 @@ public class CharacterData:ScriptableObject
 
     }
     public CharacterData() { }
+
+
+
+
+    public enum Type
+    {
+        Soldier,Hero
+    }
 }

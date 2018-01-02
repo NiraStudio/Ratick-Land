@@ -142,8 +142,10 @@ public class CharacterSystemEditorCreate : EditorWindow {
         GUILayout.Label("Character Shape:");
         temp.prefab = EditorGUILayout.ObjectField(temp.prefab, typeof(GameObject)) as GameObject;
 
-        //ID
-        temp.id = EditorGUILayout.IntField("ID:", temp.id);
+        GUILayout.Label("Character Type:");
+        temp.type =(CharacterData.Type) EditorGUILayout.EnumPopup(temp.type);
+
+        
         GUILayout.EndHorizontal();
 
         #endregion
@@ -159,11 +161,23 @@ public class CharacterSystemEditorCreate : EditorWindow {
         temp.attackSpeed = EditorGUILayout.FloatField("Attack Speed:", temp.attackSpeed);
         //Speed
         temp.speed = EditorGUILayout.FloatField("Speed:", temp.speed);
+
        
-        
 
         GUILayout.EndHorizontal();
         #endregion
+
+        GUILayout.BeginHorizontal();
+
+        //maxLevel
+        temp.maxLevel = EditorGUILayout.IntField("Max Level:", temp.maxLevel, GUILayout.Width(300));
+
+        //Range
+        temp.attackRange = EditorGUILayout.FloatField("Attack range:", temp.attackRange, GUILayout.Width(300));
+
+        //ID
+        temp.id = EditorGUILayout.IntField("ID:", temp.id);
+        GUILayout.EndHorizontal();
 
         GUILayout.EndVertical();
 

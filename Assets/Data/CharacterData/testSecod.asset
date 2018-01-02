@@ -9,16 +9,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0afe9298aff7cc94680f1ef5dc2deb2c, type: 3}
-  m_Name: secondTest
+  m_Name: testSecod
   m_EditorClassIdentifier: 
-  characterName: secondTest
+  characterName: testSecod
   prefab: {fileID: 1687395385589252, guid: 065e50ea5e014874cae87b3a5f8cc101, type: 2}
+  type: 1
   id: 2
-  icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  speed: 3
-  attackSpeed: 11
-  hitPoint: 11
+  maxLevel: 50
+  icon: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+  speed: 2
+  attackSpeed: 1
+  hitPoint: 150
+  attackRange: 0
   damage: 10
-  description: 'secondTest
-
-'
+  description: 

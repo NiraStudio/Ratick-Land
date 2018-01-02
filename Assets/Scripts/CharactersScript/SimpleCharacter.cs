@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SimpleCharacter : Character, IHitable, IAttackable
 {
-    public float attackRadius=0.5f;
     float waitTime;
     Collider2D detectedEnemy;
     	
@@ -13,7 +12,7 @@ public class SimpleCharacter : Character, IHitable, IAttackable
         if (!free)
             return;
         waitTime += Time.deltaTime;
-        detectedEnemy = Physics2D.OverlapCircle(transform.position, attackRadius, EnemyMask);
+        detectedEnemy = Physics2D.OverlapCircle(transform.position, attackRange, EnemyMask);
         
         if (waitTime > attackSpeed && detectedEnemy)
             Attack();
@@ -32,6 +31,6 @@ public class SimpleCharacter : Character, IHitable, IAttackable
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRadius);
+        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 }

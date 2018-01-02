@@ -15,6 +15,8 @@ public class LevelController : MainBehavior
         get { return move; }
     }
 
+
+    Dictionary<int, int> data = new Dictionary<int, int>();
     bool move;
     /// cach var
     Vector2 t;
@@ -26,6 +28,8 @@ public class LevelController : MainBehavior
     }
     void Start()
     {
+        data.Add(1, 5);
+        data.Add(2, 3);
         spawnCharacters();
     }
 
@@ -81,16 +85,31 @@ public class LevelController : MainBehavior
     }
     void spawnCharacters()
     {
-        /*for (int i = 0; i < 4; i++)
+        foreach (var item in data)
         {
-            GameObject g= Instantiate(characterDataBase.GiveByID(1).prefab);
-            g.transform.position = Random.insideUnitCircle * 3;
-            cameraController.AddTarget(g);
-        }*/
-        GameObject a = Instantiate(characterDataBase.GiveByID(2).prefab);
-        a.transform.position = Random.insideUnitCircle * 3;
-        cameraController.AddTarget(a);
-        a.GetComponent<Character>().Release(true);
+            CharacterData c = characterDataBase.GiveByID(item.Key);
+            switch (c.type)
+            {
+                case CharacterData.Type.Soldier:
+                    for (int i = 0; i < item.Value; i++)
+                    {
+                        GameObject b = Instantiate(c.prefab);
+                        b.transform.position = Random.insideUnitCircle * 3;
+                        cameraController.AddTarget(b);
+                        b.GetComponent<Character>().Release(true);
+                    }
+
+                    break;
+                case CharacterData.Type.Hero:
+                    GameObject a = Instantiate(c.prefab);
+                    a.transform.position = Random.insideUnitCircle * 3;
+                    cameraController.AddTarget(a);
+                    a.GetComponent<Character>().Release(true);
+                    break;
+
+            }
+        }
+        
     }
 
     public void AddCharacter()
