@@ -116,7 +116,7 @@ public class CharacterSystmeEditorEdit : EditorWindow
             GUILayout.BeginHorizontal();
 
             GUILayout.Label("Character Name:", GUILayout.Width(250));
-            temp.characterName = GUILayout.TextField(temp.characterName, GUILayout.Width(250));
+            temp.name= temp.characterName = GUILayout.TextField(temp.characterName, GUILayout.Width(250));
 
             GUILayout.Label("Character Shape:", GUILayout.Width(200));
             temp.prefab = EditorGUILayout.ObjectField(temp.prefab, typeof(GameObject), GUILayout.Width(200)) as GameObject;

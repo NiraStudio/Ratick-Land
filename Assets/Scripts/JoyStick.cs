@@ -5,6 +5,7 @@ using UnityEngine;
 public class JoyStick : MainBehavior
 {
     public GameObject handle;
+    public bool spriteMethod;
     public float distance;
     public float speed;
     public Vector3 direction;
@@ -17,7 +18,13 @@ public class JoyStick : MainBehavior
 	
 	// Update is called once per frame
 	void Update () {
-        mousePos= Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (spriteMethod)
+            SpriteMethod();
+        else
+            UiMethod();
+	}
+    void SpriteMethod() {
+        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if (Vector2.Distance(transform.position, mousePos) <= distance)
             handle.transform.position = mousePos;
         else
@@ -26,7 +33,23 @@ public class JoyStick : MainBehavior
             t = t.normalized;
             handle.transform.position = (Vector2)transform.position + t * distance;
         }
-        speed=(handle.transform.position - transform.position).magnitude/distance;
+        speed = (handle.transform.position - transform.position).magnitude / distance;
         direction = (handle.transform.position - transform.position).normalized;
-	}
+    
+    }
+    void UiMethod()
+    {
+        mousePos = Input.mousePosition;
+        if (Vector2.Distance(transform.position, mousePos) <= distance)
+            handle.transform.position = mousePos;
+        else
+        {
+            t = mousePos - (Vector2)transform.position;
+            t = t.normalized;
+            handle.transform.position = (Vector2)transform.position + t * distance;
+        }
+        speed = (handle.transform.position - transform.position).magnitude / distance;
+        direction = (handle.transform.position - transform.position).normalized;
+    
+    }
 }

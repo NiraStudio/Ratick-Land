@@ -6,6 +6,7 @@ public class LevelController : MainBehavior
 {
     public static LevelController instance;
     public CharacterDataBase characterDataBase;
+    public CameraController cameraController;
     public JoyStick joyStick;
     public GameObject aimer;
     public float speedMultiPly;
@@ -80,11 +81,25 @@ public class LevelController : MainBehavior
     }
     void spawnCharacters()
     {
-        for (int i = 0; i < 10; i++)
+        /*for (int i = 0; i < 4; i++)
         {
             GameObject g= Instantiate(characterDataBase.GiveByID(1).prefab);
             g.transform.position = Random.insideUnitCircle * 3;
-        }
+            cameraController.AddTarget(g);
+        }*/
+        GameObject a = Instantiate(characterDataBase.GiveByID(2).prefab);
+        a.transform.position = Random.insideUnitCircle * 3;
+        cameraController.AddTarget(a);
+        a.GetComponent<Character>().Release(true);
+    }
+
+    public void AddCharacter()
+    {
+        GameObject g = Instantiate(characterDataBase.GiveByID(1).prefab);
+        g.transform.position = Random.insideUnitCircle * 3;
+        cameraController.AddTarget(g);
+        g.GetComponent<Character>().Release(true);
+
     }
 
 }
