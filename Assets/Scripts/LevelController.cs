@@ -7,9 +7,18 @@ public class LevelController : MainBehavior
     public static LevelController instance;
     public CharacterDataBase characterDataBase;
     public CameraController cameraController;
+    public CageFinder cageFinder;
     public JoyStick joyStick;
     public GameObject aimer;
+    public Vector2 mapBorders;
     public float speedMultiPly;
+    public int WorldCoinMultiply=1;
+
+
+    [Tooltip("Map Parameters")]
+    public GameObject cage;
+    public GameObject[] stone;
+    public Wave[] waves;
     public bool Move
     {
         get { return move; }
@@ -28,9 +37,10 @@ public class LevelController : MainBehavior
     }
     void Start()
     {
-        data.Add(1, 5);
+        data.Add(1, 300);
         data.Add(2, 3);
         spawnCharacters();
+        MakeCage();
     }
 
     // Update is called once per frame
@@ -119,6 +129,29 @@ public class LevelController : MainBehavior
         cameraController.AddTarget(g);
         g.GetComponent<Character>().Release(true);
 
+    }
+
+    void designMap()
+    {
+
+    }
+    public void MakeCage()
+    {
+        Vector2 a;
+
+        do
+        {
+            a = giveMapPos();
+        } while (Vector2.Distance(a, Camera.main.transform.position) < 10);
+
+
+        GameObject g = Instantiate(cage, a, Quaternion.identity);
+
+        cageFinder.cage = g;
+    }
+    Vector3 giveMapPos()
+    {
+        return new Vector3(Random.Range(-mapBorders.x, mapBorders.x), Random.Range(-mapBorders.y, mapBorders.y),0);
     }
 
 }

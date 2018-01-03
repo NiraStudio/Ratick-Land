@@ -6,6 +6,7 @@ using CodeStage.AntiCheat.ObscuredTypes;
 public class Character : MainBehavior
 {
     public CharacterData data;
+    public bool right;
     protected GameObject aimer;
     protected LevelController controller;
     protected Rigidbody2D rg;
@@ -24,7 +25,6 @@ public class Character : MainBehavior
 
     Vector2 t, tt;
     protected bool free;
-    protected bool right;
     // Use this for initialization
     void Start()
     {
@@ -37,21 +37,18 @@ public class Character : MainBehavior
         sr.sortingOrder = IsoMetricHandler.giveSortingOrderNumber(transform.position.y);
         RenewData();
     }
-    public virtual void Update()
-    {
-        if (!free)
-            return;
-    }
+   
     // Update is called once per frame
     void FixedUpdate()
     {
 
         if (!free)
             return;
-        #region Attack
+        #region Move
         if (controller.Move)
         {
-            speed = (aimer.transform.position - transform.position).magnitude * speedMultiPly;
+            speed = speedMultiPly;
+           
             tt = (aimer.transform.position - transform.position).normalized;
             tt = tt * speed;
             // t = (Vector2)rg.position + tt ;
@@ -69,8 +66,8 @@ public class Character : MainBehavior
 
 
 
-       // if (anim)
-         //   anim.SetBool("Move", controller.Move);
+        if (anim)
+            anim.SetBool("Move", controller.Move);
     }
     void RenewData()
     {

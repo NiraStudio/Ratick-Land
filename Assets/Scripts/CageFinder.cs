@@ -5,13 +5,17 @@ using UnityEngine.UI;
 
 public class CageFinder : MonoBehaviour {
     public GameObject cage;
+    public Text meterText;
+    public Image img;
 
-float dis= 5.5f;
-    Vector2 t;
-    Image img;
+    Vector2 t,aa;
+    Vector2 distance;
+
+
+    float xDis = 3, yDis = 5;
 	// Use this for initialization
 	void Start () {
-        img = GetComponent<Image>();
+        
 	}
 
     // Update is called once per frame
@@ -19,20 +23,49 @@ float dis= 5.5f;
     {
         if (!cage)
             return;
+        distance.x = 3 + (0.5f * (Camera.main.orthographicSize - 5));
+        distance.y = 5 +  (Camera.main.orthographicSize - 5);
+        t = (cage.transform.position - Camera.main.transform.position) ;
 
-        if (Vector2.Distance(Camera.main.transform.position, cage.transform.position) < dis)
-            img.enabled = false;
+        meterText.text =(int) t.magnitude+" M";
+
+        aa = t;
+        aa.x = Mathf.Abs(aa.x);
+        aa.y = Mathf.Abs(aa.y);
+        if (aa.y < distance.y && aa.x < distance.x)
+        {
+            img.gameObject.SetActive(false);
+
+            meterText.gameObject.SetActive(false);
+        }
         else
-            img.enabled = true;
+        {
+            img.gameObject.SetActive(true);
 
-        t = (cage.transform.position - Camera.main.transform.position).normalized;
-        t.x = t.x * 2;
-        t.y = t.y * 4.5f;
+            meterText.gameObject.SetActive(true);
+
+        }
+
+
+        var angle = Mathf.Atan2(t.y, t.x) * Mathf.Rad2Deg;
+        img.gameObject. transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        
+        t.Normalize();
+        t.x *= xDis;
+        t.y *= yDis;
+
+
+
         transform.position = Camera.main.WorldToScreenPoint((Vector2)Camera.main.transform.position + (t));
-        print(transform.position);
+
+
+      // print( Screen.width +" "+transform.position.x);
+
     }
     public void addTaget(GameObject t)
     {
         cage = t;
     }
+    
 }

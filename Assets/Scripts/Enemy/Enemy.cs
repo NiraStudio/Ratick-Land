@@ -5,15 +5,20 @@ using CodeStage.AntiCheat.ObscuredTypes;
 
 public class Enemy : MonoBehaviour,IHitable {
     public EnemyData data;
-
+    
     protected ObscuredFloat speedMultiPly;
     protected ObscuredFloat attackSpeed;
     protected ObscuredFloat hitPoint;
     protected ObscuredFloat damage;
     protected ObscuredFloat speed;
+    protected ObscuredInt coin;
 
+    [SerializeField]
+    GameObject coinObject;
+    LevelController levelController;
 	// Use this for initialization
 	public virtual void Start () {
+        levelController = LevelController.instance;
         RenewData();	
 	}
 	
@@ -25,7 +30,14 @@ public class Enemy : MonoBehaviour,IHitable {
     public void GetHit(float dmg)
     {
         hitPoint -= dmg;
-        print(hitPoint+" damge"+dmg);
+        if (hitPoint < 0)
+            Death();
+    }
+    void Death()
+    {
+        ///coin Ui
+        Instantiate(coinObject, transform.position, Quaternion.identity).transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<UnityEngine.UI.Text>().text = coin.ToString();
+        Destroy(gameObject);
     }
     void RenewData()
     {
@@ -33,5 +45,7 @@ public class Enemy : MonoBehaviour,IHitable {
         attackSpeed = data.attackSpeed;
         hitPoint = data.hitPoint;
         damage = data.damage;
+        damage = damage * ((Time.time / 20)+1);
+        coin = data.coin * levelController.WorldCoinMultiply;
     }
 }

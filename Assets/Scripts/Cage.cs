@@ -8,17 +8,19 @@ public class Cage : MonoBehaviour, IHitable
     public float hitPoint;
     public CharacterDataBase data;
     List<GameObject> prisoners=new List<GameObject>();
+
+    SpriteRenderer sr;
     // Use this for initialization
     void Start()
     {
-        transform.position = new Vector2(Random.Range(-100, 100), Random.Range(-100, 100));
         addCharacters();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+         sr.sortingOrder= IsoMetricHandler.giveSortingOrderNumber(transform.position.y);
     }
     void addCharacters()
     {
@@ -29,6 +31,7 @@ public class Cage : MonoBehaviour, IHitable
             a.y = Random.Range(0.01f, 0.1f);
             a = (Vector2)transform.position + a;
             GameObject g = Instantiate(data.GiveByID(1).prefab, a, Quaternion.identity);
+            g.transform.SetParent(gameObject.transform);
             g.GetComponent<Character>().Release(false);
             prisoners.Add(g);
         }
@@ -45,7 +48,9 @@ public class Cage : MonoBehaviour, IHitable
         foreach (var item in prisoners)
         {
             item.GetComponent<Character>().Release(true);
+            item.transform.SetParent(null);
         }
+        LevelController.instance.MakeCage();
         Destroy(gameObject);
     }
 }
