@@ -24,7 +24,8 @@ public class LevelController : MainBehavior
         get { return move; }
     }
 
-
+    [SerializeField]
+     int characterCount;
     Dictionary<int, int> data = new Dictionary<int, int>();
     bool move;
     /// cach var
@@ -37,8 +38,7 @@ public class LevelController : MainBehavior
     }
     void Start()
     {
-        data.Add(1, 300);
-        data.Add(2, 3);
+        data.Add(1, 250);
         spawnCharacters();
         MakeCage();
     }
@@ -107,6 +107,7 @@ public class LevelController : MainBehavior
                         b.transform.position = Random.insideUnitCircle * 3;
                         cameraController.AddTarget(b);
                         b.GetComponent<Character>().Release(true);
+                        characterCount++;
                     }
 
                     break;
@@ -115,9 +116,12 @@ public class LevelController : MainBehavior
                     a.transform.position = Random.insideUnitCircle * 3;
                     cameraController.AddTarget(a);
                     a.GetComponent<Character>().Release(true);
+                    characterCount++;
+
                     break;
 
             }
+
         }
         
     }

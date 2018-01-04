@@ -7,6 +7,7 @@ public class CharacterData:ScriptableObject
 {
     public string characterName;
     public GameObject prefab;
+    public Currency price=new Currency();
     public Type type;
     public int id;
     public int maxLevel;

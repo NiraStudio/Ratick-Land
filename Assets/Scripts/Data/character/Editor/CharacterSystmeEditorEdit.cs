@@ -172,6 +172,13 @@ public class CharacterSystmeEditorEdit : EditorWindow
             GUILayout.EndHorizontal();
 
 
+            GUILayout.BeginHorizontal("Box");
+
+            temp.price.Amount = EditorGUILayout.IntField("Price:", temp.price.Amount, GUILayout.Width(300));
+            temp.price.type = (Currency.Type)EditorGUILayout.EnumPopup(temp.price.type, GUILayout.Width(300));
+
+            GUILayout.EndHorizontal();
+
             GUILayout.EndVertical();
             #endregion
 

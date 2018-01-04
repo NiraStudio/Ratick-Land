@@ -73,6 +73,8 @@ public class CharacterSystemEditorCreate : EditorWindow {
             a.hitPoint = temp.hitPoint;
             a.damage = temp.damage;
             a.description = temp.description;
+            a.price.Amount = temp.price.Amount;
+            a.price.type = temp.price.type;
 
             string path = @"Assets/Data/CharacterData/";
             if (!AssetDatabase.IsValidFolder(@"Assets/Data"))
@@ -111,7 +113,7 @@ public class CharacterSystemEditorCreate : EditorWindow {
         GUILayout.BeginHorizontal();
 
         #region Icon Part
-        
+
         if (temp.icon != null)
             ItemIcon = temp.icon.texture;
 
@@ -143,9 +145,9 @@ public class CharacterSystemEditorCreate : EditorWindow {
         temp.prefab = EditorGUILayout.ObjectField(temp.prefab, typeof(GameObject)) as GameObject;
 
         GUILayout.Label("Character Type:");
-        temp.type =(CharacterData.Type) EditorGUILayout.EnumPopup(temp.type);
+        temp.type = (CharacterData.Type)EditorGUILayout.EnumPopup(temp.type);
 
-        
+
         GUILayout.EndHorizontal();
 
         #endregion
@@ -162,10 +164,12 @@ public class CharacterSystemEditorCreate : EditorWindow {
         //Speed
         temp.speed = EditorGUILayout.FloatField("Speed:", temp.speed);
 
-       
+
 
         GUILayout.EndHorizontal();
         #endregion
+
+        #region Max ,id ,attackrange
 
         GUILayout.BeginHorizontal();
 
@@ -179,23 +183,37 @@ public class CharacterSystemEditorCreate : EditorWindow {
         temp.id = EditorGUILayout.IntField("ID:", temp.id);
         GUILayout.EndHorizontal();
 
+
+
+
         GUILayout.EndVertical();
 
         #endregion
 
 
-        
+
 
         GUILayout.EndHorizontal();
 
-        #endregion
 
+        GUILayout.BeginVertical();
+
+        GUILayout.BeginHorizontal();
+
+        temp.price.Amount = EditorGUILayout.IntField("Price:", temp.price.Amount, GUILayout.Width(300));
+        temp.price.type = (Currency.Type)EditorGUILayout.EnumPopup(temp.price.type, GUILayout.Width(300));
+
+        GUILayout.EndHorizontal();
 
         GUILayout.Label("Item Description:");
         temp.description = EditorGUILayout.TextArea(temp.description, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true));
 
-
         GUILayout.EndVertical();
+
+        #endregion
+        GUILayout.EndVertical();
+        #endregion
+
     }
-   
 }
+  

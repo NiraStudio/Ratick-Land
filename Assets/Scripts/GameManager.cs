@@ -11,7 +11,7 @@ public class GameManager : MainBehavior {
         instance = this;
     }
 	void Start () {
-		
+        DontDestroyOnLoad(gameObject);
 	}
 	
 	// Update is called once per frame

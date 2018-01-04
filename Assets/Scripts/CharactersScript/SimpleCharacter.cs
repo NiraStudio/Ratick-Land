@@ -8,7 +8,7 @@ public class SimpleCharacter : Character, IHitable, IAttackable
     Collider2D detectedEnemy;
     	
 	// Update is called once per frame
-	public void Update () {
+	public void FixedUpdate () {
         if (!free)
             return;
         waitTime += Time.deltaTime;

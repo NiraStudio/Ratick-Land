@@ -50,11 +50,23 @@ public class Character : MainBehavior
             speed = speedMultiPly;
            
             tt = (aimer.transform.position - transform.position).normalized;
+           
             tt = tt * speed;
             // t = (Vector2)rg.position + tt ;
             // t = (Vector2)transform.position + (Vector2.one * 1 * Time.fixedDeltaTime);
             // rg.MovePosition(t);
+
             rg.velocity = tt;
+            
+            if (controller.joyStick.direction.x > 0 && !right)
+            {
+                Flip();
+            }
+            else if (controller.joyStick.direction.x < 0 && right)
+            {
+                Flip();
+
+            }
         }
         else
             rg.velocity = Vector3.zero;
@@ -82,6 +94,13 @@ public class Character : MainBehavior
 
         free = state;
         GetComponent<Collider2D>().enabled = state;
+    }
+    void Flip()
+    {
+        Vector2 w = transform.localScale;
+        w.x *= -1;
+        transform.localScale = w;
+        right = !right;
     }
     
 }
