@@ -10,5 +10,6 @@ public class EnemyData : ScriptableObject {
     public float hitPoint;
     public float attackSpeed;
     public float speed;
+    public float range;
     public int coin;
 }

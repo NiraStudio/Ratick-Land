@@ -14,6 +14,6 @@ public class IsoMetricHandler : MainBehavior {
 
      public static int giveSortingOrderNumber(float y)
      {
-       return  (-(int)(y * 1000));
+       return  (-(int)(y * 100));
      }
 }

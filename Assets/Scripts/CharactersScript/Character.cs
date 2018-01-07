@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using CodeStage.AntiCheat.ObscuredTypes;
 
-public class Character : MainBehavior
+public class Character : MainBehavior,IAttackable,IHitable
 {
     public CharacterData data;
     public bool right;
@@ -21,15 +21,16 @@ public class Character : MainBehavior
     protected ObscuredFloat damage;
     protected ObscuredFloat speed;
     protected ObscuredFloat attackRange;
+    protected Collider2D detectedEnemy;
 
-
+    float waitTime;
     Vector2 t, tt;
     protected bool free;
     // Use this for initialization
     void Start()
     {
-        aimer = LevelController.instance.aimer;
         controller = LevelController.instance;
+        aimer = controller.aimer;
         rg = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
@@ -39,11 +40,13 @@ public class Character : MainBehavior
     }
    
     // Update is called once per frame
-    void FixedUpdate()
+    public virtual void FixedUpdate()
     {
 
         if (!free)
             return;
+
+        waitTime += Time.fixedDeltaTime;
         #region Move
         if (controller.Move)
         {
@@ -52,10 +55,6 @@ public class Character : MainBehavior
             tt = (aimer.transform.position - transform.position).normalized;
            
             tt = tt * speed;
-            // t = (Vector2)rg.position + tt ;
-            // t = (Vector2)transform.position + (Vector2.one * 1 * Time.fixedDeltaTime);
-            // rg.MovePosition(t);
-
             rg.velocity = tt;
             
             if (controller.joyStick.direction.x > 0 && !right)
@@ -73,10 +72,17 @@ public class Character : MainBehavior
 
         #endregion
 
+        #region Attack
+        detectedEnemy = Physics2D.OverlapCircle(transform.position, attackRange, EnemyMask);
+
+        if (waitTime > attackSpeed && detectedEnemy)
+            Attack();
+
+
         ///ISOMETRIC
         sr.sortingOrder = IsoMetricHandler.giveSortingOrderNumber(transform.position.y);
 
-
+        #endregion
 
         if (anim)
             anim.SetBool("Move", controller.Move);
@@ -97,10 +103,29 @@ public class Character : MainBehavior
     }
     void Flip()
     {
-        Vector2 w = transform.localScale;
-        w.x *= -1;
-        transform.localScale = w;
+
+        sr.flipX = !sr.flipX;
         right = !right;
     }
-    
+
+
+    public virtual void Attack()
+    {
+        waitTime = 0;
+    }
+
+    public virtual void GetHit(float dmg)
+    {
+
+        hitPoint -= dmg;
+        if (hitPoint <= 0)
+            Die();
+    }
+
+    public virtual void Die()
+    {
+        //animation
+        controller.RemoveCharacter(gameObject);
+        Destroy(gameObject);
+    }
 }

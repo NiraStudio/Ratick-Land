@@ -41,14 +41,17 @@ public class Cage : MonoBehaviour, IHitable
     {
         hitPoint -= dmg;
         if(hitPoint<0)
-            Break();
+            Die();
     }
-    void Break()
+    
+
+    public void Die()
     {
         foreach (var item in prisoners)
         {
             item.GetComponent<Character>().Release(true);
             item.transform.SetParent(null);
+            LevelController.instance.AddCharacters(item);
         }
         LevelController.instance.MakeCage();
         Destroy(gameObject);

@@ -10,27 +10,34 @@ public class LevelController : MainBehavior
     public CageFinder cageFinder;
     public JoyStick joyStick;
     public GameObject aimer;
-    public Vector2 mapBorders;
     public float speedMultiPly;
-    public int WorldCoinMultiply=1;
+    public int WorldCoinMultiply=1,maxWave;
+    [Range(0,100)]
+    public int ChanceToRespawnSecretMap;
 
 
     [Tooltip("Map Parameters")]
     public GameObject cage;
-    public GameObject[] stone;
-    public Wave[] waves;
+    public GameObject[] Blocks,Maps;
+    public GameObject SecretMap,wave;
+    public List<GameObject> currentWaves=new List<GameObject>();
     public bool Move
     {
         get { return move; }
     }
+    public bool game;
 
-    [SerializeField]
-     int characterCount;
+
+
+
     Dictionary<int, int> data = new Dictionary<int, int>();
-    bool move;
+    List<Vector2> freeSpots=new List<Vector2>();
+    List<GameObject> characters=new List<GameObject>();
     /// cach var
     Vector2 t;
     Touch[] touches;
+    bool move;
+    MapClass map;
     // Use this for initialization
     void Awake()
     {
@@ -38,9 +45,11 @@ public class LevelController : MainBehavior
     }
     void Start()
     {
-        data.Add(1, 250);
+        designMap();
+        data.Add(1, 50);
         spawnCharacters();
         MakeCage();
+        StartCoroutine(spawnEnemy());
     }
 
     // Update is called once per frame
@@ -81,62 +90,25 @@ public class LevelController : MainBehavior
 
         }
         #endregion
+        if (characters.Count <= 0)
+            FinishTheGame();
     }
-    void JoyStickTurnOn(Vector2 pos)
+    public void RemoveCharacter(GameObject character)
     {
-        joyStick.gameObject.SetActive(true);
-        joyStick.transform.position = pos;
-        move = true;
+        characters.Remove(character);
+        cameraController.ChangeTargets(characters);
     }
-    void JoyStickTurnOff()
+    public void AddCharacters(GameObject character)
     {
-        joyStick.gameObject.SetActive(false);
-        move = false;
+        characters.Add(character);
+        cameraController.ChangeTargets(characters);
     }
-    void spawnCharacters()
-    {
-        foreach (var item in data)
-        {
-            CharacterData c = characterDataBase.GiveByID(item.Key);
-            switch (c.type)
-            {
-                case CharacterData.Type.Soldier:
-                    for (int i = 0; i < item.Value; i++)
-                    {
-                        GameObject b = Instantiate(c.prefab);
-                        b.transform.position = Random.insideUnitCircle * 3;
-                        cameraController.AddTarget(b);
-                        b.GetComponent<Character>().Release(true);
-                        characterCount++;
-                    }
-
-                    break;
-                case CharacterData.Type.Hero:
-                    GameObject a = Instantiate(c.prefab);
-                    a.transform.position = Random.insideUnitCircle * 3;
-                    cameraController.AddTarget(a);
-                    a.GetComponent<Character>().Release(true);
-                    characterCount++;
-
-                    break;
-
-            }
-
-        }
-        
-    }
-
     public void AddCharacter()
     {
         GameObject g = Instantiate(characterDataBase.GiveByID(1).prefab);
         g.transform.position = Random.insideUnitCircle * 3;
-        cameraController.AddTarget(g);
         g.GetComponent<Character>().Release(true);
-
-    }
-
-    void designMap()
-    {
+        AddCharacters(g);
 
     }
     public void MakeCage()
@@ -153,9 +125,106 @@ public class LevelController : MainBehavior
 
         cageFinder.cage = g;
     }
-    Vector3 giveMapPos()
+
+    void JoyStickTurnOn(Vector2 pos)
     {
-        return new Vector3(Random.Range(-mapBorders.x, mapBorders.x), Random.Range(-mapBorders.y, mapBorders.y),0);
+        joyStick.gameObject.SetActive(true);
+        joyStick.transform.position = pos;
+        move = true;
     }
+    void JoyStickTurnOff()
+    {
+        joyStick.gameObject.SetActive(false);
+        move = false;
+    }
+    void spawnCharacters()
+    {
+        GameObject p = new GameObject("Characters");
+        foreach (var item in data)
+        {
+            CharacterData c = characterDataBase.GiveByID(item.Key);
+            switch (c.type)
+            {
+                case CharacterData.Type.Soldier:
+                    for (int i = 0; i < item.Value; i++)
+                    {
+                        GameObject b = Instantiate(c.prefab,p.transform);
+                        b.transform.position = Random.insideUnitCircle * 3;
+                        b.GetComponent<Character>().Release(true);
+                        AddCharacters(b);
+                    }
+
+                    break;
+                case CharacterData.Type.Hero:
+                    GameObject a = Instantiate(c.prefab,p.transform);
+                    a.transform.position = Random.insideUnitCircle * 3;
+                    a.GetComponent<Character>().Release(true);
+                    AddCharacters(a);
+
+
+                    break;
+
+            }
+
+        }
+        
+    }
+    
+    void designMap()
+    {
+        int a = Random.Range(0, 100);
+        GameObject g;
+        Vector3 r=new Vector3(0, 0, Random.Range(0, 360));
+        if (a < ChanceToRespawnSecretMap)
+        {
+            g = Instantiate(SecretMap, Vector2.zero, Quaternion.Euler(r));
+        }
+        else
+        {
+            g = Instantiate(Maps[Random.Range(0, Maps.Length)], Vector2.zero, Quaternion.Euler(r));
+        }
+        map = g.GetComponent<MapClass>();
+
+        freeSpots = map.points(PointsType.Free);
+
+        map.DestroyGameObjects();
+    }
+    Vector2 giveMapPos()
+    {
+        return freeSpots[Random.Range(0, freeSpots.Count)];
+    }
+    Vector2 giveMapPos(float distance)
+    {
+        Vector2 t = new Vector2();
+         do
+        {
+            t =freeSpots[Random.Range(0, freeSpots.Count)];
+        } while (Vector2.Distance(t, Camera.main.transform.position) < distance);
+         return t;
+    }
+    IEnumerator spawnEnemy()
+    {
+        if (currentWaves.Count < maxWave)
+        {
+            while (currentWaves.Count < maxWave)
+            {
+                GameObject g = Instantiate(wave.gameObject, giveMapPos(7), Quaternion.identity);
+                g.GetComponent<Wave>().controller = this;
+               currentWaves.Add(g);
+            }
+        }
+        yield return new WaitForSeconds(2);
+        StartCoroutine(spawnEnemy());
+
+    }
+    void FinishTheGame()
+    {
+        game = false;
+        print("GameFinished");
+        Application.LoadLevel(0);
+
+    }
+
+    
 
 }

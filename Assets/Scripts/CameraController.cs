@@ -41,6 +41,15 @@ public class CameraController : MonoBehaviour {
 
     }
 
+
+    public void ChangeTargets(List<GameObject> characters)
+    {
+        Targets = characters;
+    }
+
+    
+
+
     Vector3 GetCenterOfTargets()
     {
         if (Targets.Count == 1)
@@ -56,9 +65,10 @@ public class CameraController : MonoBehaviour {
         return bound.center;
 
     }
+
     float GetGreatSize()
     {
-        
+
 
         var bound = new Bounds(Targets[0].transform.position, Vector3.zero);
 
@@ -69,13 +79,5 @@ public class CameraController : MonoBehaviour {
         return bound.size.x;
 
     }
-    public void AddTarget(GameObject target)
-    {
-        Targets.Add(target);
-    }
-    public void RemoveTarget(GameObject target)
-    {
-        Targets.Remove(target);
-    }
-    
+
 }
