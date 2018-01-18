@@ -33,6 +33,8 @@ public class LevelController : MainBehavior
     Dictionary<int, int> data = new Dictionary<int, int>();
     List<Vector2> freeSpots=new List<Vector2>();
     List<GameObject> characters=new List<GameObject>();
+    SlotContainer sc = new SlotContainer();
+    GameManager GM;
     /// cach var
     Vector2 t;
     Touch[] touches;
@@ -45,10 +47,13 @@ public class LevelController : MainBehavior
     }
     void Start()
     {
+        GM=GameManager.instance;
         designMap();
         data.Add(1, 50);
+        sc = GM.SlotData;
         spawnCharacters();
         MakeCage();
+        
         StartCoroutine(spawnEnemy());
     }
 
@@ -140,33 +145,44 @@ public class LevelController : MainBehavior
     void spawnCharacters()
     {
         GameObject p = new GameObject("Characters");
-        foreach (var item in data)
+        foreach (var item in sc.Heros)
         {
             CharacterData c = characterDataBase.GiveByID(item.Key);
-            switch (c.type)
-            {
-                case CharacterData.Type.Soldier:
-                    for (int i = 0; i < item.Value; i++)
-                    {
-                        GameObject b = Instantiate(c.prefab,p.transform);
-                        b.transform.position = Random.insideUnitCircle * 3;
-                        b.GetComponent<Character>().Release(true);
-                        AddCharacters(b);
-                    }
-
-                    break;
-                case CharacterData.Type.Hero:
-                    GameObject a = Instantiate(c.prefab,p.transform);
-                    a.transform.position = Random.insideUnitCircle * 3;
-                    a.GetComponent<Character>().Release(true);
-                    AddCharacters(a);
-
-
-                    break;
-
-            }
+            GameObject a = Instantiate(c.prefab, p.transform);
+            a.transform.position = Random.insideUnitCircle * 3;
+            a.GetComponent<Character>().Release(true);
+            AddCharacters(a);
 
         }
+        if(sc.minionId>=0)
+        {
+            CharacterData c = characterDataBase.GiveByID(sc.minionId);
+            for (int i = 0; i < 10; i++)
+            {
+                GameObject b = Instantiate(c.prefab, p.transform);
+                b.transform.position = Random.insideUnitCircle * 3;
+                b.GetComponent<Character>().Release(true);
+                AddCharacters(b);
+            }
+        }
+        if (sc.supportId >= 0)
+        {
+            CharacterData c = characterDataBase.GiveByID(sc.supportId);
+            GameObject a = Instantiate(c.prefab, p.transform);
+            a.transform.position = Random.insideUnitCircle * 3;
+            a.GetComponent<Character>().Release(true);
+            AddCharacters(a);
+        }
+
+        if (sc.mainId >= 0)
+        {
+            CharacterData c = characterDataBase.GiveByID(sc.mainId);
+            GameObject a = Instantiate(c.prefab, p.transform);
+            a.transform.position = Random.insideUnitCircle * 3;
+            a.GetComponent<Character>().Release(true);
+            AddCharacters(a);
+        }
+           
         
     }
     

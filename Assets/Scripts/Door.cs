@@ -15,7 +15,7 @@ public class Door : MonoBehaviour {
 	
 	// Update is called once per frame
 	void LateUpdate () {
-        bool enter = Physics2D.OverlapBox(entry.transform.position, entrySize, 0,a);
+       /* bool enter = Physics2D.OverlapBox(entry.transform.position, entrySize, 0,a);
         if (enter)
         {
             image.SetActive(true);
@@ -26,7 +26,7 @@ public class Door : MonoBehaviour {
             image.SetActive(false);
             print("false");
 
-        }
+        }*/
 	}
     void OnDrawGizmos()
     {

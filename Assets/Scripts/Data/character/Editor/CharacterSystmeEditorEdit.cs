@@ -17,6 +17,9 @@ public class CharacterSystmeEditorEdit : EditorWindow
     CharacterData temp;
     string searchName="";
 
+
+    int aa = 0;
+
     [MenuItem("Character System/Edit Character")]
     public static void InIt()
     {
@@ -97,12 +100,15 @@ public class CharacterSystmeEditorEdit : EditorWindow
 
             if (GUILayout.Button(ItemIcon, GUILayout.Width(IconButtonSize.x), GUILayout.Height(IconButtonSize.y)))
             {
-                EditorGUIUtility.ShowObjectPicker<Sprite>(null, true, null, 0);
+                EditorGUIUtility.ShowObjectPicker<Sprite>(temp.icon, true, null, 0);
+                aa = i;
             }
+
             string commend = Event.current.commandName;
-            if (commend == "ObjectSelectorClosed")
+            if (commend == "ObjectSelectorClosed"&&i==aa)
             {
                 temp.icon = (Sprite)EditorGUIUtility.GetObjectPickerObject();
+                aa = -1;
             }
 
             #endregion

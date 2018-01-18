@@ -22,12 +22,12 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     GameObject coinObject,aim;
     LevelController levelController;
     LayerMask charactersLayer;
-    Collider2D detectedCharacter;
-    bool detect;
-    float time;
+    protected Collider2D detectedCharacter;
+    bool detect,move;
+    protected float time;
 
-
-    Vector2 tt;
+    
+    Vector2 tt,direction;
 	// Use this for initialization
 	public virtual void Start () {
         levelController = LevelController.instance;
@@ -40,24 +40,35 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-        time+=Time.deltaTime;
+    void Update()
+    {
 
 
-        if (Vector2.Distance(transform.position, aim.transform.position) < range)
+        detectedCharacter = Physics2D.OverlapCircle(transform.position, range, charactersLayer);
+
+
+        if (detectedCharacter)
         {
-            rg.bodyType = RigidbodyType2D.Static;
-            rg.velocity = Vector2.zero;
+            time += Time.deltaTime;
+            if (attackSpeed <= time)
+                Attack();
         }
-        else
-            rg.bodyType = RigidbodyType2D.Dynamic;
 
-        detectedCharacter=Physics2D.OverlapCircle(transform.position,range,charactersLayer);
 
-        if (detectedCharacter && attackSpeed <= time)
-            Attack();
+        if (detectedCharacter)
+        {
+            print("Attack");
+            return;
+        }
+        if (move)
+        {
+            Vector2 a = transform.position;
+            a += direction * speed * Time.deltaTime;
+            transform.position = a;
+        }
 
-	}
+
+    }
 
     public void GetHit(float dmg)
     {
@@ -81,6 +92,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     {
         yield return new WaitForSeconds(timeForMove.Random);
         IntRange a = new IntRange(0, 100);
+        move = true;
         if(Vector2.Distance(transform.position, aim.transform.position) < 5)
         {
 
@@ -88,7 +100,10 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
             {
                 Vector2 t = aim.transform.position - transform.position;
                 t = t.normalized;
-                rg.velocity = t * speed;
+               // rg.velocity = t * speed;
+
+                direction = t;
+
                 print("Follow");
 
 
@@ -104,12 +119,13 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
         else
         {
             Vector2 t = GiveRandomMoveDiretion();
-            rg.velocity = t * speed;
-            print("Random "+t+ " velo "+rg.velocity);
+           // rg.velocity = t * speed;
+            direction = t;
         }
 
         yield return new WaitForSeconds(timeForMove.Random);
-        rg.velocity = Vector2.zero;
+       // rg.velocity = Vector2.zero;
+        move = false;
         
 
         StartCoroutine(Move());
@@ -137,7 +153,6 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
         Gizmos.color = Color.black;
         Gizmos.DrawLine(transform.position,(Vector2)transform.position+( tt*4f));
     }
-
 
     public Vector2 GiveRandomMoveDiretion()
     {

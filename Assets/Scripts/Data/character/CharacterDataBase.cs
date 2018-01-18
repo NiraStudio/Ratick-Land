@@ -42,6 +42,17 @@ public class CharacterDataBase : ScriptableObject {
         setDirty();
 
     }
+
+    public List<CharacterData> GiveByType(CharacterData.Type type)
+    {
+        List<CharacterData> answer = new List<CharacterData>();
+        foreach (var item in DataBase)
+        {
+            if (item.type == type)
+                answer.Add(item);
+        }
+        return answer;
+    }
     public CharacterData.Type giveCharacterMode(int id)
     {
         return GiveByID(id).type;

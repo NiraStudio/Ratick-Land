@@ -13,7 +13,7 @@ public class Wave : MonoBehaviour {
     {
         for (int i = 0; i < enemiesNumber.Random; i++)
         {
-            Vector2 p = Random.insideUnitCircle * 2;
+            Vector2 p = Random.insideUnitCircle * 1;
             p =(Vector2) transform.position + p;
             GameObject g = Instantiate(enemy, p, Quaternion.identity);
             g.transform.SetParent(gameObject.transform);

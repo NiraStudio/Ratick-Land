@@ -39,6 +39,6 @@ public class CharacterData:ScriptableObject
 
     public enum Type
     {
-        Soldier,Hero
+        Soldier,Hero,Main,Support
     }
 }

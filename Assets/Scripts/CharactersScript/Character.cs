@@ -42,26 +42,28 @@ public class Character : MainBehavior,IAttackable,IHitable
     // Update is called once per frame
     public virtual void FixedUpdate()
     {
-
+        
         if (!free)
             return;
 
-        waitTime += Time.fixedDeltaTime;
         #region Move
         if (controller.Move)
         {
             speed = speedMultiPly;
            
-            tt = (aimer.transform.position - transform.position).normalized;
-           
+            tt = (aimer.transform.position - transform.position);
+            tt.Normalize();
             tt = tt * speed;
-            rg.velocity = tt;
+            if (Vector2.Distance(transform.position, aimer.transform.position) > 0.2f)
+                rg.velocity = tt;
+            else
+                rg.velocity = Vector2.zero;
             
-            if (controller.joyStick.direction.x > 0 && !right)
+            if (aimer.transform.position.x > transform.position.x && !right)
             {
                 Flip();
             }
-            else if (controller.joyStick.direction.x < 0 && right)
+            else if (aimer.transform.position.x < transform.position.x && right)
             {
                 Flip();
 
@@ -74,9 +76,16 @@ public class Character : MainBehavior,IAttackable,IHitable
 
         #region Attack
         detectedEnemy = Physics2D.OverlapCircle(transform.position, attackRange, EnemyMask);
+        if (detectedEnemy)
+        {
+            waitTime += Time.fixedDeltaTime;
 
-        if (waitTime > attackSpeed && detectedEnemy)
-            Attack();
+            if (waitTime > attackSpeed && detectedEnemy)
+                Attack();
+        }
+        else
+            waitTime = 0;
+       
 
 
         ///ISOMETRIC

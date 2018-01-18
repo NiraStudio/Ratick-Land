@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class MainBehavior : MonoBehaviour {
+public class EnemyMelee : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
@@ -14,8 +13,4 @@ public class MainBehavior : MonoBehaviour {
 	void Update () {
 		
 	}
-    public void GoToScene(string SceneName)
-    {
-        SceneManager.LoadScene(SceneName);
-    }
 }

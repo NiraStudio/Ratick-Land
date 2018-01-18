@@ -33,7 +33,10 @@ public class JoyStick : MainBehavior
             t = t.normalized;
             handle.transform.position = (Vector2)transform.position + t * distance;
         }
-        speed = (handle.transform.position - transform.position).magnitude / distance;
+        if (Vector2.Distance(transform.position, mousePos) >= distance / 4)
+            speed = (handle.transform.position - transform.position).magnitude / distance;
+        else
+            speed = 0;
         direction = (handle.transform.position - transform.position).normalized;
     
     }
