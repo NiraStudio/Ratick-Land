@@ -5,10 +5,10 @@ using UnityEngine;
 [System.Serializable]
 public class SlotContainer  {
     public int minionId, minionCount,supportId,supoortLevel,mainId,mainLevel;
-    public Dictionary<int, int> Heros = new Dictionary<int, int>();
+    public List<int> Heros = new List<int>();
 	
 
-    public void ChangeHeros(Dictionary<int, int> heros)
+    public void ChangeHeros(List<int> heros)
     {
         Heros = heros;
     }

@@ -13,16 +13,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: third
   prefab: {fileID: 1441858223127896, guid: ce90b65c3fb7fc84fba06110a4e52e58, type: 2}
-  price:
-    Amount: 1000
+  buyPrice:
+    Amount: 0
+    type: 0
+  upgradePrice:
+    Amount: 0
     type: 0
   type: 0
   id: 3
   maxLevel: 0
   icon: {fileID: 21300002, guid: 801bc8cc322258a4a9bf7a762033c7bf, type: 3}
-  speed: 10
+  speed: 3
   attackSpeed: 0.5
   hitPoint: 100
   attackRange: 0
-  damage: 10
+  damage:
+    m_Min: 0
+    m_Max: 0
+  upgrade:
+    type: 0
+    amount: 0
   description: 

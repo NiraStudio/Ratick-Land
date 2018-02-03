@@ -7,6 +7,8 @@ public class ArrangeChooseButton : MonoBehaviour {
     public Image icon;
     public string CharacterName;
     public CharacterData data;
+    public Text characterName;
+
 	// Use this for initialization
 	void Start () {
         GetComponent<Button>().onClick.AddListener(Clicked);
@@ -21,6 +23,8 @@ public class ArrangeChooseButton : MonoBehaviour {
         icon.sprite = data.icon;
         CharacterName = data.name;
         this.data = data;
+        characterName.text = data.characterName;
+
     }
     void Clicked()
     {

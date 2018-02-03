@@ -22,7 +22,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     GameObject coinObject,aim;
     LevelController levelController;
     LayerMask charactersLayer;
-    protected Collider2D detectedCharacter;
+    public Collider2D detectedCharacter;
     bool detect,move;
     protected float time;
 
@@ -46,25 +46,23 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
 
         detectedCharacter = Physics2D.OverlapCircle(transform.position, range, charactersLayer);
 
+        
 
         if (detectedCharacter)
         {
             time += Time.deltaTime;
             if (attackSpeed <= time)
                 Attack();
+            move = false;
         }
+        
 
 
-        if (detectedCharacter)
-        {
-            print("Attack");
-            return;
-        }
+
+        
         if (move)
         {
-            Vector2 a = transform.position;
-            a += direction * speed * Time.deltaTime;
-            transform.position = a;
+            rg.velocity = direction* speed;
         }
 
 
@@ -90,47 +88,50 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     }
     IEnumerator Move()
     {
+        yield return new WaitUntil(() => detectedCharacter == null);
+
         yield return new WaitForSeconds(timeForMove.Random);
         IntRange a = new IntRange(0, 100);
         move = true;
-        if(Vector2.Distance(transform.position, aim.transform.position) < 5)
+        if (Vector2.Distance(transform.position, aim.transform.position) < 5)
         {
 
             if (a.Random <= 60)
             {
                 Vector2 t = aim.transform.position - transform.position;
                 t = t.normalized;
-               // rg.velocity = t * speed;
+                // rg.velocity = t * speed;
 
                 direction = t;
 
                 print("Follow");
 
-
             }
             else
             {
-                rg.velocity = GiveRandomMoveDiretion() * speed ;
+                //rg.velocity = GiveRandomMoveDiretion() * speed ;
+                direction = GiveRandomMoveDiretion();
                 print("Random");
 
             }
-
         }
         else
         {
             Vector2 t = GiveRandomMoveDiretion();
-           // rg.velocity = t * speed;
+            rg.velocity = t * speed;
             direction = t;
         }
 
         yield return new WaitForSeconds(timeForMove.Random);
-       // rg.velocity = Vector2.zero;
+        rg.velocity = Vector2.zero;
         move = false;
-        
+
 
         StartCoroutine(Move());
-
     }
+       
+    
+
 
     public virtual void Attack()
     {
@@ -143,6 +144,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     public void Die()
     {
         Instantiate(coinObject, transform.position, Quaternion.identity).transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<UnityEngine.UI.Text>().text = coin.ToString();
+        levelController.ChangeCoin(coin);
         Destroy(gameObject);
     }
     void OnDrawGizmos()
@@ -167,10 +169,8 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
             if (a.collider==null)
                 find = true;
 
-            print("Choosing ... ");
         } while (find==false);
         tt = t;
-        print("Choosed "+tt);
 
         return t ;
     }

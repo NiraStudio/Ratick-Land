@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
+using CodeStage.AntiCheat.ObscuredTypes;
 public class LevelController : MainBehavior
 {
     public static LevelController instance;
@@ -20,26 +21,38 @@ public class LevelController : MainBehavior
     public GameObject cage;
     public GameObject[] Blocks,Maps;
     public GameObject SecretMap,wave;
+    public IntRange BlockAmount;
     public List<GameObject> currentWaves=new List<GameObject>();
     public bool Move
     {
         get { return move; }
     }
     public bool game;
+    public int CoinAmount
+    { get { return coinAmount; } }
 
 
+
+    ObscuredInt coinAmount;
 
 
     Dictionary<int, int> data = new Dictionary<int, int>();
-    List<Vector2> freeSpots=new List<Vector2>();
+    List<Vector2> freeSpots = new List<Vector2>();
+    List<Vector2> BlockSpots = new List<Vector2>();
     List<GameObject> characters=new List<GameObject>();
     SlotContainer sc = new SlotContainer();
     GameManager GM;
     /// cach var
-    Vector2 t;
+    Vector2 t,startPos;
     Touch[] touches;
     bool move;
     MapClass map;
+    public float LevelTime
+    {
+        get { return levelTime; }
+    }
+
+    float coinTemp,lerp=0,levelTime;
     // Use this for initialization
     void Awake()
     {
@@ -60,6 +73,9 @@ public class LevelController : MainBehavior
     // Update is called once per frame
     void Update()
     {
+
+        levelTime += Time.deltaTime;
+
         #region inputs
         if (Application.isMobilePlatform)
         {
@@ -145,22 +161,26 @@ public class LevelController : MainBehavior
     void spawnCharacters()
     {
         GameObject p = new GameObject("Characters");
+        print(startPos);
+        p.transform.position = startPos;
         foreach (var item in sc.Heros)
         {
-            CharacterData c = characterDataBase.GiveByID(item.Key);
+            CharacterData c = characterDataBase.GiveByID(item);
             GameObject a = Instantiate(c.prefab, p.transform);
-            a.transform.position = Random.insideUnitCircle * 3;
+            a.transform.position =startPos+ Random.insideUnitCircle * 3;
             a.GetComponent<Character>().Release(true);
             AddCharacters(a);
+            a.SendMessage("UpgradeTheCharacter", GM.CharacterLevel(item));
 
         }
         if(sc.minionId>=0)
         {
             CharacterData c = characterDataBase.GiveByID(sc.minionId);
-            for (int i = 0; i < 10; i++)
+            int a = GM.CharacterLevel(sc.minionId);
+            for (int i = 0; i < a; i++)
             {
                 GameObject b = Instantiate(c.prefab, p.transform);
-                b.transform.position = Random.insideUnitCircle * 3;
+                b.transform.position =startPos+ Random.insideUnitCircle * 3;
                 b.GetComponent<Character>().Release(true);
                 AddCharacters(b);
             }
@@ -169,23 +189,27 @@ public class LevelController : MainBehavior
         {
             CharacterData c = characterDataBase.GiveByID(sc.supportId);
             GameObject a = Instantiate(c.prefab, p.transform);
-            a.transform.position = Random.insideUnitCircle * 3;
+            a.transform.position =startPos+ Random.insideUnitCircle * 3;
             a.GetComponent<Character>().Release(true);
             AddCharacters(a);
+            a.SendMessage("UpgradeTheCharacter", GM.CharacterLevel(sc.supportId));
+
         }
 
         if (sc.mainId >= 0)
         {
             CharacterData c = characterDataBase.GiveByID(sc.mainId);
             GameObject a = Instantiate(c.prefab, p.transform);
-            a.transform.position = Random.insideUnitCircle * 3;
+            a.transform.position =startPos+ Random.insideUnitCircle * 3;
             a.GetComponent<Character>().Release(true);
+            GetComponent<LevelUIManager>().GetMain(a.GetComponent<Character>());
             AddCharacters(a);
+            a.SendMessage("UpgradeTheCharacter", GM.CharacterLevel(sc.mainId));
+
         }
-           
+        aimer.transform.position = startPos;
         
     }
-    
     void designMap()
     {
         int a = Random.Range(0, 100);
@@ -197,13 +221,25 @@ public class LevelController : MainBehavior
         }
         else
         {
-            g = Instantiate(Maps[Random.Range(0, Maps.Length)], Vector2.zero, Quaternion.Euler(r));
+            g = Instantiate(Maps[Random.Range(0, Maps.Length)], Vector2.zero, Quaternion.identity);
         }
         map = g.GetComponent<MapClass>();
 
         freeSpots = map.points(PointsType.Free);
-
+        BlockSpots = map.points(PointsType.Block);
+        startPos =map.startPoint.transform.position;
         map.DestroyGameObjects();
+        MakeBlocks();
+    }
+    void MakeBlocks()
+    {
+        Vector2 tt;
+        for (int i = 0; i < BlockAmount.Random; i++)
+        {
+            tt=BlockSpots[Random.Range(0,BlockSpots.Count)];
+            Instantiate(Blocks[Random.Range(0, Blocks.Length)], tt, Quaternion.identity);
+            BlockSpots.Remove(tt);
+        }
     }
     Vector2 giveMapPos()
     {
@@ -233,12 +269,20 @@ public class LevelController : MainBehavior
         StartCoroutine(spawnEnemy());
 
     }
-    void FinishTheGame()
+    public void FinishTheGame()
     {
         game = false;
         print("GameFinished");
+        GM.ChangeCoin(coinAmount);
         Application.LoadLevel(0);
 
+    }
+
+
+
+    public void ChangeCoin(int Amount)
+    {
+        coinAmount += Amount;
     }
 
     

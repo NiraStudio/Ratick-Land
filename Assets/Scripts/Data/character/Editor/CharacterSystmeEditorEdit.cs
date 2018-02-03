@@ -146,7 +146,8 @@ public class CharacterSystmeEditorEdit : EditorWindow
             GUILayout.BeginHorizontal();
 
             //Damage
-            temp.damage = EditorGUILayout.FloatField("Damage:", temp.damage, GUILayout.Width(300));
+            temp.damage.m_Min = EditorGUILayout.IntField("Damage Min:", temp.damage.m_Min);
+            temp.damage.m_Max = EditorGUILayout.IntField("Damage Max:", temp.damage.m_Max);
             //HitPoint
             temp.hitPoint = EditorGUILayout.FloatField("Hit Point:", temp.hitPoint, GUILayout.Width(300));
 
@@ -178,10 +179,20 @@ public class CharacterSystmeEditorEdit : EditorWindow
             GUILayout.EndHorizontal();
 
 
+            GUILayout.BeginHorizontal();
+
+            temp.buyPrice.Amount = EditorGUILayout.IntField("Buy Price:", temp.buyPrice.Amount, GUILayout.Width(300));
+            temp.buyPrice.type = (Currency.Type)EditorGUILayout.EnumPopup(temp.buyPrice.type);
+
+            temp.upgradePrice.Amount = EditorGUILayout.IntField("Upgrade Price:", temp.upgradePrice.Amount, GUILayout.Width(300));
+            temp.upgradePrice.type = (Currency.Type)EditorGUILayout.EnumPopup(temp.upgradePrice.type);
+
+            GUILayout.EndHorizontal();
+
             GUILayout.BeginHorizontal("Box");
 
-            temp.price.Amount = EditorGUILayout.IntField("Price:", temp.price.Amount, GUILayout.Width(300));
-            temp.price.type = (Currency.Type)EditorGUILayout.EnumPopup(temp.price.type, GUILayout.Width(300));
+            temp.upgrade.amount = EditorGUILayout.IntField("Upgrade Amount:", temp.upgrade.amount);
+            temp.upgrade.type = (Upgrade.Type)EditorGUILayout.EnumPopup(temp.upgrade.type);
 
             GUILayout.EndHorizontal();
 
@@ -194,9 +205,7 @@ public class CharacterSystmeEditorEdit : EditorWindow
             GUILayout.EndHorizontal();
 
 
-            GUILayout.BeginHorizontal("Box");
-          
-            GUILayout.EndHorizontal();
+            
 
             GUILayout.Label("Character Description:");
             temp.description = EditorGUILayout.TextArea(temp.description, GUILayout.Height(70), GUILayout.ExpandWidth(true));

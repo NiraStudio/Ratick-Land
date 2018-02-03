@@ -34,7 +34,6 @@ public class AimedProjectile : MonoBehaviour, IHitable
 
 
         yRange = Mathf.Lerp(yRange, 0, 4 * Time.deltaTime);
-        print(speed);
         speed += 2 * Time.deltaTime;
 
 

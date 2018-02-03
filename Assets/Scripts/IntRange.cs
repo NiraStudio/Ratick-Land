@@ -19,6 +19,6 @@ public class IntRange
     // Get a random value from the range.
     public int Random
     {
-        get { return UnityEngine.Random.Range(m_Min, m_Max); }
+        get { return UnityEngine.Random.Range(m_Min, m_Max+1); }
     }
 }

@@ -12,7 +12,7 @@ public class CageFinder : MonoBehaviour {
     Vector2 distance;
 
 
-    float xDis = 3, yDis = 5;
+    float xDis = 2, yDis = 4;
 	// Use this for initialization
 	void Start () {
         

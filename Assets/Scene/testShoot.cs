@@ -10,6 +10,7 @@ public class testShoot : MonoBehaviour {
     Rigidbody2D rg;
     public float s=5;
     float maxRange, range;
+    bool aaa;
 	// Use this for initialization
 	void Start () {
         rg = GetComponent<Rigidbody2D>();
@@ -40,10 +41,14 @@ public class testShoot : MonoBehaviour {
 	void Update () {
         if (Input.GetKeyDown(KeyCode.Space))
             shoot();
+        if (aaa)
+            GetComponent<Rigidbody2D>().velocity = Vector2.right * 300;
+        else
+            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 	}
     void shoot()
     {
-        Instantiate(bullet, transform.position, Quaternion.identity).SendMessage("Spawn",traget);
+        aaa = !aaa;
     }
     IEnumerator changeY()
     {

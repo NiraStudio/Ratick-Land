@@ -18,16 +18,27 @@ public class Character : MainBehavior,IAttackable,IHitable
     protected ObscuredFloat speedMultiPly;
     protected ObscuredFloat attackSpeed;
     protected ObscuredFloat hitPoint;
-    protected ObscuredFloat damage;
+    protected IntRange damage;
     protected ObscuredFloat speed;
     protected ObscuredFloat attackRange;
     protected Collider2D detectedEnemy;
 
+    public int HP
+    {
+        get { return (int) hitPoint; }
+    }
+
     float waitTime;
     Vector2 t, tt;
     protected bool free;
-    // Use this for initialization
-    void Start()
+
+
+    public void Awake()
+    {
+        RenewData();
+
+    }
+    public virtual void Start()
     {
         controller = LevelController.instance;
         aimer = controller.aimer;
@@ -36,10 +47,8 @@ public class Character : MainBehavior,IAttackable,IHitable
         sr = GetComponent<SpriteRenderer>();
         EnemyMask = 1 << 8;
         sr.sortingOrder = IsoMetricHandler.giveSortingOrderNumber(transform.position.y);
-        RenewData();
     }
    
-    // Update is called once per frame
     public virtual void FixedUpdate()
     {
         
@@ -78,7 +87,7 @@ public class Character : MainBehavior,IAttackable,IHitable
         detectedEnemy = Physics2D.OverlapCircle(transform.position, attackRange, EnemyMask);
         if (detectedEnemy)
         {
-            waitTime += Time.fixedDeltaTime;
+            waitTime += Time.deltaTime;
 
             if (waitTime > attackSpeed && detectedEnemy)
                 Attack();
@@ -96,6 +105,10 @@ public class Character : MainBehavior,IAttackable,IHitable
         if (anim)
             anim.SetBool("Move", controller.Move);
     }
+
+
+
+
     void RenewData()
     {
         speedMultiPly = data.speed;
@@ -104,19 +117,20 @@ public class Character : MainBehavior,IAttackable,IHitable
         damage = data.damage;
         attackRange = data.attackRange;
     }
+
     public void Release(bool state)
     {
 
         free = state;
         GetComponent<Collider2D>().enabled = state;
     }
+
     void Flip()
     {
 
         sr.flipX = !sr.flipX;
         right = !right;
     }
-
 
     public virtual void Attack()
     {
@@ -136,5 +150,31 @@ public class Character : MainBehavior,IAttackable,IHitable
         //animation
         controller.RemoveCharacter(gameObject);
         Destroy(gameObject);
+    }
+
+    public void UpgradeTheCharacter(int Level)
+    {
+        for (int i = 0; i < Level; i++)
+        {
+            switch (data.upgrade.type)
+            {
+                case Upgrade.Type.MinDamage:
+                    damage.m_Min += data.upgrade.amount;
+                    break;
+
+                case Upgrade.Type.MaxDamage:
+                    damage.m_Max += data.upgrade.amount;
+                    break;
+
+                case Upgrade.Type.Damage:
+                    damage.m_Min += data.upgrade.amount;
+                    damage.m_Max += data.upgrade.amount;
+                    break;
+
+                case Upgrade.Type.Hp:
+                    hitPoint += data.upgrade.amount;
+                    break;
+            }
+        }
     }
 }

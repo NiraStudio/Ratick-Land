@@ -13,16 +13,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Test
   prefab: {fileID: 1441858223127896, guid: ae7feabd3f296fa49a9fe8e93f2287b0, type: 2}
-  price:
-    Amount: 0
+  buyPrice:
+    Amount: 100
+    type: 0
+  upgradePrice:
+    Amount: 20
     type: 0
   type: 0
   id: 1
-  maxLevel: 50
+  maxLevel: 30
   icon: {fileID: 21300000, guid: db17ef2e1535bc04cb58b1fc8a41e40a, type: 3}
   speed: 3
   attackSpeed: 0.5
   hitPoint: 20
   attackRange: 0.5
-  damage: 10
+  damage:
+    m_Min: 90
+    m_Max: 150
+  upgrade:
+    type: 0
+    amount: 0
   description: 

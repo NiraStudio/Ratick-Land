@@ -5,12 +5,13 @@ using UnityEditor;
 
 public class CharacterSystemEditorCreate : EditorWindow {
 
+    
     public const string FOLDER_NAME = "DataBase";
     public const string FILE_NAME = "CharacterDataBase.asset";
     public const string FULL_PATH = @"Assets/"+FOLDER_NAME+"/"+FILE_NAME;
 
     CharacterDataBase dataBase;
-    static Vector2 WindowSize=new Vector2(1000,300);
+    static Vector2 WindowSize=new Vector2(1000,500);
     static Vector2 IconButtonSize = new Vector2(50, 50);
     Texture2D ItemIcon;
     CharacterData temp;
@@ -69,12 +70,13 @@ public class CharacterSystemEditorCreate : EditorWindow {
             a.id = temp.id;
             a.icon = temp.icon;
             a.speed = temp.speed;
+            a.type = temp.type;
             a.attackSpeed = temp.attackSpeed;
             a.hitPoint = temp.hitPoint;
             a.damage = temp.damage;
             a.description = temp.description;
-            a.price.Amount = temp.price.Amount;
-            a.price.type = temp.price.type;
+            a.buyPrice.Amount = temp.buyPrice.Amount;
+            a.buyPrice.type = temp.buyPrice.type;
 
             string path = @"Assets/Data/CharacterData/";
             if (!AssetDatabase.IsValidFolder(@"Assets/Data"))
@@ -110,7 +112,7 @@ public class CharacterSystemEditorCreate : EditorWindow {
 
         #region Icon & Detail
 
-        GUILayout.BeginHorizontal();
+        GUILayout.BeginHorizontal("Box");
 
         #region Icon Part
 
@@ -136,7 +138,7 @@ public class CharacterSystemEditorCreate : EditorWindow {
 
         #region Name & Game Object
 
-        GUILayout.BeginHorizontal();
+        GUILayout.BeginHorizontal("Box");
 
         GUILayout.Label("Character Name:");
         temp.characterName = GUILayout.TextField(temp.characterName, GUILayout.Width(200));
@@ -153,12 +155,20 @@ public class CharacterSystemEditorCreate : EditorWindow {
         #endregion
 
         #region Damage , Hit Point & Type
-        GUILayout.BeginHorizontal();
+        GUILayout.BeginHorizontal("Box");
 
         //Damage
-        temp.damage = EditorGUILayout.FloatField("Damage:", temp.damage);
+        temp.damage.m_Min = EditorGUILayout.IntField("Damage Min:", temp.damage.m_Min);
+        temp.damage.m_Max = EditorGUILayout.IntField("Damage Max:", temp.damage.m_Max);
         //HitPoint
         temp.hitPoint = EditorGUILayout.FloatField("Hit Point:", temp.hitPoint);
+
+
+
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal("Box");
+
         //attackSpeed
         temp.attackSpeed = EditorGUILayout.FloatField("Attack Speed:", temp.attackSpeed);
         //Speed
@@ -167,17 +177,18 @@ public class CharacterSystemEditorCreate : EditorWindow {
 
 
         GUILayout.EndHorizontal();
+
         #endregion
 
         #region Max ,id ,attackrange
 
-        GUILayout.BeginHorizontal();
+        GUILayout.BeginHorizontal("Box");
 
         //maxLevel
-        temp.maxLevel = EditorGUILayout.IntField("Max Level:", temp.maxLevel, GUILayout.Width(300));
+        temp.maxLevel = EditorGUILayout.IntField("Max Level:", temp.maxLevel);
 
         //Range
-        temp.attackRange = EditorGUILayout.FloatField("Attack range:", temp.attackRange, GUILayout.Width(300));
+        temp.attackRange = EditorGUILayout.FloatField("Attack range:", temp.attackRange);
 
         //ID
         temp.id = EditorGUILayout.IntField("ID:", temp.id);
@@ -198,10 +209,22 @@ public class CharacterSystemEditorCreate : EditorWindow {
 
         GUILayout.BeginVertical();
 
-        GUILayout.BeginHorizontal();
+        GUILayout.BeginHorizontal("Box");
 
-        temp.price.Amount = EditorGUILayout.IntField("Price:", temp.price.Amount, GUILayout.Width(300));
-        temp.price.type = (Currency.Type)EditorGUILayout.EnumPopup(temp.price.type, GUILayout.Width(300));
+
+        
+        temp.buyPrice.Amount = EditorGUILayout.IntField("Buy Price:", temp.buyPrice.Amount, GUILayout.Width(300));
+        temp.buyPrice.type = (Currency.Type)EditorGUILayout.EnumPopup(temp.buyPrice.type);
+
+        temp.upgradePrice.Amount = EditorGUILayout.IntField("Upgrade Price:", temp.upgradePrice.Amount, GUILayout.Width(300));
+        temp.upgradePrice.type = (Currency.Type)EditorGUILayout.EnumPopup(temp.upgradePrice.type);
+
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal("Box");
+
+        temp.upgrade.amount = EditorGUILayout.IntField("Upgrade Amount:", temp.upgrade.amount);
+        temp.upgrade.type = (Upgrade.Type)EditorGUILayout.EnumPopup(temp.upgrade.type);
 
         GUILayout.EndHorizontal();
 

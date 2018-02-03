@@ -7,19 +7,21 @@ public class CharacterData:ScriptableObject
 {
     public string characterName;
     public GameObject prefab;
-    public Currency price=new Currency();
+    public Currency buyPrice = new Currency();
+    public Currency upgradePrice = new Currency();
     public Type type;
     public int id;
     public int maxLevel;
     public Sprite icon;
-    public float speed;
+    public float speed=3;
     public float attackSpeed;
     public float hitPoint;
     public float attackRange;
-    public float damage;
+    public IntRange damage=new IntRange(0,0);
+    public Upgrade upgrade = new Upgrade();
     public string description;
 
-    public CharacterData(string characterName, GameObject prefab, int id, Sprite icon, float speed, float attackSpeed, float hitPoint, float damage, string description)
+    public CharacterData(string characterName, GameObject prefab, int id, Sprite icon, float speed, float attackSpeed, float hitPoint, IntRange damage, string description)
     {
         this.characterName = characterName;
         this.prefab = prefab;
@@ -39,6 +41,6 @@ public class CharacterData:ScriptableObject
 
     public enum Type
     {
-        Soldier,Hero,Main,Support
+        Minion,Hero,Main,Support
     }
 }

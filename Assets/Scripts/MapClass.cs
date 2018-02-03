@@ -12,8 +12,6 @@ public class MapClass : MonoBehaviour {
     void Start()
     {
         GameObject g = new GameObject();
-        g.AddComponent<SpriteRenderer>().sprite = bg;
-        g.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
     }
 
     public List<Vector2> points(PointsType pointType)

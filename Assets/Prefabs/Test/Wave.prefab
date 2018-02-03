@@ -51,8 +51,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f33e6a2fa7af494eadd69d51bb539fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 1347928720464020, guid: ecf0bc07211793345ba93fdf9346c675, type: 2}
+  enemies:
+  - {fileID: 1347928720464020, guid: ecf0bc07211793345ba93fdf9346c675, type: 2}
+  - {fileID: 1751005269736166, guid: eb7387543715bea47a818d558b3c7cc3, type: 2}
   enemiesNumber:
     m_Min: 1
-    m_Max: 1
+    m_Max: 5
   controller: {fileID: 0}
+  increaseNumber: 2
