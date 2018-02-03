@@ -6,7 +6,7 @@ using UnityEngine;
 public class SlotContainer  {
     public int minionId, minionCount,supportId,supoortLevel,mainId,mainLevel;
     public List<int> Heros = new List<int>();
-	
+    public Card card;
 
     public void ChangeHeros(List<int> heros)
     {

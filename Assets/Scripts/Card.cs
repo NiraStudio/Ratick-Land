@@ -30,10 +30,13 @@ public class Card {
             case Type.empty:
                 break;
             case Type.DoubleCoin:
-                //increase coin
+                Debug.Log("dOUBE Coin");
+                LevelController.instance.WorldCoinMultiply = 2;
                 break;
             case Type.DoubleATK:
-                //increase ATK
+                Debug.Log("dOUBE Atk");
+                LevelController.instance.WorldAttackMultiPly = 2;
+
                 break;
            
         }
@@ -44,5 +47,18 @@ public class Card {
 public class CardHolder
 {
     public List<Card> cards = new List<Card>();
+    public void Remove(Card.Type type)
+    {
+        foreach (var item in cards.ToArray())
+        {
+            if(item.cardType==type)
+            {
+                item.cardAmount -= 1;
+                if (item.cardAmount <= 0)
+                    cards.Remove(item);
+                break;
+            }
+        }
+    }
 }
 

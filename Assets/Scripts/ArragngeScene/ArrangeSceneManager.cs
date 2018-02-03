@@ -6,16 +6,19 @@ using UnityEngine.UI;
 public class ArrangeSceneManager : MainBehavior {
     public static ArrangeSceneManager Instance;
     public CharacterDataBase characterDatabase;
-    public GameObject choosePanel,ChoosePanelParent,ChooseButton,DeleteButton;
+    public GameObject choosePanel,ChoosePanelParent,ChooseButton,DeleteButton,CardPanel;
     public ArrangeIcon[] Heros;
     public ArrangeIcon Main, Support, Minion;
-
+    public Text CardDoubleAttackText, CardDoubleCoinText;
+    public Image CardBtnImage;
     public CharacterData[] data;
 
     List<CharacterData> temp = new List<CharacterData>();
     SlotContainer sc = new SlotContainer();
     GameManager GM;
     ArrangeIcon currentIcon;
+
+    int CardDoubleAttack, CardDoubleCoin;
     void Awake()
     {
         Instance = this;
@@ -37,13 +40,17 @@ public class ArrangeSceneManager : MainBehavior {
                 Heros[i].Repaint(characterDatabase.GiveByID(GM.SlotData.Heros[i]));
         }
         if (GM.SlotData.mainId >= 0)
+        {
             Main.Repaint(characterDatabase.GiveByID(GM.SlotData.mainId));
+            print("Here");
+        }
 
         if (GM.SlotData.minionId >= 0)
             Minion.Repaint(characterDatabase.GiveByID(GM.SlotData.minionId));
 
         if (GM.SlotData.supportId >= 0)
             Support.Repaint(characterDatabase.GiveByID(GM.SlotData.supportId));
+
 
     }
     public void OpenChoosePanel(ArrangeIcon btn)
@@ -65,6 +72,52 @@ public class ArrangeSceneManager : MainBehavior {
         currentIcon.Repaint(data);
         choosePanel.SetActive(false);
     }
+    public void OpenCardPanel()
+    {
+        CardPanel.SetActive(true);
+        CardDoubleAttack = CardDoubleCoin = 0;
+
+
+        foreach (var item in GM.mainData.cardHolder.cards.ToArray())
+        {
+            switch (item.cardType)
+            {
+                case Card.Type.empty:
+                    break;
+                case Card.Type.DoubleCoin:
+                    CardDoubleCoin++;
+                    break;
+                case Card.Type.DoubleATK:
+                    CardDoubleAttack++;
+                    break;
+
+            }
+        }
+
+        CardDoubleAttackText.text = "X" + CardDoubleAttack;
+        CardDoubleCoinText.text = "X" + CardDoubleCoin;
+    }
+    public void CloseCardPanel(Card card)
+    {
+        sc.card = card;
+        switch (card.cardType)
+        {
+            case Card.Type.empty:
+                break;
+            case Card.Type.DoubleCoin:
+                CardBtnImage.color = Color.yellow;
+                break;
+            case Card.Type.DoubleATK:
+                CardBtnImage.color = Color.red;
+
+                break;
+            default:
+                break;
+        }
+        CardPanel.SetActive(false);
+
+    }
+    
     public void Clean()
     {
         currentIcon.Clean();

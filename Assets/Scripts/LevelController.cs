@@ -12,7 +12,7 @@ public class LevelController : MainBehavior
     public JoyStick joyStick;
     public GameObject aimer;
     public float speedMultiPly;
-    public int WorldCoinMultiply=1,maxWave;
+    public int WorldCoinMultiply=1,WorldAttackMultiPly=1,maxWave;
     [Range(0,100)]
     public int ChanceToRespawnSecretMap;
 
@@ -51,7 +51,12 @@ public class LevelController : MainBehavior
     {
         get { return levelTime; }
     }
+    //key
+    public int keyCount=3, GotedKey;
+    public int KeyPartGeted, KeyPartNeeded;
 
+
+    float waveCount;
     float coinTemp,lerp=0,levelTime;
     // Use this for initialization
     void Awake()
@@ -68,6 +73,8 @@ public class LevelController : MainBehavior
         MakeCage();
         
         StartCoroutine(spawnEnemy());
+        RenewKeyPartNeeded();
+        UseCard(GM.SlotData.card);
     }
 
     // Update is called once per frame
@@ -75,7 +82,7 @@ public class LevelController : MainBehavior
     {
 
         levelTime += Time.deltaTime;
-
+        waveCount = maxWave +(int)( levelTime / 10);
         #region inputs
         if (Application.isMobilePlatform)
         {
@@ -110,6 +117,16 @@ public class LevelController : MainBehavior
             aimer.transform.position = t;
 
         }
+        #endregion
+
+        #region Key
+
+        if(KeyPartGeted>=KeyPartNeeded)
+        {
+            ChangeKeyCount(1);
+            RenewKeyPartNeeded();
+        }
+
         #endregion
         if (characters.Count <= 0)
             FinishTheGame();
@@ -161,7 +178,6 @@ public class LevelController : MainBehavior
     void spawnCharacters()
     {
         GameObject p = new GameObject("Characters");
-        print(startPos);
         p.transform.position = startPos;
         foreach (var item in sc.Heros)
         {
@@ -202,9 +218,9 @@ public class LevelController : MainBehavior
             GameObject a = Instantiate(c.prefab, p.transform);
             a.transform.position =startPos+ Random.insideUnitCircle * 3;
             a.GetComponent<Character>().Release(true);
-            GetComponent<LevelUIManager>().GetMain(a.GetComponent<Character>());
             AddCharacters(a);
             a.SendMessage("UpgradeTheCharacter", GM.CharacterLevel(sc.mainId));
+            GetComponent<LevelUIManager>().GetMain(a.GetComponent<Character>());
 
         }
         aimer.transform.position = startPos;
@@ -241,6 +257,16 @@ public class LevelController : MainBehavior
             BlockSpots.Remove(tt);
         }
     }
+
+    void UseCard(Card card)
+    {
+        if (card == null)
+            return;
+        card.Action();
+        GM.mainData.cardHolder.Remove(card.cardType);
+        GM.SlotData.card = null;
+        GM.SaveMainData();
+    }
     Vector2 giveMapPos()
     {
         return freeSpots[Random.Range(0, freeSpots.Count)];
@@ -256,9 +282,9 @@ public class LevelController : MainBehavior
     }
     IEnumerator spawnEnemy()
     {
-        if (currentWaves.Count < maxWave)
+        if (currentWaves.Count < waveCount)
         {
-            while (currentWaves.Count < maxWave)
+            while (currentWaves.Count < waveCount)
             {
                 GameObject g = Instantiate(wave.gameObject, giveMapPos(7), Quaternion.identity);
                 g.GetComponent<Wave>().controller = this;
@@ -283,8 +309,28 @@ public class LevelController : MainBehavior
     public void ChangeCoin(int Amount)
     {
         coinAmount += Amount;
+       
     }
 
-    
+    public void RenewKeyPartNeeded()
+    {
+        KeyPartGeted = KeyPartGeted - KeyPartNeeded;
+        ChangeKeyPartNeeded();
+    }
+    public void ChangeKeyPartNeeded()
+    {
+        KeyPartNeeded = 0;
+        KeyPartNeeded = 15 + (GotedKey * 15);
+    }
+    public void ChangeKeyCount(int amount)
+    {
+        keyCount += amount;
+        if (amount > 0)
+            GotedKey += amount;
+    }
 
+    public void ChangeKeyPart(int amount)
+    {
+        KeyPartGeted += amount;
+    }
 }

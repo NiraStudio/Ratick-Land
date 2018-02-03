@@ -85,7 +85,11 @@ public class GameManager : MainBehavior {
         Restart = false;
     }
 
-    
+    public void MakeCardFree()
+    {
+        SlotData.card = null;
+        SaveMainData();
+    }
 
     #region Save/Load Methods
 

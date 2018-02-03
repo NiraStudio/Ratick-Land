@@ -114,7 +114,7 @@ public class Character : MainBehavior,IAttackable,IHitable
         speedMultiPly = data.speed;
         attackSpeed = data.attackSpeed;
         hitPoint = data.hitPoint;
-        damage = data.damage;
+        damage = new IntRange(data.damage.m_Min * LevelController.instance.WorldAttackMultiPly, data.damage.m_Max * LevelController.instance.WorldAttackMultiPly);
         attackRange = data.attackRange;
     }
 

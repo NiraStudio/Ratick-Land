@@ -9,12 +9,14 @@ public class Cage : MonoBehaviour, IHitable
     public CharacterDataBase data;
     List<GameObject> prisoners=new List<GameObject>();
 
+    LevelController LC;
     SpriteRenderer sr;
     // Use this for initialization
     void Start()
     {
         addCharacters();
         sr = GetComponent<SpriteRenderer>();
+        LC = LevelController.instance;
     }
 
     // Update is called once per frame
@@ -39,6 +41,9 @@ public class Cage : MonoBehaviour, IHitable
 
     public void GetHit(float dmg)
     {
+        if (LC.keyCount <= 0)
+            return;
+
         hitPoint -= dmg;
         if(hitPoint<0)
             Die();
@@ -54,6 +59,7 @@ public class Cage : MonoBehaviour, IHitable
             LevelController.instance.AddCharacters(item);
         }
         LevelController.instance.MakeCage();
+        LC.ChangeKeyCount(-1);
         Destroy(gameObject);
     }
 }

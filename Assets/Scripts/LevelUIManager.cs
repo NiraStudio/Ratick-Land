@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class LevelUIManager : MonoBehaviour {
-    public Slider mainHpSlider;
-    public Text CoinText,MainHpText;
+    public Slider mainHpSlider,KeySlider;
+    public Text CoinText,MainHpText,KeyAmount;
 
     LevelController LM;
     float coinTemp,lerp;
@@ -39,6 +39,14 @@ public class LevelUIManager : MonoBehaviour {
 
         mainHpSlider.value = main.HP;
         MainHpText.text = main.HP + "/" + maxMainHp;
+
+        #endregion
+
+        #region Key
+
+        KeyAmount.text = "X " + LM.keyCount + " Keys";
+        KeySlider.maxValue = LM.KeyPartNeeded;
+        KeySlider.value = LM.KeyPartGeted;
 
         #endregion
     }

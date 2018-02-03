@@ -16,6 +16,7 @@ public class ArrangeIcon : MonoBehaviour {
         manager = ArrangeSceneManager.Instance;
         GetComponent<Button>().onClick.AddListener(Choosed);
         //img = GetComponent<Image>();
+        //Clean();
     }
 
     void Choosed()

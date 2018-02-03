@@ -16,8 +16,9 @@ public class MainCharacter : Character {
     }
     public override void Attack()
     {
-        detectedEnemy.SendMessage("GetHit", (float)damage.Random);
-        print("Attack");
+        float a=(float)damage.Random;
+        detectedEnemy.SendMessage("GetHit", a);
+        print("Attack "+ a);
 
         base.Attack();
     }

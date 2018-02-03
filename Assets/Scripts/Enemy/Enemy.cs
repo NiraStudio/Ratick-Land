@@ -145,6 +145,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     {
         Instantiate(coinObject, transform.position, Quaternion.identity).transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<UnityEngine.UI.Text>().text = coin.ToString();
         levelController.ChangeCoin(coin);
+        levelController.ChangeKeyPart(1);
         Destroy(gameObject);
     }
     void OnDrawGizmos()
