@@ -8,21 +8,28 @@ public class Cage : MonoBehaviour, IHitable
     public float hitPoint;
     public CharacterDataBase data;
     List<GameObject> prisoners=new List<GameObject>();
-
+    public GameObject Wave;
+    public Transform RightWavePos, LeftWavePos;
     LevelController LC;
     SpriteRenderer sr;
     // Use this for initialization
     void Start()
     {
         addCharacters();
+        Instantiate(Wave, RightWavePos.position, Quaternion.identity);
+        Instantiate(Wave, LeftWavePos.position, Quaternion.identity);
         sr = GetComponent<SpriteRenderer>();
         LC = LevelController.instance;
+        Destroy(RightWavePos.gameObject);
+        Destroy(LeftWavePos.gameObject);
     }
 
     // Update is called once per frame
     void Update()
     {
-         sr.sortingOrder= IsoMetricHandler.giveSortingOrderNumber(transform.position.y);
+      //   sr.sortingOrder= IsoMetricHandler.giveSortingOrderNumber(transform.position.y);
+      //  IsoMetricHandler.ChangeByTransform(transform);
+
     }
     void addCharacters()
     {

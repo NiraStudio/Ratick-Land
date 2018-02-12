@@ -4,13 +4,21 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class LevelUIManager : MonoBehaviour {
+
+    public static LevelUIManager Instance;
+
     public Slider mainHpSlider,KeySlider;
     public Text CoinText,MainHpText,KeyAmount;
-
+    public GameObject GoldBrust,GoldBrustTarget;
     LevelController LM;
     float coinTemp,lerp;
     int maxMainHp;
     public Character main;
+
+    void Awake()
+    {
+        Instance = this;
+    }
 	// Use this for initialization
 	void Start () {
         LM = GetComponent<LevelController>();
@@ -49,6 +57,10 @@ public class LevelUIManager : MonoBehaviour {
         KeySlider.value = LM.KeyPartGeted;
 
         #endregion
+    }
+    public void MakeGoldBrust(Vector2 Pos)
+    {
+        Instantiate(GoldBrust, Pos, Quaternion.identity).GetComponent<CollectableBrust>().make(GoldBrustTarget.transform,10);
     }
 
     public void GetMain(Character main)

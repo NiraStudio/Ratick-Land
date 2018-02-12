@@ -19,6 +19,7 @@ public class CameraController : MonoBehaviour {
     {
         Targets = new List<GameObject>();
         cam=GetComponent<Camera>();
+        offSet.z -= 50;
     }
     void LateUpdate()
     {

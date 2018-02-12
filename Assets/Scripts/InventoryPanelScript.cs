@@ -18,7 +18,7 @@ public class InventoryPanelScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         GM = GameManager.instance;
-        Close();
+        Open();
 	}
 	
 	// Update is called once per frame

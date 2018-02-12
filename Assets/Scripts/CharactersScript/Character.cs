@@ -46,7 +46,9 @@ public class Character : MainBehavior,IAttackable,IHitable
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
         EnemyMask = 1 << 8;
-        sr.sortingOrder = IsoMetricHandler.giveSortingOrderNumber(transform.position.y);
+       // sr.sortingOrder = IsoMetricHandler.giveSortingOrderNumber(transform.position.y);
+        IsoMetricHandler.ChangeByTransform(transform);
+
     }
    
     public virtual void FixedUpdate()
@@ -98,7 +100,9 @@ public class Character : MainBehavior,IAttackable,IHitable
 
 
         ///ISOMETRIC
-        sr.sortingOrder = IsoMetricHandler.giveSortingOrderNumber(transform.position.y);
+       // sr.sortingOrder = IsoMetricHandler.giveSortingOrderNumber(transform.position.y);
+        IsoMetricHandler.ChangeByTransform(transform);
+
 
         #endregion
 

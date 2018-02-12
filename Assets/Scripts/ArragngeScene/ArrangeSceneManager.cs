@@ -25,31 +25,33 @@ public class ArrangeSceneManager : MainBehavior {
         GM = GameManager.instance;
     }
 	// Use this for initialization
-	void Start () {
-        RepaintArranges();
-	}
-
-    void RepaintArranges()
+    void Start()
     {
-        if (GM.SlotData == null)
-            return;
+        if (GM.SlotData != null)
 
-        for (int i = 0; i < GM.SlotData.Heros.Count; i++)
+            RepaintArranges(GM.SlotData);
+    }
+
+    void RepaintArranges(SlotContainer SC)
+    {
+        
+
+        for (int i = 0; i < SC.Heros.Count; i++)
         {
-            if (GM.SlotData.Heros[i] >= 0)
-                Heros[i].Repaint(characterDatabase.GiveByID(GM.SlotData.Heros[i]));
+            if (SC.Heros[i] >= 0)
+                Heros[i].Repaint(characterDatabase.GiveByID(SC.Heros[i]));
         }
-        if (GM.SlotData.mainId >= 0)
+        if (SC.mainId >= 0)
         {
-            Main.Repaint(characterDatabase.GiveByID(GM.SlotData.mainId));
+            Main.Repaint(characterDatabase.GiveByID(SC.mainId));
             print("Here");
         }
 
-        if (GM.SlotData.minionId >= 0)
-            Minion.Repaint(characterDatabase.GiveByID(GM.SlotData.minionId));
+        if (SC.minionId >= 0)
+            Minion.Repaint(characterDatabase.GiveByID(SC.minionId));
 
-        if (GM.SlotData.supportId >= 0)
-            Support.Repaint(characterDatabase.GiveByID(GM.SlotData.supportId));
+        if (SC.supportId >= 0)
+            Support.Repaint(characterDatabase.GiveByID(SC.supportId));
 
 
     }
@@ -151,25 +153,27 @@ public class ArrangeSceneManager : MainBehavior {
     {
         if (!CheckForRequirements())
             return;
-
-
+        SaveSlot();
+        GoToScene("PlayScene");
+        
+    }
+    public void SaveSlot()
+    {
         List<int> hero = new List<int>();
         foreach (var item in Heros)
         {
             if (item.ID > 0)
                 hero.Add(item.ID);
-            
+
         }
 
         sc.ChangeHeros(hero);
-        
-        sc.ChangeMain(Main.ID>0?Main.ID:-1, Main.Level);
+
+        sc.ChangeMain(Main.ID > 0 ? Main.ID : -1, Main.Level);
         sc.ChangeMinion(Minion.ID > 0 ? Minion.ID : -1, Minion.Level);
         sc.ChangeSupport(Support.ID > 0 ? Support.ID : -1, Support.Level);
 
         GM.SlotData = sc;
-        GoToScene("PlayScene");
-        
     }
     bool CheckForSelect(int ID)
     {

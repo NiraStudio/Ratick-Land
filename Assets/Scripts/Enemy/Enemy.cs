@@ -29,15 +29,17 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     
     Vector2 tt,direction;
 	// Use this for initialization
-	public virtual void Start () {
+    public virtual void Start()
+    {
         levelController = LevelController.instance;
         aim = GameObject.FindWithTag("Aim");
         rg = GetComponent<Rigidbody2D>();
-        charactersLayer  = 1 << 10;
+        charactersLayer = 1 << 10;
 
         RenewData();
-        StartCoroutine(Move());
-	}
+        if (!Gurdian)
+            StartCoroutine(Move());
+    }
 	
 	// Update is called once per frame
     void Update()
@@ -143,7 +145,8 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
 
     public void Die()
     {
-        Instantiate(coinObject, transform.position, Quaternion.identity).transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<UnityEngine.UI.Text>().text = coin.ToString();
+       // Instantiate(coinObject, transform.position, Quaternion.identity).transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<UnityEngine.UI.Text>().text = coin.ToString();
+        LevelUIManager.Instance.MakeGoldBrust(transform.position);
         levelController.ChangeCoin(coin);
         levelController.ChangeKeyPart(1);
         Destroy(gameObject);

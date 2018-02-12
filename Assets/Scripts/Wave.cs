@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Wave : MonoBehaviour {
+    public bool GurdianWave;
     public GameObject[] enemies;
     public IntRange enemiesNumber;
     public LevelController controller;
@@ -19,6 +20,7 @@ public class Wave : MonoBehaviour {
             Vector2 p = Random.insideUnitCircle * 0.5f;
             p =(Vector2) transform.position + p;
             GameObject g = Instantiate(enemies[Random.Range(0,enemies.Length)], p, Quaternion.identity);
+            g.GetComponent<Enemy>().Gurdian=GurdianWave;
             g.transform.SetParent(gameObject.transform);
         }
         StartCoroutine(checkForEnd());
