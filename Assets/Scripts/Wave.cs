@@ -1,44 +1,56 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Wave : MonoBehaviour {
-    public bool GurdianWave;
-    public GameObject[] enemies;
-    public IntRange enemiesNumber;
-    public LevelController controller;
-    [Tooltip("Increase enemies number by this after every 10 Sec")]
-    public int increaseNumber;
-    int lenght;
-	// Use this for initialization
+
+    public enum EnemyType
+    {
+        MeleeNormal,MeleeFast,RangeShort,RangeLong,Tank,EliteMeleeNormal,EliteMeleeFast,EliteRangeShort, EliteRangeLong, EliteTank
+    }
+    [System.Serializable]
+    public class WaveEnemy
+    {
+        public EnemyType type;
+        public GameObject Enemy;
+
+    }
+
+
+    public List<GameObject> currentEnemies = new List<GameObject>();
+    public List<WaveEnemy> Enemies = new List<WaveEnemy>();
+    [Header("MeleeNormal = 0,MeleeFast = 1,RangeShort = 2,RangeLong = 3,Tank = 4,EliteMeleeNormal = 5 ")]
+    [Header("EliteMeleeFast = 6,EliteRangeShort = 7, EliteRangeLong = 8, EliteTank = 9")]
+    public UnityEvent[] events;
+
+    public LevelController LC;
+
     void Start()
     {
-        controller = LevelController.instance;
-        
-        for (int i = 0; i < enemiesNumber.Random; i++)
-        {
-            Vector2 p = Random.insideUnitCircle * 0.5f;
-            p =(Vector2) transform.position + p;
-            GameObject g = Instantiate(enemies[Random.Range(0,enemies.Length)], p, Quaternion.identity);
-            g.GetComponent<Enemy>().Gurdian=GurdianWave;
-            g.transform.SetParent(gameObject.transform);
-        }
-        StartCoroutine(checkForEnd());
-        
+        LC = LevelController.instance;
     }
-	
-	// Update is called once per frame
-    IEnumerator checkForEnd()
+    public void AddEnemy(int type)
     {
-        
-        if (transform.childCount == 0)
+        EnemyType t = (EnemyType)type;
+       foreach (var item in Enemies.ToArray())
         {
-            controller.currentWaves.Remove(gameObject);
-            Destroy(gameObject);
+            if(item.type==t)
+            {
+                currentEnemies.Add(item.Enemy);
+            }
         }
-
-        yield return new WaitForSeconds(1);
-        StartCoroutine(checkForEnd());
+    }
+    public void RemoveEnemy(int type)
+    {
+        EnemyType t = (EnemyType)type;
+        foreach (var item in Enemies.ToArray())
+        {
+            if (item.type == t)
+            {
+                currentEnemies.Remove(item.Enemy);
+            }
+        }
     }
     
 }

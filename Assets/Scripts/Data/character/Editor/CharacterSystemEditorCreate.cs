@@ -12,7 +12,7 @@ public class CharacterSystemEditorCreate : EditorWindow {
 
     CharacterDataBase dataBase;
     static Vector2 WindowSize=new Vector2(1000,500);
-    static Vector2 IconButtonSize = new Vector2(50, 50);
+    static Vector2 IconButtonSize = new Vector2(70, 50);
     Texture2D ItemIcon;
     CharacterData temp;
 
@@ -125,6 +125,10 @@ public class CharacterSystemEditorCreate : EditorWindow {
             EditorGUIUtility.ShowObjectPicker<Sprite>(null, true, null, 0);
         }
         string commend = Event.current.commandName;
+        if (commend == "ObjectSelectorClosed")
+        {
+            temp.icon = (Sprite)EditorGUIUtility.GetObjectPickerObject();
+        }string command = Event.current.commandName;
         if (commend == "ObjectSelectorClosed")
         {
             temp.icon = (Sprite)EditorGUIUtility.GetObjectPickerObject();

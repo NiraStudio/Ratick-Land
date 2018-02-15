@@ -6,6 +6,7 @@ using CodeStage.AntiCheat.ObscuredTypes;
 public class Enemy : MonoBehaviour,IHitable,IAttackable {
     public EnemyData data;
     public IntRange timeForMove;
+    public int powerRate;
     public bool Gurdian;
 
     protected ObscuredFloat speedMultiPly;

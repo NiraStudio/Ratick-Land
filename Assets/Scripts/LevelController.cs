@@ -287,7 +287,7 @@ public class LevelController : MainBehavior
             while (currentWaves.Count < waveCount)
             {
                 GameObject g = Instantiate(wave.gameObject, giveMapPos(7), Quaternion.identity);
-                g.GetComponent<Wave>().controller = this;
+                g.GetComponent<Wave>().LC = this;
                currentWaves.Add(g);
             }
         }
