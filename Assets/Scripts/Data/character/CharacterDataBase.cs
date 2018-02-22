@@ -42,6 +42,10 @@ public class CharacterDataBase : ScriptableObject {
         setDirty();
 
     }
+    public CharacterData GiveByRandom()
+    {
+        return DataBase[Random.Range(0, DataBase.Count)];
+    }
 
     public List<CharacterData> GiveByType(CharacterData.Type type)
     {

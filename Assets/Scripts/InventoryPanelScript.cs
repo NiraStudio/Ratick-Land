@@ -9,7 +9,7 @@ public class InventoryPanelScript : MonoBehaviour {
     public GameObject CharacterBtnSample,CharacterPanelParent;
     public Text CardDoubleCoinText, CardDoubleAttackText;
     GameManager GM;
-    Dictionary<int, int> charactersData;
+    List<characterInfo> charactersData;
     int CardDoubleCoin, CardDoubleAttack;
     void Awake()
     {
@@ -25,14 +25,15 @@ public class InventoryPanelScript : MonoBehaviour {
 	
     public void RepaintCharacterPanel()
     {
+        
         for (int i = 0; i < CharacterPanelParent.transform.childCount; i++)
         {
             Destroy(CharacterPanelParent.transform.GetChild(i).gameObject);
         }
-        charactersData = GM.mainData.charactersData;
+        charactersData = GM.mainData.characterInfos;
         foreach (var item in charactersData)
         {
-            Instantiate(CharacterBtnSample, CharacterPanelParent.transform).GetComponent<CharacterPanelBtn>().Repaint(characterDB.GiveByID(item.Key));
+            Instantiate(CharacterBtnSample, CharacterPanelParent.transform).GetComponent<CharacterPanelBtn>().Repaint(characterDB.GiveByID(item.Id));
         }
     }
     public void RepaintCardPanel()

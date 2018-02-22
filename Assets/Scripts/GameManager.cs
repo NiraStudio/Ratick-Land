@@ -6,7 +6,8 @@ using CodeStage.AntiCheat.ObscuredTypes;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-public class GameManager : MainBehavior {
+public class GameManager : MainBehavior
+{
     public static GameManager instance;
     [Tooltip("Restarts the game")]
     public bool Restart;
@@ -20,15 +21,15 @@ public class GameManager : MainBehavior {
         }
     }
 
-    
-    
+
+    public CharacterDataBase characterDB;
 
 
     //Datas
     [SerializeField]
-    MainData _mainData=new MainData();
+    MainData _mainData = new MainData();
     [SerializeField]
-    CurrencyData currencyData=new CurrencyData();
+    CurrencyData currencyData = new CurrencyData();
 
     public int coinAmount
     {
@@ -39,15 +40,16 @@ public class GameManager : MainBehavior {
         get { return _mainData; }
     }
 
-	// Use this for initialization
+    // Use this for initialization
 
     void Awake()
     {
         instance = this;
     }
-	void Start () {
+    void Start()
+    {
         DontDestroyOnLoad(gameObject);
-        if (PlayerPrefs.GetInt("FirstTime") != 1||Restart)
+        if (PlayerPrefs.GetInt("FirstTime") != 1 || Restart)
             FirstTimeChanges();
         else
         {
@@ -55,15 +57,21 @@ public class GameManager : MainBehavior {
             LoadMainData();
             SceneManager.LoadScene("MainMenu");
         }
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
     public void ChangeCoin(int Amount)
     {
         currencyData.Coins += Amount;
+        SaveCurrencyData();
+    }
+    public void ChangeGem(int Amount)
+    {
+        currencyData.Gems += Amount;
         SaveCurrencyData();
     }
 
@@ -75,8 +83,8 @@ public class GameManager : MainBehavior {
 
     public void FirstTimeChanges()
     {
-        mainData.charactersData.Add(1, 5);
-        mainData.charactersData.Add(5, 1);
+        mainData.characterInfos.Add(new characterInfo(1, 5, 0));
+        mainData.characterInfos.Add(new characterInfo(5, 1, 0));
         currencyData.Coins = 100;
         SaveCurrencyData();
         SaveMainData();
@@ -157,12 +165,28 @@ public class GameManager : MainBehavior {
     #region Characters Methods
     public void IncreaseLevel(int ID, int levelAmount)
     {
-        mainData.charactersData[ID] = mainData.charactersData[ID] + levelAmount;
+        foreach (var item in mainData.characterInfos.ToArray())
+        {
+            if (item.Id == ID)
+            {
+                item.Level = +levelAmount;
+                break;
+            }
+        }
+
         SaveMainData();
     }
     public int CharacterLevel(int ID)
     {
-        return mainData.charactersData[ID];
+        foreach (var item in mainData.characterInfos.ToArray())
+        {
+            if (item.Id == ID)
+            {
+                return item.Level;
+            }
+        }
+        return -1;
+
     }
     public int UpgradeCost(CharacterData character)
     {
@@ -175,15 +199,27 @@ public class GameManager : MainBehavior {
 
         return answer;
     }
-    
-
+    public void AddCharacterCard(int ID, int amount)
+    {
+        foreach (var item in mainData.characterInfos.ToArray())
+        {
+            if (item.Id == ID)
+            {
+                item.cards += amount;
+                return;
+            }
+        }
+        mainData.characterInfos.Add(new characterInfo(ID, 1, amount));
+        SaveMainData();
+    }
     #endregion
 }
 
 [System.Serializable]
 public class MainData
 {
-    public Dictionary<int, int> charactersData=new Dictionary<int,int>();
+    public List<characterInfo> characterInfos = new List<characterInfo>();
+
     public CardHolder cardHolder = new CardHolder();
     public SlotContainer defultSlot = new SlotContainer();
 }
@@ -193,6 +229,19 @@ public class MainData
 public class CurrencyData
 {
     public ObscuredInt Coins=0;
+    public ObscuredInt Gems=0;
 }
-
+[System.Serializable]
+public class characterInfo
+{
+    public int Id;
+    public int Level;
+    public int cards;
+    public characterInfo(int Id,int level,int cards)
+    {
+        this.cards = cards;
+        this.Id = Id;
+        this.Level = level;
+    }
+}
 

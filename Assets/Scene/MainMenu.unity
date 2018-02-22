@@ -944,6 +944,8 @@ GameObject:
   - component: {fileID: 827436849}
   - component: {fileID: 827436853}
   - component: {fileID: 827436854}
+  - component: {fileID: 827436855}
+  - component: {fileID: 827436856}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1091,6 +1093,49 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &827436855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 827436848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 652c2e554dc6e6d419c6d1f28a6fe75d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  Bullet: {fileID: 0}
+  s: {fileID: 827436856}
+--- !u!114 &827436856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 827436848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 650688d73480b794d9a23ae3eefad72b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RewardCount: 20
+  rewardState:
+  - type: 0
+    chance: 40
+    amount:
+      m_Min: 2
+      m_Max: 3
+  - type: 1
+    chance: 58
+    amount:
+      m_Min: 100
+      m_Max: 500
+  - type: 2
+    chance: 2
+    amount:
+      m_Min: 5
+      m_Max: 10
+  AdState: []
 --- !u!1 &897665694
 GameObject:
   m_ObjectHideFlags: 0
@@ -1270,7 +1315,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000015258789}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 290.00003, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1017511673

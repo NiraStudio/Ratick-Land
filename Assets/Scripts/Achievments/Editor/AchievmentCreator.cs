@@ -12,8 +12,8 @@ public class AchievmentCreator : EditorWindow
     static Vector2 size = new Vector2(1000, 300);
     public Vector2 IconButtonSize = new Vector2(300, 300);
     public Vector2 CreateButtonSize = new Vector2(300, 50);
-    AchievmentDataBase dB;
-    Achievment temp;
+    AchievementDataBase achievementDatabase;
+    Achievement temp;
     Texture2D t;
 
     [MenuItem("AchievmentSystem/AchievmentCreator")]
@@ -27,18 +27,18 @@ public class AchievmentCreator : EditorWindow
     }
     void OnEnable()
     {
-        dB = AssetDatabase.LoadAssetAtPath(FullPathName, typeof(AchievmentDataBase)) as AchievmentDataBase;
-        if (dB == null)
+        achievementDatabase = AssetDatabase.LoadAssetAtPath(FullPathName, typeof(AchievementDataBase)) as AchievementDataBase;
+        if (achievementDatabase == null)
         {
             if (!AssetDatabase.IsValidFolder(@"Assets/" + FolderName))
                 AssetDatabase.CreateFolder(@"Assets/DataBase", "Mission");
 
-            dB = ScriptableObject.CreateInstance<AchievmentDataBase>();
-            AssetDatabase.CreateAsset(dB, FullPathName);
+            achievementDatabase = ScriptableObject.CreateInstance<AchievementDataBase>();
+            AssetDatabase.CreateAsset(achievementDatabase, FullPathName);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }
-        temp = new Achievment();
+        temp = new Achievement();
     }
     void OnGUI()
     {
@@ -51,8 +51,9 @@ public class AchievmentCreator : EditorWindow
 
         if (GUILayout.Button("create", GUILayout.ExpandWidth(true), GUILayout.Height(CreateButtonSize.y)))
         {
-            dB.dB.Add(temp);
-            temp = new Achievment();
+            temp.id = GiveID();
+            achievementDatabase.AddAchievment(temp);
+            temp = new Achievement();
             t = null;
         }
         GUILayout.EndVertical();
@@ -92,7 +93,7 @@ public class AchievmentCreator : EditorWindow
         GUILayout.Label("goal");
         temp.goal = EditorGUILayout.IntField(temp.goal);
         GUILayout.Label("Type");
-        temp.achivType = (AchievmentType)EditorGUILayout.EnumPopup(temp.achivType);
+        temp.achievementType  = (AchievementType)EditorGUILayout.EnumPopup(temp.achievementType );
 
         GUILayout.EndVertical();
 
@@ -103,7 +104,7 @@ public class AchievmentCreator : EditorWindow
         GUILayout.Label("reward amount");
         temp.reward.amount = EditorGUILayout.IntField(temp.reward.amount);
         GUILayout.Label("resetable");
-        temp.resetAble = EditorGUILayout.Toggle(temp.resetAble);
+        temp.resetable = EditorGUILayout.Toggle(temp.resetable);
 
         GUILayout.EndVertical();
 
@@ -117,5 +118,39 @@ public class AchievmentCreator : EditorWindow
 
         GUILayout.EndHorizontal();
     }
+    public string GiveID()
+    {
+        string answer = "";
+        bool find = true;
+        
+        do
+        {
+            find = true;
+            answer = "";
 
+            for (int i = 0; i < 10; i++)
+            {
+                int a = Random.Range(1, 3);
+                if (a == 1)
+                {
+                    answer += (char)Random.Range(48, 58);
+                }
+                else
+                {
+                    answer += (char)Random.Range(65, 90);
+                }
+            }
+
+            foreach (var item in achievementDatabase.dataBase)
+            {
+                if(item.id==answer)
+                {
+                    find = false;
+                    break;
+                }
+            }
+        } while (find==false);
+
+        return answer;
+    }
 }

@@ -2,83 +2,83 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Chest : MonoBehaviour {
 
-    public Sprite[] Icons;
-    public ChestCard[] Cards;
-    public ChestCard VideoCard;
-    Animator anim;
-    bool open = false;
-
-    ChestReward AdReward;
+    public int RewardCount;
+    public RewardStates[] rewardState;
+    public RewardStates[] AdState;
+    List<RewardInfo> rewards = new List<RewardInfo>();
+    RewardInfo AdReward;
 	// Use this for initialization
-	void Start () {
-        anim = GetComponent<Animator>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		if(Input.GetKeyDown(KeyCode.Space))
-        {
-            if (open)
-            {
-                anim.SetTrigger("Close");
-                open = false;
-            }
-            else
-            {
-                MakeChest(3);
-            }
-        }
-	}
-    public void MakeChest(int RewardAmount)
+    public void MakeChest()
     {
-        ChestReward t = new ChestReward();
-        for (int i = 0; i < RewardAmount; i++)
+        RewardStates aa = new RewardStates();
+        for (int i = 0; i < rewardState.Length - 1; i++)
+            for (int j = 0; j < rewardState.Length - 1; j++)
+                if (rewardState[j].chance > rewardState[j + 1].chance)
+                {
+                    aa = rewardState[j];
+                    rewardState[j] = rewardState[j + 1];
+                    rewardState[j + 1] = aa;
+                }
+
+        float dice;
+        float temp;
+        for (int j = 0; j < RewardCount; j++)
         {
-            ///Algoritem
-            t.icon = Icons[Random.Range(0,Icons.Length)];
-            t.amount = Random.Range(10, 200);
-            t.type = (ChestReward.Type)Random.Range(0, 4);
-            print(t.type.ToString());
-            Cards[i].Repaint(t);
-            t.GainReward();
+            dice = Random.Range(0, 101);
+            temp = 0;
+            for (int i = 0; i < rewardState.Length; i++)
+            {
+                temp += rewardState[i].chance;
+                if (dice < temp)
+                {
+                    rewards.Add( RewardManager.Instance.AddReward(rewardState[i].type, rewardState[i].amount.Random));
+                    break;
+                }
+            }
         }
 
-        //AdCard
-        anim.SetTrigger("Open");
-        open = true;
+
+        //add formula
+        aa = new RewardStates();
+        for (int i = 0; i < AdState.Length - 1; i++)
+            for (int j = 0; j < AdState.Length - 1; j++)
+                if (AdState[j].chance > AdState[j + 1].chance)
+                {
+                    aa = AdState[j];
+                    AdState[j] = AdState[j + 1];
+                    AdState[j + 1] = aa;
+                }
+        dice = Random.Range(0, 101);
+        temp = 0;
+        for (int i = 0; i < rewardState.Length; i++)
+        {
+            temp += rewardState[i].chance;
+            if (dice < temp)
+            {
+                AdReward = RewardManager.Instance.AddReward(rewardState[i].type, rewardState[i].amount.Random);
+                break;
+            }
+        }
+        foreach (var item in rewards.ToArray())
+        {
+            print(item.type + " " + item.amount + " " + item.cardType + " " + item.characterId);
+            RewardManager.Instance.AddReward(item);
+        }
+
+        //open chestViewer
+
     }
 
     [System.Serializable]
-    public class Reward
+    public class RewardStates
     {
-        public enum Type
-        {
-            Card, Coin, Icon
-        }
-        public IntRange CoinRandom = new IntRange(200, 500);
-        public IntRange CardRandom = new IntRange(1, 2);
-        public Type type;
-        int amount;
-        public void MakeRandomAndGive()
-        {
-            type = (Type)Random.Range(0, 2);
-            switch (type)
-            {
-                case Type.Card:
-                    amount = CardRandom.Random;
-                    GameManager.instance.AddCard(new Card(amount));
-                    break;
-                case Type.Coin:
-                    amount = CoinRandom.Random;
-                    GameManager.instance.ChangeCoin(amount);
-                    break;
-                case Type.Icon:
-                    break;
 
-            }
-        }
+        public RewardType type;
+        public int chance;
+        public IntRange amount;
 
     }
 }

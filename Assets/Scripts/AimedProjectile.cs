@@ -7,7 +7,7 @@ public class AimedProjectile : MonoBehaviour, IHitable
     public bool aimed;
     public float speed;
 
-    float orginalRange, yRange,damage;
+    float orginalRange, yRange, damage;
     GameObject target;
     bool shoot;
     Vector2 t;
@@ -15,7 +15,7 @@ public class AimedProjectile : MonoBehaviour, IHitable
     void Start()
     {
 
-        yRange = speed*2;
+        yRange = speed * 2;
         orginalRange = yRange;
     }
 
@@ -36,6 +36,9 @@ public class AimedProjectile : MonoBehaviour, IHitable
         yRange = Mathf.Lerp(yRange, 0, 4 * Time.deltaTime);
         speed += 2 * Time.deltaTime;
 
+        var dir = target.transform.position - transform.position;
+        var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
         Vector2 b = t * speed * Time.deltaTime;
         b.y += yRange * Time.deltaTime;
@@ -45,7 +48,7 @@ public class AimedProjectile : MonoBehaviour, IHitable
             Die();
 
     }
-    public void Spawn(GameObject t,float d)
+    public void Spawn(GameObject t, float d)
     {
         target = t;
         damage = d;
@@ -64,3 +67,4 @@ public class AimedProjectile : MonoBehaviour, IHitable
         Destroy(gameObject);
     }
 }
+

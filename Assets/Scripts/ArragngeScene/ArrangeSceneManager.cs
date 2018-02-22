@@ -136,9 +136,9 @@ public class ArrangeSceneManager : MainBehavior {
             Destroy(ChoosePanelParent.transform.GetChild(i).gameObject);
         }
         temp = new List<CharacterData>();
-        foreach (var item in GM.mainData.charactersData)
+        foreach (var item in GM.mainData.characterInfos.ToArray())
         {
-            CharacterData a = characterDatabase.GiveByID(item.Key);
+            CharacterData a = characterDatabase.GiveByID(item.Id);
             if (a.type == t)
                 temp.Add(a);
         }
