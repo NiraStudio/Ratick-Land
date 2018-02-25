@@ -9,7 +9,6 @@ public class SimpleCharacter : Character
     public override void Attack()
     {
         detectedEnemy.SendMessage("GetHit", (float)damage.Random);
-        print("Attack");
 
         base.Attack();
     }

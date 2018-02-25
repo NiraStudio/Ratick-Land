@@ -9,6 +9,7 @@ public class CharacterData:ScriptableObject
     public GameObject prefab;
     public Currency buyPrice = new Currency();
     public Currency upgradePrice = new Currency();
+    public int baseCardNeed,CardNeedIncrease;
     public Type type;
     public int id;
     public int maxLevel;
@@ -20,6 +21,7 @@ public class CharacterData:ScriptableObject
     public IntRange damage=new IntRange(0,0);
     public Upgrade upgrade = new Upgrade();
     public string description;
+
 
     public CharacterData(string characterName, GameObject prefab, int id, Sprite icon, float speed, float attackSpeed, float hitPoint, IntRange damage, string description)
     {
@@ -41,6 +43,6 @@ public class CharacterData:ScriptableObject
 
     public enum Type
     {
-        Minion,Hero,Main,Support
+        Minion,Hero,Leader,Support
     }
 }

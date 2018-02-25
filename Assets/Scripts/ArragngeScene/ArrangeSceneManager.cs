@@ -32,6 +32,9 @@ public class ArrangeSceneManager : MainBehavior {
             RepaintArranges(GM.SlotData);
     }
 
+
+    //character Panel
+
     void RepaintArranges(SlotContainer SC)
     {
         
@@ -55,7 +58,7 @@ public class ArrangeSceneManager : MainBehavior {
 
 
     }
-    public void OpenChoosePanel(ArrangeIcon btn)
+    public void OpenCharacterChoosePanel(ArrangeIcon btn)
     {
         currentIcon = btn;
         choosePanel.SetActive(true);
@@ -69,11 +72,19 @@ public class ArrangeSceneManager : MainBehavior {
 
         print("Open");
     }
-    public void CloseChoosePanel(CharacterData data)
+    public void CloseCharacterChoosePanel(CharacterData data)
     {
         currentIcon.Repaint(data);
         choosePanel.SetActive(false);
     }
+    public void CloseCharacterChoosePanel()
+    {
+        choosePanel.SetActive(false);
+    }
+
+
+    //card panel
+
     public void OpenCardPanel()
     {
         CardPanel.SetActive(true);
@@ -101,32 +112,46 @@ public class ArrangeSceneManager : MainBehavior {
     }
     public void CloseCardPanel(Card card)
     {
-        sc.card = card;
+        
         switch (card.cardType)
         {
             case Card.Type.empty:
                 break;
             case Card.Type.DoubleCoin:
+                if (CardDoubleCoin > 0)
+                {
+
                 CardBtnImage.color = Color.yellow;
+                    sc.card = card;
+                }
                 break;
             case Card.Type.DoubleATK:
-                CardBtnImage.color = Color.red;
+                if (CardDoubleAttack > 0)
+                {
 
-                break;
-            default:
+                    CardBtnImage.color = Color.red;
+
+                    sc.card = card;
+                }
+
                 break;
         }
         CardPanel.SetActive(false);
 
     }
-    
+    public void CloseCardPanel()
+    {
+
+        sc.card = null;
+        CardBtnImage.sprite = null;
+        CardPanel.SetActive(false);
+
+    }
+
+
     public void Clean()
     {
         currentIcon.Clean();
-        choosePanel.SetActive(false);
-    }
-    public void CloseChoosePanel()
-    {
         choosePanel.SetActive(false);
     }
     public void MakeChoosePanel(CharacterData.Type t)

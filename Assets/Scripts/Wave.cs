@@ -29,6 +29,11 @@ public class Wave : MonoBehaviour {
     void Start()
     {
         LC = LevelController.instance;
+        foreach (var item in events)
+        {
+            item.Invoke();
+        }
+        Spawn();
     }
     public void AddEnemy(int type)
     {
@@ -38,6 +43,7 @@ public class Wave : MonoBehaviour {
             if(item.type==t)
             {
                 currentEnemies.Add(item.Enemy);
+                print("aa");
             }
         }
     }
@@ -50,6 +56,15 @@ public class Wave : MonoBehaviour {
             {
                 currentEnemies.Remove(item.Enemy);
             }
+        }
+    }
+    public void Spawn()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            Vector3 t = Random.insideUnitCircle*0.2f;
+           GameObject g= Instantiate(currentEnemies[Random.Range(0, currentEnemies.Count)], transform.position+t, Quaternion.identity);
+            g.transform.SetParent(transform);
         }
     }
     

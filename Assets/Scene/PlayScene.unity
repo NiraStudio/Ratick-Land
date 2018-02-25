@@ -459,7 +459,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &364071444
 SpriteRenderer:
@@ -607,7 +607,7 @@ Transform:
   m_LocalScale: {x: 200, y: 200, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &389694422
 GameObject:
@@ -1405,7 +1405,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4741102810678986, guid: ae7feabd3f296fa49a9fe8e93f2287b0, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1441858223127896, guid: ae7feabd3f296fa49a9fe8e93f2287b0, type: 2}
       propertyPath: m_IsActive
@@ -1440,7 +1440,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &914465681
 GameObject:
@@ -1817,7 +1817,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4113884385846646, guid: ecf0bc07211793345ba93fdf9346c675, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1347928720464020, guid: ecf0bc07211793345ba93fdf9346c675, type: 2}
       propertyPath: m_IsActive
@@ -1948,7 +1948,7 @@ MonoBehaviour:
   speedMultiPly: 3
   WorldCoinMultiply: 1
   WorldAttackMultiPly: 1
-  maxWave: 10
+  maxWave: 8
   ChanceToRespawnSecretMap: 0
   cage: {fileID: 1599364267321120, guid: 32743f247c3b8eb47815eb7821e8771e, type: 2}
   Blocks:
@@ -1982,7 +1982,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1384633657
 MonoBehaviour:
@@ -2002,6 +2002,7 @@ MonoBehaviour:
   KeyAmount: {fileID: 615792980}
   GoldBrust: {fileID: 1605108939112514, guid: a352be0973a05cd45a34997a7a09af6f, type: 2}
   GoldBrustTarget: {fileID: 1530276041}
+  maxMainHp: 0
   main: {fileID: 0}
 --- !u!1 &1405943326
 GameObject:
@@ -2177,7 +2178,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4866023838521398, guid: eb7387543715bea47a818d558b3c7cc3, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1751005269736166, guid: eb7387543715bea47a818d558b3c7cc3, type: 2}
       propertyPath: m_IsActive
@@ -2834,7 +2835,7 @@ Transform:
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &1943770986
 Rigidbody2D:
@@ -3126,7 +3127,7 @@ RectTransform:
   m_Children:
   - {fileID: 1482693387}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

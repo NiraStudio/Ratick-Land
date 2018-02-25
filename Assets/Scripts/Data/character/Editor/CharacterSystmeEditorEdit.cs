@@ -11,7 +11,7 @@ public class CharacterSystmeEditorEdit : EditorWindow
 
     CharacterDataBase dataBase,db;
     static Vector2 WindowSize = new Vector2(1500, 500);
-    static Vector2 IconButtonSize = new Vector2(50, 50);
+    static Vector2 IconButtonSize = new Vector2(75, 100);
     static Vector2 Scrollpos;
     Texture2D ItemIcon;
     CharacterData temp;
@@ -179,7 +179,7 @@ public class CharacterSystmeEditorEdit : EditorWindow
             GUILayout.EndHorizontal();
 
 
-            GUILayout.BeginHorizontal();
+            GUILayout.BeginHorizontal("Box");
 
             temp.buyPrice.Amount = EditorGUILayout.IntField("Buy Price:", temp.buyPrice.Amount, GUILayout.Width(300));
             temp.buyPrice.type = (Currency.Type)EditorGUILayout.EnumPopup(temp.buyPrice.type);
@@ -187,7 +187,15 @@ public class CharacterSystmeEditorEdit : EditorWindow
             temp.upgradePrice.Amount = EditorGUILayout.IntField("Upgrade Price:", temp.upgradePrice.Amount, GUILayout.Width(300));
             temp.upgradePrice.type = (Currency.Type)EditorGUILayout.EnumPopup(temp.upgradePrice.type);
 
+
+
+
+            temp.baseCardNeed = EditorGUILayout.IntField("Base Card Need:", temp.baseCardNeed, GUILayout.Width(300));
+
+            temp.CardNeedIncrease = EditorGUILayout.IntField("Card Increase After Each Update:", temp.CardNeedIncrease, GUILayout.Width(300));
+
             GUILayout.EndHorizontal();
+
 
             GUILayout.BeginHorizontal("Box");
 
@@ -196,6 +204,7 @@ public class CharacterSystmeEditorEdit : EditorWindow
 
             GUILayout.EndHorizontal();
 
+            
             GUILayout.EndVertical();
             #endregion
 

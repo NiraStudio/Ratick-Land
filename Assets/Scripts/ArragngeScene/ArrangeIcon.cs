@@ -21,7 +21,7 @@ public class ArrangeIcon : MonoBehaviour {
 
     void Choosed()
     {
-        manager.OpenChoosePanel(this);
+        manager.OpenCharacterChoosePanel(this);
     }
     public void Repaint(CharacterData data)
     {

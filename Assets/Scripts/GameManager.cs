@@ -169,7 +169,7 @@ public class GameManager : MainBehavior
         {
             if (item.Id == ID)
             {
-                item.Level = +levelAmount;
+                item.Level +=levelAmount;
                 break;
             }
         }
@@ -199,6 +199,32 @@ public class GameManager : MainBehavior
 
         return answer;
     }
+    public int UpgradeCost(int ID)
+    {
+        int answer = 0;
+        CharacterData a = characterDB.GiveByID(ID);
+
+        for (int i = 0; i < CharacterLevel(ID); i++)
+        {
+            answer += a.upgradePrice.Amount;
+        }
+
+        return answer;
+    }
+    public int CharacterCardUpgradeCost(int ID)
+    {
+        int answer=0;
+        foreach (var item in mainData.characterInfos.ToArray())
+        {
+            if (item.Id == ID)
+            {
+
+                answer = characterDB.GiveByID(item.Id).baseCardNeed + (characterDB.GiveByID(item.Id).CardNeedIncrease * item.Level);
+            }
+        }
+        return answer;
+
+    }
     public void AddCharacterCard(int ID, int amount)
     {
         foreach (var item in mainData.characterInfos.ToArray())
@@ -211,6 +237,31 @@ public class GameManager : MainBehavior
         }
         mainData.characterInfos.Add(new characterInfo(ID, 1, amount));
         SaveMainData();
+    }
+    public List<CharacterData> PlayerCharacters
+    {
+        get
+        {
+            List<CharacterData> answer = new List<CharacterData>();
+            foreach (var item in mainData.characterInfos.ToArray())
+            {
+                answer.Add(characterDB.GiveByID(item.Id));
+            }
+            return answer;
+        }
+    }
+    public int CharacterCard(int ID)
+    {
+        int answer = 0;
+        foreach (var item in mainData.characterInfos)
+        {
+            if (item.Id == ID)
+            {
+                answer = item.cards;
+                break;
+            }
+        }
+        return answer;
     }
     #endregion
 }

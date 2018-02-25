@@ -81,11 +81,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f33e6a2fa7af494eadd69d51bb539fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemies:
-  - {fileID: 1347928720464020, guid: ecf0bc07211793345ba93fdf9346c675, type: 2}
-  - {fileID: 1751005269736166, guid: eb7387543715bea47a818d558b3c7cc3, type: 2}
-  enemiesNumber:
-    m_Min: 1
-    m_Max: 4
-  controller: {fileID: 0}
-  increaseNumber: 2
+  currentEnemies: []
+  Enemies:
+  - type: 0
+    Enemy: {fileID: 1347928720464020, guid: ecf0bc07211793345ba93fdf9346c675, type: 2}
+  - type: 4
+    Enemy: {fileID: 1126327648200018, guid: 731124ead00dfb04e822a0ffb46dab31, type: 2}
+  events:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114720931751985442}
+        m_MethodName: AddEnemy
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 114720931751985442}
+        m_MethodName: AddEnemy
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 4
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  LC: {fileID: 0}

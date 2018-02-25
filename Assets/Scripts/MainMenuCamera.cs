@@ -15,9 +15,17 @@ public class MainMenuCamera : MonoBehaviour
         ChangeByCurrentState();
     }
 
+    void FixedUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+            ChangeView(-1);
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+            ChangeView(1);
+    }
     // Update is called once per frame
     void Update()
     {
+
         Vector3 a = target.position;
         a.z = transform.position.z;
         transform.position = Vector3.Lerp(transform.position, a, (smoothness / 100) * Time.deltaTime);

@@ -11,8 +11,8 @@ public class CharacterSystemEditorCreate : EditorWindow {
     public const string FULL_PATH = @"Assets/"+FOLDER_NAME+"/"+FILE_NAME;
 
     CharacterDataBase dataBase;
-    static Vector2 WindowSize=new Vector2(1000,500);
-    static Vector2 IconButtonSize = new Vector2(70, 50);
+    static Vector2 WindowSize=new Vector2(1500, 500);
+    static Vector2 IconButtonSize = new Vector2(75, 100);
     Texture2D ItemIcon;
     CharacterData temp;
 
@@ -215,13 +215,18 @@ public class CharacterSystemEditorCreate : EditorWindow {
 
         GUILayout.BeginHorizontal("Box");
 
-
-        
         temp.buyPrice.Amount = EditorGUILayout.IntField("Buy Price:", temp.buyPrice.Amount, GUILayout.Width(300));
         temp.buyPrice.type = (Currency.Type)EditorGUILayout.EnumPopup(temp.buyPrice.type);
 
         temp.upgradePrice.Amount = EditorGUILayout.IntField("Upgrade Price:", temp.upgradePrice.Amount, GUILayout.Width(300));
         temp.upgradePrice.type = (Currency.Type)EditorGUILayout.EnumPopup(temp.upgradePrice.type);
+
+
+
+
+        temp.baseCardNeed = EditorGUILayout.IntField("Base Card Need:", temp.baseCardNeed, GUILayout.Width(300));
+
+        temp.CardNeedIncrease = EditorGUILayout.IntField("Card Increase After Each Update:", temp.CardNeedIncrease, GUILayout.Width(300));
 
         GUILayout.EndHorizontal();
 
@@ -231,6 +236,8 @@ public class CharacterSystemEditorCreate : EditorWindow {
         temp.upgrade.type = (Upgrade.Type)EditorGUILayout.EnumPopup(temp.upgrade.type);
 
         GUILayout.EndHorizontal();
+
+       
 
         GUILayout.Label("Item Description:");
         temp.description = EditorGUILayout.TextArea(temp.description, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true));

@@ -1,14 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class testShoot : MonoBehaviour {
     public GameObject target,Bullet;
     public Chest s;
 	// Use this for initialization
 	void Start () {
-       
-	}
+        
+        
+
+    }
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))

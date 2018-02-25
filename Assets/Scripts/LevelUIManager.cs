@@ -12,7 +12,7 @@ public class LevelUIManager : MonoBehaviour {
     public GameObject GoldBrust,GoldBrustTarget;
     LevelController LM;
     float coinTemp,lerp;
-    int maxMainHp;
+    public int maxMainHp;
     public Character main;
 
     void Awake()
@@ -45,6 +45,7 @@ public class LevelUIManager : MonoBehaviour {
 
         #region Main HP
 
+        mainHpSlider.maxValue = maxMainHp;
         mainHpSlider.value = main.HP;
         MainHpText.text = main.HP + "/" + maxMainHp;
 
@@ -66,7 +67,7 @@ public class LevelUIManager : MonoBehaviour {
     public void GetMain(Character main)
     {
         this.main = main;
-        maxMainHp = this.main.HP;
+        maxMainHp = main.HP;
         mainHpSlider.maxValue = maxMainHp;
     }
 }

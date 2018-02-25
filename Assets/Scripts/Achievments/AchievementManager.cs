@@ -20,7 +20,7 @@ public class AchievementManager : MonoBehaviour {
 
     void Start()
     {
-
+        
     }
 
     void Update()

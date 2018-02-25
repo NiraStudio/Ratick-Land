@@ -10,6 +10,8 @@ public class AssetCreator : MonoBehaviour {
     {
         ScriptableObjectUtility.CreateAsset<EnemyData>("EnemyData");
     }
-   
     
+   
+
+
 }

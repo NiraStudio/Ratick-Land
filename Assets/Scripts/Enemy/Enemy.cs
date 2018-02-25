@@ -22,7 +22,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     [SerializeField]
     GameObject coinObject,aim;
     LevelController levelController;
-    LayerMask charactersLayer;
+    protected LayerMask charactersLayer;
     public Collider2D detectedCharacter;
     bool detect,move;
     protected float time;
@@ -49,7 +49,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
 
         detectedCharacter = Physics2D.OverlapCircle(transform.position, range, charactersLayer);
 
-        
+
 
         if (detectedCharacter)
         {
@@ -58,6 +58,8 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
                 Attack();
             move = false;
         }
+        else
+            time = 0;
         
 
 
@@ -107,14 +109,14 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
 
                 direction = t;
 
-                print("Follow");
+               // print("Follow");
 
             }
             else
             {
                 //rg.velocity = GiveRandomMoveDiretion() * speed ;
                 direction = GiveRandomMoveDiretion();
-                print("Random");
+                //print("Random");
 
             }
         }

@@ -69,7 +69,8 @@ public class Chest : MonoBehaviour {
         }
 
         //open chestViewer
-
+        if (CampaignMenuManager.Instance != null)
+            CampaignMenuManager.Instance.RenewPlayer();
     }
 
     [System.Serializable]

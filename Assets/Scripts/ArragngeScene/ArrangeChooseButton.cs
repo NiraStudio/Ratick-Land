@@ -28,6 +28,6 @@ public class ArrangeChooseButton : MonoBehaviour {
     }
     void Clicked()
     {
-        ArrangeSceneManager.Instance.CloseChoosePanel(data);
+        ArrangeSceneManager.Instance.CloseCharacterChoosePanel(data);
     }
 }

@@ -7,6 +7,8 @@ public class Character : MainBehavior,IAttackable,IHitable
 {
     public CharacterData data;
     public bool right;
+    [SerializeField]
+    protected SkinManager skinManager;
     protected GameObject aimer;
     protected LevelController controller;
     protected Rigidbody2D rg;
@@ -31,16 +33,23 @@ public class Character : MainBehavior,IAttackable,IHitable
     float waitTime;
     Vector2 t, tt;
     protected bool free;
-
+    
 
     public void Awake()
     {
+        controller = LevelController.instance;
+        if (controller == null)
+        {
+            this.enabled = false;
+            return;
+        }
         RenewData();
-
+        UpgradeTheCharacter(GameManager.instance.CharacterLevel(data.id));
     }
     public virtual void Start()
     {
-        controller = LevelController.instance;
+        
+
         aimer = controller.aimer;
         rg = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -118,7 +127,7 @@ public class Character : MainBehavior,IAttackable,IHitable
         speedMultiPly = data.speed;
         attackSpeed = data.attackSpeed;
         hitPoint = data.hitPoint;
-        damage = new IntRange(data.damage.m_Min * LevelController.instance.WorldAttackMultiPly, data.damage.m_Max * LevelController.instance.WorldAttackMultiPly);
+        damage = new IntRange(data.damage.m_Min * controller.WorldAttackMultiPly, data.damage.m_Max * controller.WorldAttackMultiPly);
         attackRange = data.attackRange;
     }
 

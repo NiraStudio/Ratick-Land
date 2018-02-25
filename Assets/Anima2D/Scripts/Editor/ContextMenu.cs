@@ -11,7 +11,7 @@ namespace Anima2D
 	public class ContextMenu
 	{
 		[MenuItem("Assets/Create/Anima2D/SpriteMesh", true)]
-		static bool ValidateCreateSpriteMesh(MenuCommand menuCommand)
+        public static bool ValidateCreateSpriteMesh(MenuCommand menuCommand)
 		{
 			bool valid = false;
 
@@ -26,9 +26,27 @@ namespace Anima2D
 
 			valid = valid || selectedTextures.Count > 0;
 
+
 			return valid;
 		}
+        public static bool ValidateCreateSpriteMesh(Sprite a)
+        {
+            bool valid = false;
 
+            Sprite sprite = a;
+
+            if (sprite && !SpriteMeshPostprocessor.GetSpriteMeshFromSprite(sprite))
+            {
+                valid = true;
+            }
+
+            List<Texture2D> selectedTextures = Selection.objects.ToList().Where(o => o is Texture2D).ToList().ConvertAll(o => o as Texture2D);
+
+            valid = valid || selectedTextures.Count > 0;
+
+
+            return valid;
+        }
 		[MenuItem("Assets/Create/Anima2D/SpriteMesh", false)]
 		static void CreateSpriteMesh(MenuCommand menuCommand)
 		{
@@ -44,6 +62,8 @@ namespace Anima2D
 				SpriteMeshUtils.CreateSpriteMesh(Selection.activeObject as Sprite);
 			}
 		}
+
+       
 		
 		[MenuItem("GameObject/2D Object/SpriteMesh", false, 10)]
 		static void ContextCreateSpriteMesh(MenuCommand menuCommand)

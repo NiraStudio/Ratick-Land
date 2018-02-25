@@ -186,7 +186,6 @@ public class LevelController : MainBehavior
             a.transform.position =startPos+ Random.insideUnitCircle * 3;
             a.GetComponent<Character>().Release(true);
             AddCharacters(a);
-            a.SendMessage("UpgradeTheCharacter", GM.CharacterLevel(item));
 
         }
         if(sc.minionId>=0)
@@ -208,7 +207,6 @@ public class LevelController : MainBehavior
             a.transform.position =startPos+ Random.insideUnitCircle * 3;
             a.GetComponent<Character>().Release(true);
             AddCharacters(a);
-            a.SendMessage("UpgradeTheCharacter", GM.CharacterLevel(sc.supportId));
 
         }
 
@@ -219,7 +217,6 @@ public class LevelController : MainBehavior
             a.transform.position =startPos+ Random.insideUnitCircle * 3;
             a.GetComponent<Character>().Release(true);
             AddCharacters(a);
-            a.SendMessage("UpgradeTheCharacter", GM.CharacterLevel(sc.mainId));
             GetComponent<LevelUIManager>().GetMain(a.GetComponent<Character>());
 
         }
