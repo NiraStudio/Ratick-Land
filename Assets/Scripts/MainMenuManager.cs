@@ -12,6 +12,7 @@ public class MainMenuManager : MainBehavior {
 	// Use this for initialization
 	void Start () {
         GM = GameManager.instance;
+        OpenScreen();
 	}
 	
 	// Update is called once per frame

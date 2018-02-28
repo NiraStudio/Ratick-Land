@@ -35,7 +35,7 @@ public class LevelController : MainBehavior
 
     ObscuredInt coinAmount;
 
-
+    int _CageBroken=-1;
     Dictionary<int, int> data = new Dictionary<int, int>();
     List<Vector2> freeSpots = new List<Vector2>();
     List<Vector2> BlockSpots = new List<Vector2>();
@@ -54,7 +54,10 @@ public class LevelController : MainBehavior
     //key
     public int keyCount=3, GotedKey;
     public int KeyPartGeted, KeyPartNeeded;
-
+    public int BrokenCage
+    {
+        get { return _CageBroken; }
+    }
 
     float waveCount;
     float coinTemp,lerp=0,levelTime;
@@ -75,6 +78,7 @@ public class LevelController : MainBehavior
         StartCoroutine(spawnEnemy());
         RenewKeyPartNeeded();
         UseCard(GM.SlotData.card);
+        OpenScreen();
     }
 
     // Update is called once per frame
@@ -162,6 +166,7 @@ public class LevelController : MainBehavior
         GameObject g = Instantiate(cage, a, Quaternion.identity);
 
         cageFinder.cage = g;
+        _CageBroken++;
     }
 
     void JoyStickTurnOn(Vector2 pos)

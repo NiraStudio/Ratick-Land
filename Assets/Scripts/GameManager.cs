@@ -9,8 +9,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 public class GameManager : MainBehavior
 {
     public static GameManager instance;
-    [Tooltip("Restarts the game")]
-    public bool Restart;
     public SlotContainer SlotData
     {
         get { return mainData.defultSlot; }
@@ -29,11 +27,11 @@ public class GameManager : MainBehavior
     [SerializeField]
     MainData _mainData = new MainData();
     [SerializeField]
-    CurrencyData currencyData = new CurrencyData();
+    CurrencyData _currencyData = new CurrencyData();
 
     public int coinAmount
     {
-        get { return currencyData.Coins; }
+        get { return _currencyData.Coins; }
     }
     public MainData mainData
     {
@@ -49,14 +47,17 @@ public class GameManager : MainBehavior
     void Start()
     {
         DontDestroyOnLoad(gameObject);
-        if (PlayerPrefs.GetInt("FirstTime") != 1 || Restart)
+        if (PlayerPrefs.GetInt("FirstTime") != 1)
+        {
             FirstTimeChanges();
+        }
         else
         {
             LoadCurrencyData();
             LoadMainData();
-            SceneManager.LoadScene("MainMenu");
         }
+        SceneManager.LoadScene("MainMenu");
+
     }
 
     // Update is called once per frame
@@ -66,12 +67,12 @@ public class GameManager : MainBehavior
     }
     public void ChangeCoin(int Amount)
     {
-        currencyData.Coins += Amount;
+        _currencyData.Coins += Amount;
         SaveCurrencyData();
     }
     public void ChangeGem(int Amount)
     {
-        currencyData.Gems += Amount;
+        _currencyData.Gems += Amount;
         SaveCurrencyData();
     }
 
@@ -83,14 +84,15 @@ public class GameManager : MainBehavior
 
     public void FirstTimeChanges()
     {
+        _mainData = new MainData();
+        _currencyData = new CurrencyData();
         mainData.characterInfos.Add(new characterInfo(1, 5, 0));
         mainData.characterInfos.Add(new characterInfo(5, 1, 0));
-        currencyData.Coins = 100;
+        _currencyData.Coins = 100;
         SaveCurrencyData();
         SaveMainData();
         PlayerPrefs.SetInt("FirstTime", 1);
-        SceneManager.LoadScene("MainMenu");
-        Restart = false;
+
     }
 
     public void MakeCardFree()
@@ -109,7 +111,7 @@ public class GameManager : MainBehavior
             Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, "Data"));
         }
         FileStream File = new FileStream(Application.persistentDataPath + "/Data/CR.Alpha", FileMode.Create);
-        bf.Serialize(File, currencyData);
+        bf.Serialize(File, _currencyData);
 
         File.Close();
     }
@@ -120,7 +122,7 @@ public class GameManager : MainBehavior
             BinaryFormatter bf = new BinaryFormatter();
             FileStream File = new FileStream(Application.persistentDataPath + "/Data/CR.Alpha", FileMode.Open);
 
-            currencyData = bf.Deserialize(File) as CurrencyData;
+            _currencyData = bf.Deserialize(File) as CurrencyData;
             File.Close();
         }
         else

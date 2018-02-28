@@ -30,6 +30,7 @@ public class ArrangeSceneManager : MainBehavior {
         if (GM.SlotData != null)
 
             RepaintArranges(GM.SlotData);
+        OpenScreen();
     }
 
 

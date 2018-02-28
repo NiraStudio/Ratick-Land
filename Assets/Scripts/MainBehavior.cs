@@ -16,6 +16,10 @@ public class MainBehavior : MonoBehaviour {
 	}
     public void GoToScene(string SceneName)
     {
-        SceneManager.LoadScene(SceneName);
+        LoadingScreenManager.Instance.GoToScene(SceneName);
+    }
+    public void OpenScreen()
+    {
+        LoadingScreenManager.Instance.Open();
     }
 }

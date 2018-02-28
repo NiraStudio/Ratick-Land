@@ -1,23 +1,23 @@
 fileFormatVersion: 2
-guid: 7656d12f885593b499a1b737bc389e2f
-timeCreated: 1519592825
+guid: 916b3b135b47f204fa2f3838ca61b5d2
+timeCreated: 1519762199
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Minion_0
-    21300002: Minion_1
-    21300004: Minion_2
-    21300006: Minion_3
-    21300008: Minion_4
-    21300010: Minion_5
-    21300012: Minion_6
-    21300014: Minion_7
-    21300016: Minion_8
-    21300018: Minion_9
-    21300020: Minion_10
-    21300022: Minion_11
-    21300024: Minion_12
-    21300026: Minion_13
+    21300000: Head
+    21300002: Hat
+    21300004: HandBack
+    21300006: Lip
+    21300008: CloseHand
+    21300010: HandFront
+    21300012: HandFrontBackSword
+    21300014: BackFoot
+    21300016: HandFrontForwardSword
+    21300018: OpenHand
+    21300020: FrontFoot
+    21300022: Body
+    21300024: SholderFront
+    21300026: SholderBack
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -71,7 +71,7 @@ TextureImporter:
   textureFormatSet: 0
   platformSettings:
   - buildTarget: DefaultTexturePlatform
-    maxTextureSize: 1024
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -81,7 +81,7 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
   - buildTarget: Standalone
-    maxTextureSize: 1024
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -91,7 +91,7 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
   - buildTarget: Android
-    maxTextureSize: 1024
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -104,111 +104,55 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Minion_0
+      name: Head
       rect:
         serializedVersion: 2
-        x: 26
-        y: 829
-        width: 93
-        height: 128
+        x: 387
+        y: 695
+        width: 261
+        height: 246
       alignment: 9
-      pivot: {x: 0.5053765, y: 0.5}
+      pivot: {x: 0.5, y: 0.49999997}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Minion_1
+      name: Hat
       rect:
         serializedVersion: 2
-        x: 177.00002
-        y: 816
-        width: 88.999985
-        height: 136
+        x: 684
+        y: 677
+        width: 316
+        height: 323
       alignment: 9
-      pivot: {x: 0.50000006, y: 0.5}
+      pivot: {x: 0.49683547, y: 0.5108359}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Minion_2
+      name: HandBack
       rect:
         serializedVersion: 2
-        x: 432.00003
-        y: 725.00006
-        width: 231.99997
-        height: 218
+        x: 50.499996
+        y: 514
+        width: 121
+        height: 203
       alignment: 9
-      pivot: {x: 0.50431025, y: 0.49999997}
+      pivot: {x: 0.4876033, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Minion_3
+      name: Lip
       rect:
         serializedVersion: 2
-        x: 710
-        y: 697.00006
-        width: 277
-        height: 289
-      alignment: 9
-      pivot: {x: 0.49097472, y: 0.49826992}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Minion_5
-      rect:
-        serializedVersion: 2
-        x: 49.999996
-        y: 649
-        width: 94
-        height: 111
-      alignment: 9
-      pivot: {x: 0.48936173, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Minion_6
-      rect:
-        serializedVersion: 2
-        x: 368
-        y: 750
-        width: 30
-        height: 10
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Minion_7
-      rect:
-        serializedVersion: 2
-        x: 220.06258
-        y: 523.41425
-        width: 110.999985
-        height: 159
-      alignment: 9
-      pivot: {x: 0.4994366, y: 0.5005397}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Minion_8
-      rect:
-        serializedVersion: 2
-        x: 362.00003
-        y: 628.00006
-        width: 63
-        height: 50
+        x: 481
+        y: 640
+        width: 45
+        height: 22
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -216,71 +160,141 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Minion_9
+      name: CloseHand
       rect:
         serializedVersion: 2
-        x: 435.00003
-        y: 626
-        width: 76
+        x: 55
+        y: 372
+        width: 90
+        height: 87
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HandFront
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 412
+        width: 90
+        height: 225
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HandFrontBackSword
+      rect:
+        serializedVersion: 2
+        x: 605
+        y: 403
+        width: 390
+        height: 237
+      alignment: 9
+      pivot: {x: 0.50256413, y: 0.49999997}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: BackFoot
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 220
+        width: 101
+        height: 142
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HandFrontForwardSword
+      rect:
+        serializedVersion: 2
+        x: 595
+        y: 46
+        width: 380
+        height: 319
+      alignment: 9
+      pivot: {x: 0.5, y: 0.49843258}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: OpenHand
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 66
+        width: 102
+        height: 120
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: FrontFoot
+      rect:
+        serializedVersion: 2
+        x: 248
+        y: 42
+        width: 101
+        height: 155
+      alignment: 9
+      pivot: {x: 0.5, y: 0.4967742}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Body
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 35
+        width: 126
+        height: 181
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: SholderFront
+      rect:
+        serializedVersion: 2
+        x: 157
+        y: 809
+        width: 81
         height: 53
       alignment: 9
-      pivot: {x: 0.5, y: 0.50000113}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Minion_10
+      name: SholderBack
       rect:
         serializedVersion: 2
-        x: 63.999992
-        y: 516
-        width: 84.00001
-        height: 81
+        x: 72
+        y: 809
+        width: 67
+        height: 52
       alignment: 9
-      pivot: {x: 0.48809558, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Minion_11
-      rect:
-        serializedVersion: 2
-        x: 59.218765
-        y: 278.24225
-        width: 111
-        height: 177
-      alignment: 9
-      pivot: {x: 0.49802914, y: 0.49863154}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Minion_12
-      rect:
-        serializedVersion: 2
-        x: 244.99998
-        y: 34
-        width: 348
-        height: 353
-      alignment: 9
-      pivot: {x: 0.4928162, y: 0.49575058}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Minion_13
-      rect:
-        serializedVersion: 2
-        x: 32.15627
-        y: 28.57814
-        width: 122.000015
-        height: 163
-      alignment: 9
-      pivot: {x: 0.5069158, y: 0.49338576}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -288,6 +302,6 @@ TextureImporter:
     outline: []
     physicsShape: []
   spritePackingTag: 
-  userData: 99586735130575
+  userData: 99599135001388
   assetBundleName: 
   assetBundleVariant: 
