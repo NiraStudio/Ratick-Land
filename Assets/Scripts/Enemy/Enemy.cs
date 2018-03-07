@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using CodeStage.AntiCheat.ObscuredTypes;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class Enemy : MonoBehaviour,IHitable,IAttackable {
     public EnemyData data;
     public IntRange timeForMove;
@@ -17,17 +18,17 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     protected ObscuredFloat range;
     protected ObscuredInt coin;
     protected Rigidbody2D rg;
-
+    protected Animator anim;
 
     [SerializeField]
     GameObject coinObject,aim;
     LevelController levelController;
-    protected LayerMask charactersLayer;
     public Collider2D detectedCharacter;
     bool detect,move;
     protected float time;
 
-    
+    [HideInInspector]
+    public bool Attacking;
     Vector2 tt,direction;
 	// Use this for initialization
     public virtual void Start()
@@ -35,8 +36,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
         levelController = LevelController.instance;
         aim = GameObject.FindWithTag("Aim");
         rg = GetComponent<Rigidbody2D>();
-        charactersLayer = 1 << 10;
-
+        anim = GetComponent<Animator>();
         RenewData();
         if (!Gurdian)
             StartCoroutine(Move());
@@ -47,14 +47,14 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     {
 
 
-        detectedCharacter = Physics2D.OverlapCircle(transform.position, range, charactersLayer);
+        detectedCharacter = Physics2D.OverlapCircle(transform.position, range, MainBehavior.CharacterLayer);
 
 
 
         if (detectedCharacter)
         {
             time += Time.deltaTime;
-            if (attackSpeed <= time)
+            if (attackSpeed <= time&&!Attacking)
                 Attack();
             move = false;
         }
@@ -151,7 +151,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
        // Instantiate(coinObject, transform.position, Quaternion.identity).transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<UnityEngine.UI.Text>().text = coin.ToString();
         LevelUIManager.Instance.MakeGoldBrust(transform.position);
         levelController.ChangeCoin(coin);
-        levelController.ChangeKeyPart(1);
+        KeyManager.Instance.ChangeKeyPart(1);
         Destroy(gameObject);
     }
     void OnDrawGizmos()
@@ -180,6 +180,13 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
         tt = t;
 
         return t ;
+    }
+
+    void Reset()
+    {
+        GetComponent<Rigidbody2D>().mass = 100;
+        GetComponent<Rigidbody2D>().angularDrag = 6.6f;
+        GetComponent<Rigidbody2D>().drag = 100;
     }
 }
 

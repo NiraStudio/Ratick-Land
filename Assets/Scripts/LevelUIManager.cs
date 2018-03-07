@@ -10,7 +10,8 @@ public class LevelUIManager : MonoBehaviour {
     public Slider mainHpSlider,KeySlider;
     public Text CoinText,MainHpText,KeyAmount;
     public GameObject GoldBrust,GoldBrustTarget;
-    LevelController LM;
+    LevelController LC;
+    KeyManager KM;
     float coinTemp,lerp;
     public int maxMainHp;
     public Character main;
@@ -21,7 +22,8 @@ public class LevelUIManager : MonoBehaviour {
     }
 	// Use this for initialization
 	void Start () {
-        LM = GetComponent<LevelController>();
+        LC = GetComponent<LevelController>();
+        KM = GetComponent<KeyManager>();
 	}
 	
 	// Update is called once per frame
@@ -31,10 +33,10 @@ public class LevelUIManager : MonoBehaviour {
 
         #region Coin
 
-        if (coinTemp !=LM.CoinAmount)
+        if (coinTemp !=LC.CoinAmount)
         {
             lerp += Time.deltaTime / 1;
-            coinTemp = Mathf.Lerp(coinTemp, LM.CoinAmount, lerp);
+            coinTemp = Mathf.Lerp(coinTemp, LC.CoinAmount, lerp);
         }
         else
             lerp = 0;
@@ -53,9 +55,9 @@ public class LevelUIManager : MonoBehaviour {
 
         #region Key
 
-        KeyAmount.text = "X " + LM.keyCount + " Keys";
-        KeySlider.maxValue = LM.KeyPartNeeded;
-        KeySlider.value = LM.KeyPartGeted;
+        KeyAmount.text = "X " + KM.keyCount + " Keys";
+        KeySlider.maxValue = KM.KeyPartNeeded;
+        KeySlider.value = KM.KeyPartGeted;
 
         #endregion
     }

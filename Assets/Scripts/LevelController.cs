@@ -3,65 +3,55 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using CodeStage.AntiCheat.ObscuredTypes;
+
+[RequireComponent(typeof(LevelUIManager))]
+[RequireComponent(typeof(KeyManager))]
+[RequireComponent(typeof(GamePlayInput))]
+
 public class LevelController : MainBehavior
 {
     public static LevelController instance;
     public CharacterDataBase characterDataBase;
-    public CameraController cameraController;
-    public CageFinder cageFinder;
-    public JoyStick joyStick;
-    public GameObject aimer;
-    public float speedMultiPly;
+    
     public int WorldCoinMultiply=1,WorldAttackMultiPly=1,maxWave;
+
+
     [Range(0,100)]
-    public int ChanceToRespawnSecretMap;
+    public float ChanceToRespawnSecretMap;
 
-
-    [Tooltip("Map Parameters")]
+    [Header("Map Parameters")]
     public GameObject cage;
     public GameObject[] Blocks,Maps;
     public GameObject SecretMap,wave;
     public IntRange BlockAmount;
-    public List<GameObject> currentWaves=new List<GameObject>();
-    public bool Move
-    {
-        get { return move; }
-    }
-    public bool game;
+
+    public GamePlayState gameState;
     public int CoinAmount
     { get { return coinAmount; } }
 
 
 
-    ObscuredInt coinAmount;
-
-    int _CageBroken=-1;
-    Dictionary<int, int> data = new Dictionary<int, int>();
+    List<GameObject> currentWaves=new List<GameObject>();
     List<Vector2> freeSpots = new List<Vector2>();
     List<Vector2> BlockSpots = new List<Vector2>();
     List<GameObject> characters=new List<GameObject>();
     SlotContainer sc = new SlotContainer();
+    GameObject aimer;
+    CameraController cameraController;
+    ObscuredInt coinAmount;
     GameManager GM;
-    /// cach var
     Vector2 t,startPos;
     Touch[] touches;
+    int _CageBroken=-1;
     bool move;
     MapClass map;
-    public float LevelTime
-    {
-        get { return levelTime; }
-    }
-    //key
-    public int keyCount=3, GotedKey;
-    public int KeyPartGeted, KeyPartNeeded;
+    
+   
     public int BrokenCage
     {
         get { return _CageBroken; }
     }
 
-    float waveCount;
-    float coinTemp,lerp=0,levelTime;
-    // Use this for initialization
     void Awake()
     {
         instance = this;
@@ -69,72 +59,54 @@ public class LevelController : MainBehavior
     void Start()
     {
         GM=GameManager.instance;
+        //Camera
+        cameraController = Camera.main.GetComponent<CameraController>();
+        aimer = GetComponent<GamePlayInput>().aimer;
+
+        //designing the map  (Blocks , map &...)
         designMap();
-        data.Add(1, 50);
         sc = GM.SlotData;
         spawnCharacters();
+        //making FirstCage
         MakeCage();
         
-        StartCoroutine(spawnEnemy());
-        RenewKeyPartNeeded();
+        //start Spawning the Waves
+        StartCoroutine(SpawnWaves());
+
+
+        //Use Card
         UseCard(GM.SlotData.card);
+
+        //Starting the game
         OpenScreen();
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        levelTime += Time.deltaTime;
-        waveCount = maxWave +(int)( levelTime / 10);
-        #region inputs
-        if (Application.isMobilePlatform)
-        {
-            touches = Input.touches;
-            if (touches.Length == 1)
-                switch (touches[0].phase)
-                {
-                    case TouchPhase.Began:
-                        JoyStickTurnOn(Camera.main.ScreenToWorldPoint(touches[0].position));
-                        break;
-                    case TouchPhase.Ended:
-                        JoyStickTurnOff();
-                        break;
-                }
-        }
-        else if (Application.isEditor)
-        {
-            if (Input.GetMouseButtonDown(0))
-                JoyStickTurnOn(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-            else if (Input.GetMouseButtonUp(0))
-                JoyStickTurnOff();
-        }
-        #endregion
-
-        #region characterMoves
-        if (move)
-        {
-
-            t = aimer.transform.position;
-            t.x += joyStick.direction.x * (joyStick.speed * speedMultiPly) * Time.deltaTime;
-            t.y += joyStick.direction.y * (joyStick.speed * speedMultiPly) * Time.deltaTime;
-            aimer.transform.position = t;
-
-        }
-        #endregion
-
-        #region Key
-
-        if(KeyPartGeted>=KeyPartNeeded)
-        {
-            ChangeKeyCount(1);
-            RenewKeyPartNeeded();
-        }
-
-        #endregion
         if (characters.Count <= 0)
             FinishTheGame();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public void RemoveCharacter(GameObject character)
     {
         characters.Remove(character);
@@ -165,21 +137,11 @@ public class LevelController : MainBehavior
 
         GameObject g = Instantiate(cage, a, Quaternion.identity);
 
-        cageFinder.cage = g;
+        CageFinder.Instance.ChangeTarget( g);
         _CageBroken++;
     }
 
-    void JoyStickTurnOn(Vector2 pos)
-    {
-        joyStick.gameObject.SetActive(true);
-        joyStick.transform.position = pos;
-        move = true;
-    }
-    void JoyStickTurnOff()
-    {
-        joyStick.gameObject.SetActive(false);
-        move = false;
-    }
+    
     void spawnCharacters()
     {
         GameObject p = new GameObject("Characters");
@@ -252,10 +214,12 @@ public class LevelController : MainBehavior
     void MakeBlocks()
     {
         Vector2 tt;
+        GameObject a = new GameObject();
+        a.name = "Blocks";
         for (int i = 0; i < BlockAmount.Random; i++)
         {
             tt=BlockSpots[Random.Range(0,BlockSpots.Count)];
-            Instantiate(Blocks[Random.Range(0, Blocks.Length)], tt, Quaternion.identity);
+            Instantiate(Blocks[Random.Range(0, Blocks.Length)], tt, Quaternion.identity).transform.SetParent(a.transform);
             BlockSpots.Remove(tt);
         }
     }
@@ -282,27 +246,28 @@ public class LevelController : MainBehavior
         } while (Vector2.Distance(t, Camera.main.transform.position) < distance);
          return t;
     }
-    IEnumerator spawnEnemy()
+    IEnumerator SpawnWaves()
     {
-        if (currentWaves.Count < waveCount)
+        if (currentWaves.Count < maxWave)
         {
-            while (currentWaves.Count < waveCount)
+            while (currentWaves.Count < maxWave)
             {
                 GameObject g = Instantiate(wave.gameObject, giveMapPos(7), Quaternion.identity);
                 g.GetComponent<Wave>().LC = this;
+                print("Hello");
                currentWaves.Add(g);
             }
         }
         yield return new WaitForSeconds(2);
-        StartCoroutine(spawnEnemy());
+        StartCoroutine(SpawnWaves());
 
     }
     public void FinishTheGame()
     {
-        game = false;
+        gameState = GamePlayState.Finish;
         print("GameFinished");
         GM.ChangeCoin(coinAmount);
-        Application.LoadLevel(0);
+        GoToScene("MainMenu");
 
     }
 
@@ -314,25 +279,23 @@ public class LevelController : MainBehavior
        
     }
 
-    public void RenewKeyPartNeeded()
-    {
-        KeyPartGeted = KeyPartGeted - KeyPartNeeded;
-        ChangeKeyPartNeeded();
-    }
-    public void ChangeKeyPartNeeded()
-    {
-        KeyPartNeeded = 0;
-        KeyPartNeeded = 15 + (GotedKey * 15);
-    }
-    public void ChangeKeyCount(int amount)
-    {
-        keyCount += amount;
-        if (amount > 0)
-            GotedKey += amount;
-    }
 
-    public void ChangeKeyPart(int amount)
-    {
-        KeyPartGeted += amount;
-    }
+
+
+
+
+
+
+
+
+
+
+    
+    
+}
+
+
+public enum GamePlayState
+{
+    Playing,Finish,Pause
 }

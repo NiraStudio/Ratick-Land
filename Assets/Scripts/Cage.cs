@@ -10,16 +10,17 @@ public class Cage : MonoBehaviour, IHitable
     List<GameObject> prisoners=new List<GameObject>();
     public GameObject Wave;
     public Transform RightWavePos, LeftWavePos;
-    LevelController LC;
+
+    KeyManager KM;
     SpriteRenderer sr;
     // Use this for initialization
     void Start()
     {
         addCharacters();
-        Instantiate(Wave, RightWavePos.position, Quaternion.identity);
-        Instantiate(Wave, LeftWavePos.position, Quaternion.identity);
+       // Instantiate(Wave, RightWavePos.position, Quaternion.identity);
+       // Instantiate(Wave, LeftWavePos.position, Quaternion.identity);
         sr = GetComponent<SpriteRenderer>();
-        LC = LevelController.instance;
+        KM = KeyManager.Instance;
         Destroy(RightWavePos.gameObject);
         Destroy(LeftWavePos.gameObject);
     }
@@ -48,7 +49,7 @@ public class Cage : MonoBehaviour, IHitable
 
     public void GetHit(float dmg)
     {
-        if (LC.keyCount <= 0)
+        if (KM.keyCount <= 0)
             return;
 
         hitPoint -= dmg;
@@ -66,7 +67,7 @@ public class Cage : MonoBehaviour, IHitable
             LevelController.instance.AddCharacters(item);
         }
         LevelController.instance.MakeCage();
-        LC.ChangeKeyCount(-1);
+        KM.ChangeKeyCount(-1);
         Destroy(gameObject);
     }
 }

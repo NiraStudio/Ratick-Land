@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class testShoot : MonoBehaviour {
+    public UnityEvent e;
     public GameObject target,Bullet;
     public Chest s;
 	// Use this for initialization

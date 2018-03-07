@@ -28,8 +28,8 @@ public class ArrangeSceneManager : MainBehavior {
     void Start()
     {
         if (GM.SlotData != null)
-
             RepaintArranges(GM.SlotData);
+
         OpenScreen();
     }
 
@@ -42,19 +42,18 @@ public class ArrangeSceneManager : MainBehavior {
 
         for (int i = 0; i < SC.Heros.Count; i++)
         {
-            if (SC.Heros[i] >= 0)
+            if (SC.Heros[i] > 0)
                 Heros[i].Repaint(characterDatabase.GiveByID(SC.Heros[i]));
         }
-        if (SC.mainId >= 0)
+        if (SC.mainId > 0)
         {
             Main.Repaint(characterDatabase.GiveByID(SC.mainId));
-            print("Here");
         }
 
-        if (SC.minionId >= 0)
+        if (SC.minionId > 0)
             Minion.Repaint(characterDatabase.GiveByID(SC.minionId));
 
-        if (SC.supportId >= 0)
+        if (SC.supportId > 0)
             Support.Repaint(characterDatabase.GiveByID(SC.supportId));
 
 

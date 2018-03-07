@@ -4,25 +4,60 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class CageFinder : MonoBehaviour {
+
+
+    #region Singleton
+    public static CageFinder Instance;
+
+
+    void Awake()
+    {
+        Instance = this;
+    }
+
+    #endregion
+
+
     public GameObject cage;
     public Text meterText;
     public Image img;
 
-    Vector2 t,aa;
+    Vector2 t,CameraPos;
     Vector2 distance;
 
 
-    float xDis = 2, yDis = 4;
+    float xDis = 3, yDis = 5;
 	// Use this for initialization
-	void Start () {
-        
-	}
 
     // Update is called once per frame
     void Update()
     {
         if (!cage)
             return;
+
+
+        CameraPos = Camera.main.transform.position;
+        if (Vector2.Distance(CameraPos,cage.transform.position)<3)
+        {
+            img.gameObject.SetActive(false);
+
+            meterText.gameObject.SetActive(false);
+        }
+        else
+        {
+            img.gameObject.SetActive(true);
+
+            meterText.gameObject.SetActive(true);
+        }
+
+        t = (Vector2) cage.transform.position- CameraPos;
+        t.Normalize();
+        t.x*= xDis;
+        t.y *= yDis;
+        transform.position =(Vector2)CameraPos+ t;
+
+        #region PreviousMethod
+        /*
         distance.x = 3 + (0.5f * (Camera.main.orthographicSize - 5));
         distance.y = 5 +  (Camera.main.orthographicSize - 5);
         t = (cage.transform.position - Camera.main.transform.position) ;
@@ -57,13 +92,17 @@ public class CageFinder : MonoBehaviour {
 
 
 
-        transform.position = Camera.main.WorldToScreenPoint((Vector2)Camera.main.transform.position + (t));
+        transform.position =(Vector2)( Camera.main.WorldToScreenPoint((Vector2)Camera.main.transform.position + (t)));
 
 
       // print( Screen.width +" "+transform.position.x);
+      */
+
+        #endregion
+
 
     }
-    public void addTaget(GameObject t)
+    public void ChangeTarget(GameObject t)
     {
         cage = t;
     }

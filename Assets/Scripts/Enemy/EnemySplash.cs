@@ -7,12 +7,19 @@ public class EnemySplash : Enemy
     Collider2D[] characters;
     public override void Attack()
     {
-        characters = Physics2D.OverlapCircleAll(transform.position, range, charactersLayer);
+        anim.SetTrigger("Splash");
+        Attacking = true;
+    }
+    public void Splash()
+    {
+        characters = Physics2D.OverlapCircleAll(transform.position, range, MainBehavior.CharacterLayer);
         foreach (var item in characters)
         {
-            item.SendMessage("GetHit",(float) damage);
+            item.SendMessage("GetHit", (float)damage);
         }
         time = 0;
+        Attacking = false;
+
     }
 
 }

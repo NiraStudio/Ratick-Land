@@ -37,7 +37,8 @@ public class JoyStick : MainBehavior
             speed = (handle.transform.position - transform.position).magnitude / distance;
         else
             speed = 0;
-        direction = (handle.transform.position - transform.position).normalized;
+        direction = (handle.transform.position - transform.position);
+        direction.Normalize();
     
     }
     void UiMethod()

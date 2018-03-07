@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class test : MonoBehaviour {
-
+    public Skin[] skins;
     Vector2 tt;
     public LayerMask l;
 	// Use this for initialization

@@ -25,7 +25,7 @@ public class LoadingScreenManager : MonoBehaviour
     {
         anim = GetComponent<Animator>();
     }
-
+    
     // Update is called once per frame
     public void Open()
     {
