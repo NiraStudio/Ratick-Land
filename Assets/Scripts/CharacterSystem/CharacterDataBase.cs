@@ -44,7 +44,12 @@ public class CharacterDataBase : ScriptableObject {
     }
     public CharacterData GiveByRandom()
     {
-        return DataBase[Random.Range(0, DataBase.Count)];
+        CharacterData d = new CharacterData();
+        do
+        {
+            d = DataBase[Random.Range(0, DataBase.Count)];
+        } while (GameManager.instance.DoesPlayerHasThisCharacter(d.id)==false);
+        return d;
     }
 
     public List<CharacterData> GiveByType(CharacterData.Type type)
@@ -60,6 +65,26 @@ public class CharacterDataBase : ScriptableObject {
     public CharacterData.Type giveCharacterMode(int id)
     {
         return GiveByID(id).type;
+    }
+    public CharacterData GiveNewCharacter()
+    {
+        CharacterData d = null;
+        List<CharacterData> data = new List<CharacterData>();
+        foreach (var item in DataBase.ToArray())
+        {
+            if (!GameManager.instance.DoesPlayerHasThisCharacter(item.id))
+            {
+                data.Add(item);
+            }
+        }
+        if (data.Count > 0)
+        {
+            d = data[Random.Range(0, data.Count)];
+        }
+        else
+            d = DataBase[Random.Range(0, data.Count)];
+
+        return d;
     }
     void setDirty()
     {

@@ -175,6 +175,16 @@ public class Boss : MainBehavior,IHitable,IAttackable {
         ChooseAction();
         Counter = false;
     }
+
+    public void AttackAnimation()
+    {
+        Counter = false;
+    }
+
+    public void AttackAllower()
+    {
+        throw new NotImplementedException();
+    }
 }
 
 

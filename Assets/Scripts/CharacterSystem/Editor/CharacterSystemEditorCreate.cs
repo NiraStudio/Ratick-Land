@@ -11,10 +11,11 @@ public class CharacterSystemEditorCreate : EditorWindow {
     public const string FULL_PATH = @"Assets/"+FOLDER_NAME+"/"+FILE_NAME;
 
     CharacterDataBase dataBase;
-    static Vector2 WindowSize=new Vector2(1500, 500);
+    static Vector2 WindowSize=new Vector2(1000, 500);
     static Vector2 IconButtonSize = new Vector2(75, 100);
     Texture2D ItemIcon;
     CharacterData temp;
+    Vector2 DetailScroll, AttributesScroll, UpgradesScroll;
 
     [MenuItem("Character System/Create Character")]
     public static void InIt()
@@ -52,12 +53,18 @@ public class CharacterSystemEditorCreate : EditorWindow {
 
         }
         GUILayout.BeginVertical("Box");
+        
+
+
 
         GUILayout.BeginHorizontal("Box");
 
         //DetailPart
         DetailPart();
         GUILayout.EndHorizontal();
+
+
+
 
         GUILayout.BeginHorizontal("Box",GUILayout.Height(WindowSize.y *(.5f/ 3)));
 
@@ -75,8 +82,12 @@ public class CharacterSystemEditorCreate : EditorWindow {
             a.hitPoint = temp.hitPoint;
             a.damage = temp.damage;
             a.description = temp.description;
-            a.buyPrice.Amount = temp.buyPrice.Amount;
-            a.buyPrice.type = temp.buyPrice.type;
+            a.baseCardNeed = temp.baseCardNeed;
+            a.CardNeedIncrease = temp.CardNeedIncrease;
+            a.maxLevel = temp.maxLevel;
+            a.attackRange = temp.attackRange;
+            a.upgradePrice = temp.upgradePrice;
+            a.UpgradesForEachLevel = temp.UpgradesForEachLevel;
 
             string path = @"Assets/Data/CharacterData/";
             if (!AssetDatabase.IsValidFolder(@"Assets/Data"))
@@ -107,14 +118,17 @@ public class CharacterSystemEditorCreate : EditorWindow {
 
     void DetailPart()
     {
+
+
+        #region Details
+
         GUILayout.BeginVertical();
+        DetailScroll = GUILayout.BeginScrollView(DetailScroll, "Box");
+
+        GUILayout.Label("Details", EditorStyles.boldLabel);
 
 
-        #region Icon & Detail
-
-        GUILayout.BeginHorizontal("Box");
-
-        #region Icon Part
+        //ICon Chooser Part
 
         if (temp.icon != null)
             ItemIcon = temp.icon.texture;
@@ -128,99 +142,69 @@ public class CharacterSystemEditorCreate : EditorWindow {
         if (commend == "ObjectSelectorClosed")
         {
             temp.icon = (Sprite)EditorGUIUtility.GetObjectPickerObject();
-        }string command = Event.current.commandName;
+        }
+        string command = Event.current.commandName;
         if (commend == "ObjectSelectorClosed")
         {
             temp.icon = (Sprite)EditorGUIUtility.GetObjectPickerObject();
         }
 
-        #endregion
-
-        #region Detail Part
-
-        GUILayout.BeginVertical();
-
-        #region Name & Game Object
-
-        GUILayout.BeginHorizontal("Box");
 
         GUILayout.Label("Character Name:");
         temp.characterName = GUILayout.TextField(temp.characterName, GUILayout.Width(200));
 
         GUILayout.Label("Character Shape:");
-        temp.prefab = EditorGUILayout.ObjectField(temp.prefab, typeof(GameObject)) as GameObject;
+        temp.prefab = EditorGUILayout.ObjectField(temp.prefab, typeof(GameObject),false) as GameObject;
 
         GUILayout.Label("Character Type:");
         temp.type = (CharacterData.Type)EditorGUILayout.EnumPopup(temp.type);
 
+        temp.id = EditorGUILayout.IntField("ID:", temp.id);
 
-        GUILayout.EndHorizontal();
+        GUILayout.Label("Item Description:");
+        temp.description = EditorGUILayout.TextArea(temp.description, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true));
 
+
+        GUILayout.EndScrollView();
+        GUILayout.EndVertical();
         #endregion
 
-        #region Damage , Hit Point & Type
-        GUILayout.BeginHorizontal("Box");
 
-        //Damage
+
+
+        #region Attributes
+
+
+        GUILayout.BeginVertical();
+        AttributesScroll = GUILayout.BeginScrollView(AttributesScroll, "Box");
+
+        GUILayout.Label("Attributes", EditorStyles.boldLabel);
+
+
         temp.damage.m_Min = EditorGUILayout.IntField("Damage Min:", temp.damage.m_Min);
         temp.damage.m_Max = EditorGUILayout.IntField("Damage Max:", temp.damage.m_Max);
-        //HitPoint
         temp.hitPoint = EditorGUILayout.FloatField("Hit Point:", temp.hitPoint);
 
 
 
-        GUILayout.EndHorizontal();
 
-        GUILayout.BeginHorizontal("Box");
 
-        //attackSpeed
         temp.attackSpeed = EditorGUILayout.FloatField("Attack Speed:", temp.attackSpeed);
-        //Speed
         temp.speed = EditorGUILayout.FloatField("Speed:", temp.speed);
 
 
 
-        GUILayout.EndHorizontal();
 
-        #endregion
 
-        #region Max ,id ,attackrange
 
-        GUILayout.BeginHorizontal("Box");
 
-        //maxLevel
         temp.maxLevel = EditorGUILayout.IntField("Max Level:", temp.maxLevel);
 
-        //Range
         temp.attackRange = EditorGUILayout.FloatField("Attack range:", temp.attackRange);
 
-        //ID
-        temp.id = EditorGUILayout.IntField("ID:", temp.id);
-        GUILayout.EndHorizontal();
-
-
-
-
-        GUILayout.EndVertical();
-
-        #endregion
-
-
-
-
-        GUILayout.EndHorizontal();
-
-
-        GUILayout.BeginVertical();
-
-        GUILayout.BeginHorizontal("Box");
-
-        temp.buyPrice.Amount = EditorGUILayout.IntField("Buy Price:", temp.buyPrice.Amount, GUILayout.Width(300));
-        temp.buyPrice.type = (Currency.Type)EditorGUILayout.EnumPopup(temp.buyPrice.type);
 
         temp.upgradePrice.Amount = EditorGUILayout.IntField("Upgrade Price:", temp.upgradePrice.Amount, GUILayout.Width(300));
         temp.upgradePrice.type = (Currency.Type)EditorGUILayout.EnumPopup(temp.upgradePrice.type);
-
 
 
 
@@ -228,25 +212,33 @@ public class CharacterSystemEditorCreate : EditorWindow {
 
         temp.CardNeedIncrease = EditorGUILayout.IntField("Card Increase After Each Update:", temp.CardNeedIncrease, GUILayout.Width(300));
 
-        GUILayout.EndHorizontal();
 
-        GUILayout.BeginHorizontal("Box");
-
-        temp.upgrade.amount = EditorGUILayout.IntField("Upgrade Amount:", temp.upgrade.amount);
-        temp.upgrade.type = (Upgrade.Type)EditorGUILayout.EnumPopup(temp.upgrade.type);
-
-        GUILayout.EndHorizontal();
-
-       
-
-        GUILayout.Label("Item Description:");
-        temp.description = EditorGUILayout.TextArea(temp.description, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true));
-
+        GUILayout.EndScrollView();
         GUILayout.EndVertical();
 
+
         #endregion
+
+
+
+
+        #region Upgrades
+        GUILayout.BeginVertical();
+        UpgradesScroll = GUILayout.BeginScrollView(UpgradesScroll, "Box");
+        GUILayout.Label("Upgrades", EditorStyles.boldLabel);
+
+
+        SerializedObject serializedObject = new SerializedObject(temp);
+        SerializedProperty serializedProperty = serializedObject.FindProperty("UpgradesForEachLevel");
+
+        EditorGUILayout.PropertyField(serializedProperty, true);
+        serializedObject.ApplyModifiedProperties();
+
+
+        GUILayout.EndScrollView();
         GUILayout.EndVertical();
         #endregion
+
 
     }
 }

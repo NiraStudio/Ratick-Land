@@ -32,8 +32,8 @@ public class CampaignMenuManager : MonoBehaviour {
 	void Update () {
 		if(CurrentCharacter!=null)
         {
-            UpgradeButton.transform.GetChild(0).GetComponent<Text>().text = GM.UpgradeCost(CurrentCharacter).ToString();
-            if (GM.CharacterCard(CurrentCharacter.id) < GM.CharacterCardUpgradeCost(CurrentCharacter.id) || GM.coinAmount< GM.UpgradeCost(CurrentCharacter))
+            UpgradeButton.transform.GetChild(0).GetComponent<Text>().text = GM.CharacterUpgradeCost(CurrentCharacter).ToString();
+            if (GM.CharacterCard(CurrentCharacter.id) < GM.CharacterCardUpgradeCost(CurrentCharacter.id) || GM.coinAmount< GM.CharacterUpgradeCost(CurrentCharacter))
                 UpgradeButton.interactable = false;
             else
                 UpgradeButton.interactable = true;
@@ -76,7 +76,7 @@ public class CampaignMenuManager : MonoBehaviour {
 
     public void UpgradeCharacter()
     {
-        GM.ChangeCoin(-GM.UpgradeCost(CurrentCharacter));
+        GM.ChangeCoin(-GM.CharacterUpgradeCost(CurrentCharacter));
         GM.AddCharacterCard(CurrentCharacter.id, -GM.CharacterCardUpgradeCost(CurrentCharacter.id));
         GM.IncreaseLevel(CurrentCharacter.id, 1);
     }

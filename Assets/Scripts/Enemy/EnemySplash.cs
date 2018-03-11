@@ -7,7 +7,7 @@ public class EnemySplash : Enemy
     Collider2D[] characters;
     public override void Attack()
     {
-        anim.SetTrigger("Splash");
+        anim.SetTrigger("Attack");
         Attacking = true;
     }
     public void Splash()

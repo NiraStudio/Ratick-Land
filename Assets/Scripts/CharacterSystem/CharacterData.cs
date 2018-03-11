@@ -7,7 +7,6 @@ public class CharacterData:ScriptableObject
 {
     public string characterName;
     public GameObject prefab;
-    public Currency buyPrice = new Currency();
     public Currency upgradePrice = new Currency();
     public int baseCardNeed,CardNeedIncrease;
     public Type type;
@@ -19,7 +18,7 @@ public class CharacterData:ScriptableObject
     public float hitPoint;
     public float attackRange;
     public IntRange damage=new IntRange(0,0);
-    public Upgrade upgrade = new Upgrade();
+    public Upgrade[] UpgradesForEachLevel;
     public string description;
 
 

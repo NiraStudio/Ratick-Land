@@ -16,7 +16,12 @@ public class testShoot : MonoBehaviour {
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
-            openChest();
+        {
+            RewardInfo a = RewardManager.Instance.MakeReward(RewardType.Coin, 10);
+
+            InformationPanel.Instance.OpenRewardPanel(a,null,"Get");
+
+        }
     }
     void spawnBullet()
     {

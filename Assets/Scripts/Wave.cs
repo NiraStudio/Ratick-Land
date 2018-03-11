@@ -23,8 +23,12 @@ public class Wave : MonoBehaviour {
     [Header("MeleeNormal = 0,MeleeFast = 1,RangeShort = 2,RangeLong = 3,Tank = 4,EliteMeleeNormal = 5 ")]
     [Header("EliteMeleeFast = 6,EliteRangeShort = 7, EliteRangeLong = 8, EliteTank = 9")]
     public UnityEvent[] events;
+    [Header("PowerRate Parameters")]
+    public float FormulaBase;
+    public float FormulaChanger;
 
-    public LevelController LC;
+    int powerRate;
+    LevelController LC;
 
     void Start()
     {
@@ -33,6 +37,7 @@ public class Wave : MonoBehaviour {
         {
             item.Invoke();
         }
+        powerRate = PowerRate();
         Spawn();
     }
     public void AddEnemy(int type)
@@ -60,12 +65,23 @@ public class Wave : MonoBehaviour {
     }
     public void Spawn()
     {
-        for (int i = 0; i < 4; i++)
+        int a = 0;
+        do
         {
-            Vector3 t = Random.insideUnitCircle*0.2f;
-           GameObject g= Instantiate(currentEnemies[Random.Range(0, currentEnemies.Count)], transform.position+t, Quaternion.identity);
+            Vector3 t = Random.insideUnitCircle * 0.2f;
+            GameObject g = Instantiate(currentEnemies[Random.Range(0, currentEnemies.Count)], transform.position + t, Quaternion.identity);
             g.transform.SetParent(transform);
-        }
+            a += g.GetComponent<Enemy>().data.PowerRate;
+        } while (a<powerRate);
+           
     }
+    public int PowerRate()
+    {
+        int answer = 0;
+        answer =(int)( Mathf.Pow(FormulaChanger, LC.BrokenCage) * (FormulaBase - LC.BrokenCage));
+
+        return answer;
+    }
+    
     
 }

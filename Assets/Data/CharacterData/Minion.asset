@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0afe9298aff7cc94680f1ef5dc2deb2c, type: 3}
+  m_Name: Minion
+  m_EditorClassIdentifier: 
+  characterName: Minion
+  prefab: {fileID: 1441858223127896, guid: ae7feabd3f296fa49a9fe8e93f2287b0, type: 2}
+  upgradePrice:
+    Amount: 0
+    type: 0
+  baseCardNeed: 0
+  CardNeedIncrease: 0
+  type: 0
+  id: 2
+  maxLevel: 0
+  icon: {fileID: 21300000, guid: 53bbd60273de6f74f93fd34900f58768, type: 3}
+  speed: 3
+  attackSpeed: 1
+  hitPoint: 30
+  attackRange: 0
+  damage:
+    m_Min: 10
+    m_Max: 8
+  UpgradesForEachLevel: []
+  description: Hey!! This Is Minion

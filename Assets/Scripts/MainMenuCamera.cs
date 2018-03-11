@@ -5,7 +5,7 @@ using UnityEngine;
 public class MainMenuCamera : MonoBehaviour
 {
     public Transform target;
-    public CameraPos CurrentState=0;
+    public CameraPos CurrentState;
     public Pos[] poses;
     [Range(0, 500)]
     public float smoothness;
@@ -32,7 +32,7 @@ public class MainMenuCamera : MonoBehaviour
     }
     public void ChangeView(int state)
     {
-        if (state < 0 && CurrentState == CameraPos.Campaign)
+        if (state < 0 && CurrentState ==(CameraPos)0)
             return;
         if (state > 0 && CurrentState == (CameraPos)(System.Enum.GetValues(typeof(CameraPos)).Length - 1))
             return;
@@ -55,7 +55,7 @@ public class MainMenuCamera : MonoBehaviour
     //views by order
     public enum CameraPos
     {
-        Campaign, Main, CommingSoon
+        Shop,Campaign, Main, CommingSoon
     }
     [System.Serializable]
     public class Pos

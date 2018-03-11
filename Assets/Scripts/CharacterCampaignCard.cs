@@ -20,7 +20,7 @@ public class CharacterCampaignCard : MonoBehaviour {
         GM = GameManager.instance;
         this.data = data;
         CharacterImg.sprite = data.icon;
-        if (GM.CharacterCard(data.id) >= GM.CharacterCardUpgradeCost(data.id))
+        if (GM.CharacterCard(data.id) >= GM.CharacterCardUpgradeCost(data.id)&&GM.coinAmount>=GM.CharacterUpgradeCost(data.id))
             Alart.SetActive(true);
         else
             Alart.SetActive(false);
@@ -28,7 +28,7 @@ public class CharacterCampaignCard : MonoBehaviour {
     public void Repaint()
     {
         CharacterImg.sprite = data.icon;
-        if (GM.CharacterCard(data.id) >= GM.CharacterCardUpgradeCost(data.id))
+        if (GM.CharacterCard(data.id) >= GM.CharacterCardUpgradeCost(data.id) && GM.coinAmount >= GM.CharacterUpgradeCost(data.id))
             Alart.SetActive(true);
         else
             Alart.SetActive(false);

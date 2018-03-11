@@ -27,7 +27,7 @@ public class CharacterPanelBtn : MonoBehaviour {
         this.data = data;
         characterNameText.text = data.characterName;
         levelText.text = GM.CharacterLevel(data.id).ToString();
-        cost = GM.UpgradeCost(data);
+        cost = GM.CharacterUpgradeCost(data);
         upgradeBtnText.text = cost.ToString();
 
         

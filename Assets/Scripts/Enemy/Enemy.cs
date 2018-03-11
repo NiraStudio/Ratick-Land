@@ -33,6 +33,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
 	// Use this for initialization
     public virtual void Start()
     {
+        gameObject.layer = MainBehavior.BlocksLayer.value;
         levelController = LevelController.instance;
         aim = GameObject.FindWithTag("Aim");
         rg = GetComponent<Rigidbody2D>();
@@ -40,6 +41,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
         RenewData();
         if (!Gurdian)
             StartCoroutine(Move());
+        StartCoroutine(LayerChanger());
     }
 	
 	// Update is called once per frame
@@ -187,6 +189,19 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
         GetComponent<Rigidbody2D>().mass = 100;
         GetComponent<Rigidbody2D>().angularDrag = 6.6f;
         GetComponent<Rigidbody2D>().drag = 100;
+    }
+    public IEnumerator LayerChanger()
+    {
+        yield return new WaitForSeconds(0.7f);
+        gameObject.layer = MainBehavior.EnemyLayer.value;
+    }
+
+    public void AttackAnimation()
+    {
+    }
+
+    public void AttackAllower()
+    {
     }
 }
 

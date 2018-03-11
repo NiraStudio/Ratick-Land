@@ -10,11 +10,13 @@ public class CharacterSystmeEditorEdit : EditorWindow
     public const string FULL_PATH = @"Assets/" + FOLDER_NAME + "/" + FILE_NAME;
 
     CharacterDataBase dataBase,db;
-    static Vector2 WindowSize = new Vector2(1500, 500);
+    static Vector2 WindowSize = new Vector2(1000, 500);
     static Vector2 IconButtonSize = new Vector2(75, 100);
     static Vector2 Scrollpos;
+    static Vector2 CharacterBtnSize = new Vector2(75, 100);
+    static Vector2 ButtonScroll, DetailScroll, AttributesScroll, UpgradesScroll;
     Texture2D ItemIcon;
-    CharacterData temp;
+    CharacterData temp=null;
     string searchName="";
 
 
@@ -44,185 +46,227 @@ public class CharacterSystmeEditorEdit : EditorWindow
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }
-        temp = new CharacterData();
-        EditorUtility.SetDirty(temp);
+        
     }
 
     void OnGUI()
     {
-        GUILayout.BeginVertical();
+        GUILayout.BeginHorizontal();
+        Searching();
 
-        
-
-        EditScroll();
-
-
-        GUILayout.BeginHorizontal("Box");
-
-        GUILayout.Label("Search Character name or ID:");
-        searchName = GUILayout.TextField(searchName, GUILayout.Width(500));
-        GUILayout.Label("Character Count :"+dataBase.Length);
+        if (temp != null)
+        {
+            GUILayout.BeginHorizontal();
+            Edit();
+            GUILayout.EndHorizontal();
+        }
 
         GUILayout.EndHorizontal();
-
-        GUILayout.EndVertical();
     }
 
 
-
-
-
-    void EditScroll()
+    void Searching()
     {
+        GUILayout.BeginVertical(GUILayout.Width(WindowSize.x/5));
+
+        GUILayout.BeginVertical("Box", GUILayout.Height(WindowSize.y / 5));
+
+        GUILayout.Label("Search Character name or ID:");
+        searchName = GUILayout.TextField(searchName);
+        GUILayout.Label("Character Count :" + dataBase.Length);
+        GUILayout.EndVertical();
+
+
+        ButtonScroll = GUILayout.BeginScrollView(ButtonScroll, "Box");
+
         db = new CharacterDataBase();
-        if (searchName == null)
-           db=dataBase;
-       else
+        if (string.IsNullOrEmpty(searchName))
+            db = dataBase;
+        else
             for (int i = 0; i < dataBase.Length; i++)
             {
                 if (dataBase.GiveByIndex(i).characterName.Contains(searchName) || dataBase.GiveByIndex(i).id.ToString().Contains(searchName))
                     db.AddCharacter(dataBase.GiveByIndex(i));
             }
-        Scrollpos = GUILayout.BeginScrollView(Scrollpos, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true));
+
+
+
+        //Making Buttons
         for (int i = 0; i < db.Length; i++)
         {
-            temp = db.GiveByIndex(i);
-
-            GUILayout.BeginVertical("Box");
-
-             
-            GUILayout.BeginHorizontal();
-
-            #region icon
-            if (temp.icon != null)
-                ItemIcon = temp.icon.texture;
-
-
-            if (GUILayout.Button(ItemIcon, GUILayout.Width(IconButtonSize.x), GUILayout.Height(IconButtonSize.y)))
+            GUILayout.BeginHorizontal("Box");
+            if (db.GiveByIndex(i).icon != null)
+                ItemIcon = db.GiveByIndex(i).icon.texture;
+                
+            if (GUILayout.Button(ItemIcon,GUILayout.Height(IconButtonSize.y), GUILayout.Width(IconButtonSize.x)))
             {
-                EditorGUIUtility.ShowObjectPicker<Sprite>(temp.icon, true, null, 0);
-                aa = i;
+                temp = db.GiveByIndex(i);
             }
-
-            string commend = Event.current.commandName;
-            if (commend == "ObjectSelectorClosed"&&i==aa)
-            {
-                temp.icon = (Sprite)EditorGUIUtility.GetObjectPickerObject();
-                aa = -1;
-            }
-
-            #endregion
-
-
-            #region Name ,Shape ,Dmg ,Hp  ,X &
 
             GUILayout.BeginVertical();
-
-            #region Name ,Shape
-            GUILayout.BeginHorizontal();
-
-            GUILayout.Label("Character Name:");
-            temp.name= temp.characterName = GUILayout.TextField(temp.characterName, GUILayout.Width(200));
-
-            GUILayout.Label("Character Shape:");
-            temp.prefab = EditorGUILayout.ObjectField(temp.prefab, typeof(GameObject)) as GameObject;
-
-            GUILayout.Label("Character Type:");
-            temp.type = (CharacterData.Type)EditorGUILayout.EnumPopup(temp.type);
-
-            if (GUILayout.Button("X", GUILayout.Width(20), GUILayout.Height(20)))
-            {
-                if (EditorUtility.DisplayDialog("Delete Character", "Are you sure you want to delete " + temp.name + "?", "Yes", "No"))
-                {
-                    AssetDatabase.DeleteAsset(@"Assets/Data/CharacterData/" + temp.name + ".asset");
-                    dataBase.RemoveCharacter(temp);
-                }
-            };
-
-            GUILayout.EndHorizontal();
-            #endregion
-
-            #region dmg ,hp, Speed
-            GUILayout.BeginHorizontal();
-
-            //Damage
-            temp.damage.m_Min = EditorGUILayout.IntField("Damage Min:", temp.damage.m_Min);
-            temp.damage.m_Max = EditorGUILayout.IntField("Damage Max:", temp.damage.m_Max);
-            //HitPoint
-            temp.hitPoint = EditorGUILayout.FloatField("Hit Point:", temp.hitPoint, GUILayout.Width(300));
-
-            //attackSpeed
-            temp.speed = EditorGUILayout.FloatField("Speed:", temp.speed, GUILayout.Width(300));
-            
-
-            GUILayout.EndHorizontal();
-            #endregion
-
-
-            #region attackSpeed,ID
-            GUILayout.BeginHorizontal();
-
-
-            //ID
-            temp.id = EditorGUILayout.IntField("ID:", temp.id, GUILayout.Width(300));
-
-            //Speed
-            temp.attackSpeed = EditorGUILayout.FloatField("Attack Speed:", temp.attackSpeed, GUILayout.Width(300));
-
-            //maxLevel
-            temp.maxLevel = EditorGUILayout.IntField("Max Level:", temp.maxLevel, GUILayout.Width(300));
-
-            //Range
-            temp.attackRange = EditorGUILayout.FloatField("Attack range:", temp.attackRange, GUILayout.Width(300));
-
-
-            GUILayout.EndHorizontal();
-
-
-            GUILayout.BeginHorizontal("Box");
-
-            temp.buyPrice.Amount = EditorGUILayout.IntField("Buy Price:", temp.buyPrice.Amount, GUILayout.Width(300));
-            temp.buyPrice.type = (Currency.Type)EditorGUILayout.EnumPopup(temp.buyPrice.type);
-
-            temp.upgradePrice.Amount = EditorGUILayout.IntField("Upgrade Price:", temp.upgradePrice.Amount, GUILayout.Width(300));
-            temp.upgradePrice.type = (Currency.Type)EditorGUILayout.EnumPopup(temp.upgradePrice.type);
-
-
-
-
-            temp.baseCardNeed = EditorGUILayout.IntField("Base Card Need:", temp.baseCardNeed, GUILayout.Width(300));
-
-            temp.CardNeedIncrease = EditorGUILayout.IntField("Card Increase After Each Update:", temp.CardNeedIncrease, GUILayout.Width(300));
-
-            GUILayout.EndHorizontal();
-
-
-            GUILayout.BeginHorizontal("Box");
-
-            temp.upgrade.amount = EditorGUILayout.IntField("Upgrade Amount:", temp.upgrade.amount);
-            temp.upgrade.type = (Upgrade.Type)EditorGUILayout.EnumPopup(temp.upgrade.type);
-
-            GUILayout.EndHorizontal();
-
-            
-            GUILayout.EndVertical();
-            #endregion
-
-            #endregion
-
-
-            GUILayout.EndHorizontal();
-
-
-            
-
-            GUILayout.Label("Character Description:");
-            temp.description = EditorGUILayout.TextArea(temp.description, GUILayout.Height(70), GUILayout.ExpandWidth(true));
-
+            GUILayout.Label(db.GiveByIndex(i).characterName);
+            GUILayout.Label(db.GiveByIndex(i).type.ToString());
+            GUILayout.Label(db.GiveByIndex(i).id.ToString());
 
             GUILayout.EndVertical();
+            GUILayout.EndHorizontal();
         }
+
+
         GUILayout.EndScrollView();
 
+
+
+        GUILayout.EndVertical();
     }
+
+    void Edit()
+    {
+
+
+
+        #region Details
+
+        GUILayout.BeginVertical();
+        DetailScroll = GUILayout.BeginScrollView(DetailScroll, "Box");
+
+        GUILayout.Label("Details", EditorStyles.boldLabel);
+
+
+        //ICon Chooser Part
+        GUILayout.BeginHorizontal();
+
+
+        if (temp.icon != null)
+            ItemIcon = temp.icon.texture;
+
+
+        if (GUILayout.Button(ItemIcon, GUILayout.Width(IconButtonSize.x), GUILayout.Height(IconButtonSize.y)))
+        {
+            EditorGUIUtility.ShowObjectPicker<Sprite>(null, true, null, 0);
+        }
+        string commend = Event.current.commandName;
+        if (commend == "ObjectSelectorClosed")
+        {
+            temp.icon = (Sprite)EditorGUIUtility.GetObjectPickerObject();
+        }
+        string command = Event.current.commandName;
+        if (commend == "ObjectSelectorClosed")
+        {
+            temp.icon = (Sprite)EditorGUIUtility.GetObjectPickerObject();
+        }
+
+        if (GUILayout.Button("Delete", GUILayout.Width(100), GUILayout.Height(40)))
+        {
+            if (EditorUtility.DisplayDialog("Delete Character", "Are you sure you want to delete " + temp.name + "?", "Yes", "No"))
+            {
+                AssetDatabase.DeleteAsset(@"Assets/Data/CharacterData/" + temp.name + ".asset");
+                dataBase.RemoveCharacter(temp);
+                temp = null;
+                return;
+
+            }
+        };
+
+        if (GUILayout.Button("Back", GUILayout.Width(100), GUILayout.Height(40)))
+        {
+            temp = null;
+            return;
+        };
+        GUILayout.EndHorizontal();
+
+        GUILayout.Label("Character Name:");
+        temp.characterName = GUILayout.TextField(temp.characterName, GUILayout.Width(200));
+
+        GUILayout.Label("Character Shape:");
+        temp.prefab = EditorGUILayout.ObjectField(temp.prefab, typeof(GameObject), false) as GameObject;
+
+        GUILayout.Label("Character Type:");
+        temp.type = (CharacterData.Type)EditorGUILayout.EnumPopup(temp.type);
+
+        temp.id = EditorGUILayout.IntField("ID:", temp.id);
+
+        GUILayout.Label("Item Description:");
+        temp.description = EditorGUILayout.TextArea(temp.description, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true));
+
+
+        GUILayout.EndScrollView();
+        GUILayout.EndVertical();
+        #endregion
+
+
+
+
+        #region Attributes
+
+
+        GUILayout.BeginVertical();
+        AttributesScroll = GUILayout.BeginScrollView(AttributesScroll, "Box");
+
+        GUILayout.Label("Attributes", EditorStyles.boldLabel);
+
+
+        temp.damage.m_Min = EditorGUILayout.IntField("Damage Min:", temp.damage.m_Min);
+        temp.damage.m_Max = EditorGUILayout.IntField("Damage Max:", temp.damage.m_Max);
+        temp.hitPoint = EditorGUILayout.FloatField("Hit Point:", temp.hitPoint);
+
+
+
+
+
+        temp.attackSpeed = EditorGUILayout.FloatField("Attack Speed:", temp.attackSpeed);
+        temp.speed = EditorGUILayout.FloatField("Speed:", temp.speed);
+
+
+
+
+
+
+
+        temp.maxLevel = EditorGUILayout.IntField("Max Level:", temp.maxLevel);
+
+        temp.attackRange = EditorGUILayout.FloatField("Attack range:", temp.attackRange);
+
+
+        temp.upgradePrice.Amount = EditorGUILayout.IntField("Upgrade Price:", temp.upgradePrice.Amount, GUILayout.Width(300));
+        temp.upgradePrice.type = (Currency.Type)EditorGUILayout.EnumPopup(temp.upgradePrice.type);
+
+
+
+        temp.baseCardNeed = EditorGUILayout.IntField("Base Card Need:", temp.baseCardNeed, GUILayout.Width(300));
+
+        temp.CardNeedIncrease = EditorGUILayout.IntField("Card Increase After Each Update:", temp.CardNeedIncrease, GUILayout.Width(300));
+
+
+        GUILayout.EndScrollView();
+        GUILayout.EndVertical();
+
+
+        #endregion
+
+
+
+
+        #region Upgrades
+        GUILayout.BeginVertical();
+        UpgradesScroll = GUILayout.BeginScrollView(UpgradesScroll, "Box");
+        GUILayout.Label("Upgrades", EditorStyles.boldLabel);
+
+
+        SerializedObject serializedObject = new SerializedObject(temp);
+        SerializedProperty serializedProperty = serializedObject.FindProperty("UpgradesForEachLevel");
+
+        EditorGUILayout.PropertyField(serializedProperty, true);
+        serializedObject.ApplyModifiedProperties();
+
+
+        GUILayout.EndScrollView();
+        GUILayout.EndVertical();
+        #endregion
+
+
+    }
+
+
+    
 }

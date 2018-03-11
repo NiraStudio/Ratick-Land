@@ -190,7 +190,7 @@ public class GameManager : MainBehavior
         return -1;
 
     }
-    public int UpgradeCost(CharacterData character)
+    public int CharacterUpgradeCost(CharacterData character)
     {
         int answer = 0;
 
@@ -201,7 +201,7 @@ public class GameManager : MainBehavior
 
         return answer;
     }
-    public int UpgradeCost(int ID)
+    public int CharacterUpgradeCost(int ID)
     {
         int answer = 0;
         CharacterData a = characterDB.GiveByID(ID);
@@ -263,6 +263,20 @@ public class GameManager : MainBehavior
                 break;
             }
         }
+        return answer;
+    }
+    public bool DoesPlayerHasThisCharacter(int ID)
+    {
+        bool answer = false;
+        foreach (var item in mainData.characterInfos.ToArray())
+        {
+            if(item.Id==ID)
+            {
+                answer = true;
+                break;
+            }
+        }
+
         return answer;
     }
     #endregion

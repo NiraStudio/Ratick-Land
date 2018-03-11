@@ -14,7 +14,7 @@ public class RewardManager : MonoBehaviour {
 
 
     public Sprite CoinCard, DoubleAttackCard, DoubleCoinCard, GemCard;
-
+    public string CoinCardName, GemCardName, DoubleCoinName, DoubleAttackName;
     GameManager GM;
     CharacterDataBase characterDB;
     // Use this for initialization
@@ -23,7 +23,7 @@ public class RewardManager : MonoBehaviour {
         characterDB = GM.characterDB;
 	}
 	
-    public RewardInfo AddReward(RewardType type, int amount)
+    public RewardInfo MakeReward(RewardType type, int amount)
     {
         RewardInfo t = new RewardInfo();
         t.amount = amount;
@@ -34,16 +34,25 @@ public class RewardManager : MonoBehaviour {
                 CharacterData d = characterDB.GiveByRandom();
                 t.Icon = d.icon;
                 t.characterId = d.id;
+                t.RewardName = d.characterName;
                 break;
 
+            case RewardType.NewCharacter:
+                CharacterData b = characterDB.GiveNewCharacter();
+                t.Icon =b.icon;
+                t.characterId = b.id;
+                t.RewardName = b.characterName;
+                break;
 
             case RewardType.Coin:
                 t.Icon = CoinCard;
+                t.RewardName = CoinCardName;
                 break;
 
 
             case RewardType.Gem:
                 t.Icon = GemCard;
+                t.RewardName = GemCardName;
                 break;
 
 
@@ -55,15 +64,19 @@ public class RewardManager : MonoBehaviour {
                         break;
                     case Card.Type.DoubleCoin:
                         t.Icon = DoubleCoinCard;
+                        t.RewardName = DoubleCoinName;
+
                         break;
                     case Card.Type.DoubleATK:
                         t.Icon = DoubleAttackCard;
+                        t.RewardName = DoubleAttackName;
                         break;
                 }
                 t.cardType = a.cardType;
+                t.amount = amount;
+                
                 break;
-            default:
-                break;
+           
         }
         t.type = type;
         return t;
@@ -81,6 +94,9 @@ public class RewardManager : MonoBehaviour {
             case RewardType.Gem:
                 GM.ChangeGem(info.amount);
                 break;
+            case RewardType.NewCharacter:
+                GameManager.instance.AddCharacterCard(info.characterId, info.amount);
+                break;
             case RewardType.Card:
                 GameManager.instance.AddCard(new Card(info.cardType, info.amount));
                 break;
@@ -92,10 +108,12 @@ public class RewardManager : MonoBehaviour {
 }
 public enum RewardType
 {
-    UpgradeCard, Coin, Gem, Card
+    UpgradeCard, Coin, Gem, Card,NewCharacter
 }
+[System.Serializable]
 public class RewardInfo
 {
+    public string RewardName;
     public Sprite Icon;
     public RewardType type;
     public Card.Type cardType;

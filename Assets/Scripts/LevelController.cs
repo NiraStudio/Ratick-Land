@@ -67,6 +67,8 @@ public class LevelController : MainBehavior
         designMap();
         sc = GM.SlotData;
         spawnCharacters();
+
+
         //making FirstCage
         MakeCage();
         
@@ -128,16 +130,10 @@ public class LevelController : MainBehavior
     public void MakeCage()
     {
         Vector2 a;
-
-        do
-        {
-            a = giveMapPos();
-        } while (Vector2.Distance(a, Camera.main.transform.position) < 10);
-
-
+        a = giveMapPos(10);
         GameObject g = Instantiate(cage, a, Quaternion.identity);
 
-        CageFinder.Instance.ChangeTarget( g);
+        CageFinder.Instance.ChangeTarget(g);
         _CageBroken++;
     }
 
@@ -253,7 +249,6 @@ public class LevelController : MainBehavior
             while (currentWaves.Count < maxWave)
             {
                 GameObject g = Instantiate(wave.gameObject, giveMapPos(7), Quaternion.identity);
-                g.GetComponent<Wave>().LC = this;
                 print("Hello");
                currentWaves.Add(g);
             }

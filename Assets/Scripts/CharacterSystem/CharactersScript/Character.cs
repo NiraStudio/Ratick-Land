@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using CodeStage.AntiCheat.ObscuredTypes;
+using System;
 
 [RequireComponent(typeof(SkinManager))]
 [RequireComponent(typeof(Rigidbody2D))]
-public class Character : MainBehavior,IAttackable,IHitable
+public class Character : MainBehavior,IAttackable,IHitable,IHealable
 {
     public CharacterData data;
     public SkinDB skinDB;
+    public GameObject CenterPoint;
     public bool right;
     protected SkinManager skinManager;
     protected GameObject aimer;
@@ -26,7 +28,7 @@ public class Character : MainBehavior,IAttackable,IHitable
     protected ObscuredFloat speed;
     protected ObscuredFloat attackRange;
     protected Collider2D detectedEnemy;
-
+    protected bool Attacking;
 
     public int HP
     {
@@ -36,7 +38,7 @@ public class Character : MainBehavior,IAttackable,IHitable
     float waitTime;
     Vector2 t, tt;
     protected bool free;
-    
+    float MaxHp;
 
     public void Awake()
     {
@@ -49,6 +51,7 @@ public class Character : MainBehavior,IAttackable,IHitable
         }
         RenewData();
         UpgradeTheCharacter(GameManager.instance.CharacterLevel(data.id));
+        
     }
     public virtual void Start()
     {
@@ -61,6 +64,7 @@ public class Character : MainBehavior,IAttackable,IHitable
         skinManager = GetComponent<SkinManager>();
        // sr.sortingOrder = IsoMetricHandler.giveSortingOrderNumber(transform.position.y);
         IsoMetricHandler.ChangeByTransform(transform);
+        anim.GetBehaviour<AttackingStateMachine>().OnExit.AddListener(AttackAllower);
 
     }
    
@@ -99,13 +103,13 @@ public class Character : MainBehavior,IAttackable,IHitable
         #endregion
 
         #region Attack
-        detectedEnemy = Physics2D.OverlapCircle(transform.position, attackRange, MainBehavior.EnemyLayer);
+        detectedEnemy = Physics2D.OverlapCircle(CenterPoint.transform.position, attackRange, MainBehavior.EnemyLayer);
         if (detectedEnemy)
         {
             waitTime += Time.deltaTime;
 
-            if (waitTime > attackSpeed && detectedEnemy)
-                Attack();
+            if (waitTime > attackSpeed && detectedEnemy&&!Attacking)
+                AttackAnimation();
         }
         else
             waitTime = 0;
@@ -133,6 +137,7 @@ public class Character : MainBehavior,IAttackable,IHitable
         hitPoint = data.hitPoint;
         damage = new IntRange(data.damage.m_Min * controller.WorldAttackMultiPly, data.damage.m_Max * controller.WorldAttackMultiPly);
         attackRange = data.attackRange;
+        MaxHp = hitPoint;
     }
 
     public void Release(bool state)
@@ -151,7 +156,7 @@ public class Character : MainBehavior,IAttackable,IHitable
 
     public virtual void Attack()
     {
-        waitTime = 0;
+        detectedEnemy.SendMessage("GetHit", (float)damage.Random);
     }
 
     public virtual void GetHit(float dmg)
@@ -173,31 +178,44 @@ public class Character : MainBehavior,IAttackable,IHitable
     {
         for (int i = 0; i < Level; i++)
         {
-            switch (data.upgrade.type)
+            foreach (var item in data.UpgradesForEachLevel)
             {
-                case Upgrade.Type.MinDamage:
-                    damage.m_Min += data.upgrade.amount;
-                    break;
+                switch (item.type)
+                {
+                    case Upgrade.Type.MinDamage:
+                        damage.m_Min += item.amount;
+                        break;
 
-                case Upgrade.Type.MaxDamage:
-                    damage.m_Max += data.upgrade.amount;
-                    break;
+                    case Upgrade.Type.MaxDamage:
+                        damage.m_Max += item.amount;
+                        break;
 
-                case Upgrade.Type.Damage:
-                    damage.m_Min += data.upgrade.amount;
-                    damage.m_Max += data.upgrade.amount;
-                    break;
+                    case Upgrade.Type.Damage:
+                        damage.m_Min += item.amount;
+                        damage.m_Max += item.amount;
+                        break;
 
-                case Upgrade.Type.Hp:
-                    hitPoint += data.upgrade.amount;
-                    break;
+                    case Upgrade.Type.Hp:
+                        hitPoint += item.amount;
+                        break;
+                }
             }
+            
         }
     }
 
+    public void AttackAllower()
+    {
+        Attacking = false;
+        waitTime = 0;
+    }
 
-
-
+    public virtual void AttackAnimation()
+    {
+        Attacking = true;
+        Attack();
+        AttackAllower();
+    }
 
 
 
@@ -224,5 +242,12 @@ public class Character : MainBehavior,IAttackable,IHitable
         /*Object s = Resources.Load("FirctionLess");
         rg.sharedMaterial =(PhysicsMaterial2D) s as PhysicsMaterial2D;*/
 
+    }
+
+    public void GetHeal(float amount)
+    {
+        hitPoint +=(int) amount;
+        if (hitPoint > MaxHp)
+            hitPoint = MaxHp;
     }
 }

@@ -10,5 +10,11 @@ public interface IHitable
 public interface IAttackable
 {
      void Attack();
+    void AttackAnimation();
+    void AttackAllower();
 
+}
+public interface IHealable
+{
+    void GetHeal(float amount);
 }
