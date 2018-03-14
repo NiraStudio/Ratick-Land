@@ -9,7 +9,7 @@ using System;
 public class Character : MainBehavior,IAttackable,IHitable,IHealable
 {
     public CharacterData data;
-    public SkinDB skinDB;
+    public SkinDataBase skinDB;
     public GameObject CenterPoint;
     public bool right;
     protected SkinManager skinManager;

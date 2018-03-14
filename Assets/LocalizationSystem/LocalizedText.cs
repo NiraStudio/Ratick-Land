@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UPersian.Components;
  
-namespace Nira.Localization
+namespace Alpha.Localization
 {
     public class LocalizedText : MonoBehaviour
     {
@@ -13,12 +13,37 @@ namespace Nira.Localization
         public RtlText t;
         public bool Checkable;
         bool Allow;
+        public string ChangeAfter
+        {
+            set
+            {
+                AfterExtra = value;
+            }
+        }
+        public string ChangeKey
+        {
+            set
+            {
+                Key = value;
+            }
+        }
+        public string ChangeBefore
+        {
+            set
+            {
+                BeforeExtra = value;
+            }
+        }
+
+
+        LocalizationManager LM;
         // Use this for initialization
         IEnumerator Start()
         {
             yield return new WaitUntil(() => LocalizationManager.Instance.GetIsReady);
-            t.text =BeforeExtra+ LocalizationManager.Instance.GetLocalizationValue(Key)  +AfterExtra;
-
+            LM = LocalizationManager.Instance;
+            if(Key==null)
+            t.text =BeforeExtra+ LM.GetLocalizationValue(Key)  +AfterExtra;
             Allow = true;
            
 
@@ -28,7 +53,18 @@ namespace Nira.Localization
         {
             if (!Allow)
                 return;
-            t.text = BeforeExtra +  LocalizationManager.Instance.GetLocalizationValue(Key) +  AfterExtra;
+            t.text = BeforeExtra + LM.GetLocalizationValue(Key) +  AfterExtra;
+            switch (LM.LanguageCode)
+            {
+                case Language.EN:
+                    t.font = LM.ENFont;
+                    break;
+                case Language.FA:
+                    t.font = LM.FAFont;
+
+                    break;
+                
+            }
 
         }
 
@@ -47,6 +83,20 @@ namespace Nira.Localization
             {
                 t = gameObject.GetComponent<RtlText>();
             }
+            t.resizeTextForBestFit = true;
+            t.alignment = TextAnchor.MiddleCenter;
+            switch (LM.LanguageCode)
+            {
+                case Language.EN:
+                    t.font = LM.ENFont;
+                    break;
+                case Language.FA:
+                    t.font = LM.FAFont;
+
+                    break;
+
+            }
+            Checkable = true;
         }
 
     }

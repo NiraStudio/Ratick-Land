@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using CodeStage.AntiCheat.ObscuredTypes;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using TapsellSDK;
+using Alpha.Localization;
 
 public class GameManager : MainBehavior
 {
@@ -21,7 +24,7 @@ public class GameManager : MainBehavior
 
 
     public CharacterDataBase characterDB;
-
+    public SkinDataBase skinDB;
 
     //Datas
     [SerializeField]
@@ -44,9 +47,10 @@ public class GameManager : MainBehavior
     {
         instance = this;
     }
-    void Start()
+    IEnumerator Start()
     {
         DontDestroyOnLoad(gameObject);
+        Tapsell.initialize("sonnarsnhngcetmrogmagklqsjhkqhbecchfearcsbdrqarifnpskfqlettjjedpnsjssr");
         if (PlayerPrefs.GetInt("FirstTime") != 1)
         {
             FirstTimeChanges();
@@ -56,8 +60,11 @@ public class GameManager : MainBehavior
             LoadCurrencyData();
             LoadMainData();
         }
-        SceneManager.LoadScene("MainMenu");
+        yield return new WaitUntil(() => PreCheck());
 
+
+        SceneManager.LoadScene("MainMenu");
+        
     }
 
     // Update is called once per frame
@@ -99,6 +106,14 @@ public class GameManager : MainBehavior
     {
         SlotData.card = null;
         SaveMainData();
+    }
+    public bool PreCheck()
+    {
+        bool answer;
+
+        answer = LocalizationManager.Instance.GetIsReady;
+
+        return answer;
     }
 
     #region Save/Load Methods
@@ -234,6 +249,7 @@ public class GameManager : MainBehavior
             if (item.Id == ID)
             {
                 item.cards += amount;
+                SaveMainData();
                 return;
             }
         }
@@ -279,6 +295,24 @@ public class GameManager : MainBehavior
 
         return answer;
     }
+    public List<string> CharacterBoughtedSkins(int ID)
+    {
+        foreach (var item in mainData.characterInfos.ToArray())
+        {
+            if (item.Id == ID)
+                return item.BoughtedSkins;
+        }
+        return null;
+    }
+    public string CurrentCharacterSkin(int ID)
+    {
+        foreach (var item in mainData.characterInfos.ToArray())
+        {
+            if (item.Id == ID)
+                return item.CurrentSkin;
+        }
+        return null;
+    }
     #endregion
 }
 
@@ -304,6 +338,8 @@ public class characterInfo
     public int Id;
     public int Level;
     public int cards;
+    public string CurrentSkin = "Normal";
+    public List<string> BoughtedSkins = new List<string>();
     public characterInfo(int Id,int level,int cards)
     {
         this.cards = cards;

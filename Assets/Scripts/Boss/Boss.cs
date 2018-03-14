@@ -64,7 +64,7 @@ public class Boss : MainBehavior,IHitable,IAttackable {
         {
             time += Time.deltaTime;
             if (time >= waitTime)
-                Attack();
+                ChooseAction();
         }
         else
         {
@@ -155,7 +155,7 @@ public class Boss : MainBehavior,IHitable,IAttackable {
 
     
 
-    public void GetHit(float dmg)
+    public virtual void GetHit(float dmg)
     {
         hitPoint -=(int) dmg;
         if (hitPoint <= 0)
@@ -165,12 +165,12 @@ public class Boss : MainBehavior,IHitable,IAttackable {
         }
     }
 
-    public void Die()
+    public virtual void Die()
     {
         Destroy(gameObject);
     }
 
-    public void Attack()
+    public virtual void Attack()
     {
         ChooseAction();
         Counter = false;

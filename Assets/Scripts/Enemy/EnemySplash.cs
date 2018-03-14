@@ -7,11 +7,7 @@ public class EnemySplash : Enemy
     Collider2D[] characters;
     public override void Attack()
     {
-        anim.SetTrigger("Attack");
-        Attacking = true;
-    }
-    public void Splash()
-    {
+        
         characters = Physics2D.OverlapCircleAll(transform.position, range, MainBehavior.CharacterLayer);
         foreach (var item in characters)
         {
@@ -19,6 +15,10 @@ public class EnemySplash : Enemy
         }
         time = 0;
         Attacking = false;
+    }
+    public void Splash()
+    {
+        
 
     }
 

@@ -17,7 +17,7 @@ public class CharacterSystemEditorCreate : EditorWindow {
     CharacterData temp;
     Vector2 DetailScroll, AttributesScroll, UpgradesScroll;
 
-    [MenuItem("Character System/Create Character")]
+    [MenuItem("AlphaTool/Character System/Create Character")]
     public static void InIt()
     {
         CharacterSystemEditorCreate window = EditorWindow.GetWindow<CharacterSystemEditorCreate>();
@@ -143,11 +143,7 @@ public class CharacterSystemEditorCreate : EditorWindow {
         {
             temp.icon = (Sprite)EditorGUIUtility.GetObjectPickerObject();
         }
-        string command = Event.current.commandName;
-        if (commend == "ObjectSelectorClosed")
-        {
-            temp.icon = (Sprite)EditorGUIUtility.GetObjectPickerObject();
-        }
+        
 
 
         GUILayout.Label("Character Name:");

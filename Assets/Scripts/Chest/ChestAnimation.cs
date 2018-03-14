@@ -8,7 +8,7 @@ public class ChestAnimation : MonoBehaviour {
     int a ;
     int index=0;
     public Animator CardHolderAnim,chestAnim;
-    bool open,allow;
+    bool open,allow,Adcard;
 	// Use this for initialization
 	void Start () {
        
@@ -42,6 +42,10 @@ public class ChestAnimation : MonoBehaviour {
                         Destroy(CardHolder.transform.GetChild(i).gameObject);
                     }
                     allow = false;
+                    if (Adcard&&InternetChecker.Instance.internetConnectBool&&InformationPanel.Instance.AdPanelScript.HaveAd)
+                    {
+                        InformationPanel.Instance.OpenADRewardPanel();
+                    }
                     gameObject.SetActive(false);
                     ChestManager.Instance.Close();
                 }
@@ -68,7 +72,7 @@ public class ChestAnimation : MonoBehaviour {
         index++;
         CardHolderAnim.SetTrigger("Open");
     }
-    public void Open(List<RewardInfo> rewards,RewardInfo Ad)
+    public void Open(List<RewardInfo> rewards,bool AdCard)
     {
         RewardCard c = new RewardCard();
         
@@ -78,12 +82,7 @@ public class ChestAnimation : MonoBehaviour {
             c.Repaint(item);
             c.gameObject.SetActive(false);
         }
-        if(Ad!=null)
-        {
-            c = Instantiate(CardUI, CardHolder.transform).GetComponent<RewardCard>();
-            c.Repaint(Ad);
-            c.gameObject.SetActive(false);
-        }
+        Adcard = AdCard;
         index = 0;
         a = CardHolder.transform.childCount;
         gameObject.SetActive(true);

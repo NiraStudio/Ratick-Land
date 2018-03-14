@@ -15,11 +15,14 @@ public class CampaignMenuManager : MonoBehaviour {
 
 
     public List<CharacterData> PlayerCharacter = new List<CharacterData>();
-    public ScrollRectSnap CharacterScroll;
-    public GameObject characterInstansiatePos,CampaignCard;
+    public ScrollRectSnap CharacterScroll,SkinScroll;
+    public GameObject characterInstansiatePos,CampaignCard,CampaignSkinCard;
     public Button UpgradeButton;
     public CharacterCampaignCard[] cardHolders;
     GameManager GM;
+
+    List<string> SD = new List<string>();
+    List<SkinData> skinData = new List<SkinData>();
     CharacterData CurrentCharacter;
 	// Use this for initialization
 	void Start () {
@@ -71,7 +74,39 @@ public class CampaignMenuManager : MonoBehaviour {
     }
     public void RenewSkins()
     {
+        skinData = new List<SkinData>();
+        SD = new List<string>();
 
+        skinData = GM.skinDB.CharacterBoughtedSkins(CurrentCharacter.id);
+        if (skinData == null)
+            return;
+        SD = GM.CharacterBoughtedSkins(CurrentCharacter.id);
+        for (int i = 0; i < SkinScroll.Content.transform.childCount; i++)
+        {
+            Destroy(SkinScroll.Content.transform.GetChild(i).gameObject);
+        }
+        for (int i = 0; i < skinData.Count; i++)
+        {
+            CharacterSkinCampaignCard g= Instantiate(CampaignSkinCard, CharacterScroll.Content.transform).GetComponent<CharacterSkinCampaignCard>();
+            if (SD.Contains(skinData[i].SkinName))
+            {
+                if (skinData[i].SkinName == GM.CurrentCharacterSkin(CurrentCharacter.id))
+                    g.Repaint(skinData[i], true, true);
+                else
+                    g.Repaint(skinData[i], true, false);
+
+            }
+            else
+            {
+                g.Repaint(skinData[i], false, false);
+
+            }
+        }
+    }
+
+    public void ChangeModelSkin(string s)
+    {
+        characterInstansiatePos.transform.GetChild(0).GetComponent<SkinManager>().LoadSkinByString(s);
     }
 
     public void UpgradeCharacter()

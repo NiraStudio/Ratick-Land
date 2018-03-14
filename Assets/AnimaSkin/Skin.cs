@@ -4,12 +4,13 @@ using UnityEngine;
 using Anima2D;
 
 [System.Serializable]
-[RequireComponent(typeof(SkinDB))]
+[RequireComponent(typeof(SkinDataBase))]
 public class Skin : MonoBehaviour
 {
     
     [SerializeField]
     public string skinName;
+    public Sprite Icon;
     public Upgrade[] Attributes;
     public Currency Price = new Currency();
     [HideInInspector]

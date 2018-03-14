@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -18,10 +19,10 @@ public class ScrollRectSnap : MonoBehaviour, IEndDragHandler, IBeginDragHandler
     public bool Negetive;
     public bool Scaler;
     public Vector2 ScaleSize;
+    public UnityEvent ChangeEvent;
 
-
-    RectTransform[] childTransforms;
-    float[] distances;
+    RectTransform[] childTransforms=new RectTransform[0];
+    float[] distances=new float[0];
 
     RectTransform _Rect;
     ScrollRect _RectScroll;
@@ -88,8 +89,8 @@ public class ScrollRectSnap : MonoBehaviour, IEndDragHandler, IBeginDragHandler
             return;
 
 
-        MinElementNumber = ElementNumber-1 ;
-        ChangeCharacter();
+        MinElementNumber = ElementNumber - 1;
+        ChangeEvent.Invoke();
 
     }
 
@@ -191,7 +192,7 @@ public class ScrollRectSnap : MonoBehaviour, IEndDragHandler, IBeginDragHandler
                 }
             }
         }
-        ChangeCharacter();
+        ChangeEvent.Invoke();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -201,5 +202,9 @@ public class ScrollRectSnap : MonoBehaviour, IEndDragHandler, IBeginDragHandler
     public void ChangeCharacter()
     {
         CampaignMenuManager.Instance.ChangeCurrentCharacter(childTransforms[MinElementNumber].GetComponent<CharacterCampaignCard>().data);
+    }
+    public void ChangeSkin()
+    {
+
     }
 }

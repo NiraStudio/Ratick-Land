@@ -10,7 +10,7 @@ public class CharacterSystmeEditorEdit : EditorWindow
     public const string FULL_PATH = @"Assets/" + FOLDER_NAME + "/" + FILE_NAME;
 
     CharacterDataBase dataBase,db;
-    static Vector2 WindowSize = new Vector2(1000, 500);
+    static Vector2 WindowSize = new Vector2(1200, 500);
     static Vector2 IconButtonSize = new Vector2(75, 100);
     static Vector2 Scrollpos;
     static Vector2 CharacterBtnSize = new Vector2(75, 100);
@@ -22,7 +22,7 @@ public class CharacterSystmeEditorEdit : EditorWindow
 
     int aa = 0;
 
-    [MenuItem("Character System/Edit Character")]
+    [MenuItem("AlphaTool/Character System/Edit Character")]
     public static void InIt()
     {
         CharacterSystmeEditorEdit window = EditorWindow.GetWindow<CharacterSystmeEditorEdit>();
@@ -104,9 +104,12 @@ public class CharacterSystmeEditorEdit : EditorWindow
             }
 
             GUILayout.BeginVertical();
+            GUILayout.Label("Character Name: ",EditorStyles.boldLabel);
             GUILayout.Label(db.GiveByIndex(i).characterName);
-            GUILayout.Label(db.GiveByIndex(i).type.ToString());
-            GUILayout.Label(db.GiveByIndex(i).id.ToString());
+            GUILayout.Label("Character Type: ", EditorStyles.boldLabel);
+            GUILayout.Label( db.GiveByIndex(i).type.ToString());
+            GUILayout.Label("Character ID: ", EditorStyles.boldLabel);
+            GUILayout.Label( db.GiveByIndex(i).id.ToString());
 
             GUILayout.EndVertical();
             GUILayout.EndHorizontal();
@@ -150,11 +153,7 @@ public class CharacterSystmeEditorEdit : EditorWindow
         {
             temp.icon = (Sprite)EditorGUIUtility.GetObjectPickerObject();
         }
-        string command = Event.current.commandName;
-        if (commend == "ObjectSelectorClosed")
-        {
-            temp.icon = (Sprite)EditorGUIUtility.GetObjectPickerObject();
-        }
+        
 
         if (GUILayout.Button("Delete", GUILayout.Width(100), GUILayout.Height(40)))
         {

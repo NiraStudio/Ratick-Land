@@ -4,35 +4,39 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class MainMenuManager : MainBehavior {
-    public Text coinText;
-
+    public MainMenuCamera MMC;
+    public UnityEngine.Events.UnityEvent PreGamePlay;
     GameManager GM;
-
+    
     float coinTemp,lerp;
 	// Use this for initialization
 	void Start () {
+        print("here");
         GM = GameManager.instance;
         OpenScreen();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (coinTemp != GM.coinAmount)
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+            Play();
+    }
+	public void Play()
+    {
+        if(MMC.CurrentState==MainMenuCamera.CameraPos.Main)
         {
-            lerp += Time.deltaTime / 1;
-            coinTemp = Mathf.Lerp(coinTemp, GM.coinAmount, lerp);
+            StartCoroutine(GoToPlay());
         }
-        else
-            lerp = 0;
-
-        coinText.text = ((int)coinTemp).ToString();
-	}
-    public void ShowInventory()
-    {
-        InventoryPanelScript.Instance.Open();
     }
-    public void ShowShop()
+    IEnumerator GoToPlay()
     {
-
+        MMC.Allow = false;
+        MMC.SendToSky();
+        //swordAnimation
+        PreGamePlay.Invoke();
+        yield return new WaitForSeconds(2);
+        GoToScene("SlotContainer");
     }
+	// Update is called once per frame
+	
 }

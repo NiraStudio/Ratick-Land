@@ -50,32 +50,7 @@ public class Chest : MonoBehaviour {
         }
         #endregion
 
-        #region Ad Reward
-        //ad formula
-        aa = new RewardStates();
-        for (int i = 0; i < AdState.Length - 1; i++)
-            for (int j = 0; j < AdState.Length - 1; j++)
-                if (AdState[j].chance > AdState[j + 1].chance)
-                {
-                    aa = AdState[j];
-                    AdState[j] = AdState[j + 1];
-                    AdState[j + 1] = aa;
-                }
-        dice = Random.Range(0, 101);
-        temp = 0;
-        for (int i = 0; i < rewardState.Length; i++)
-        {
-            temp += rewardState[i].chance;
-            if (dice < temp)
-            {
-                AdReward = RewardManager.Instance.MakeReward(rewardState[i].type, rewardState[i].amount.Random);
-                break;
-            }
-        }
-        AdReward = null;
-
-        ChestManager.Instance.AdReward = AdReward;
-        #endregion
+        
 
 
         #endregion
@@ -95,7 +70,7 @@ public class Chest : MonoBehaviour {
         if (CampaignMenuManager.Instance != null)
             CampaignMenuManager.Instance.RenewPlayer();
 
-        Animation.Open(rewards,AdReward!=null?AdReward:null);
+        Animation.Open(rewards, Random.Range(0, 101) <= chanceForADReward?true:false);
 
     }
 

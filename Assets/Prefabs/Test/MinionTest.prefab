@@ -11,6 +11,23 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1441858223127896}
   m_IsPrefabParent: 1
+--- !u!1 &1138475571313896
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4372838445493472}
+  - component: {fileID: 114831962449910160}
+  - component: {fileID: 114554169385797360}
+  m_Layer: 0
+  m_Name: Skins
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1441858223127896
 GameObject:
   m_ObjectHideFlags: 0
@@ -22,8 +39,9 @@ GameObject:
   - component: {fileID: 212667221865952890}
   - component: {fileID: 95504664816161158}
   - component: {fileID: 50178656895372898}
-  - component: {fileID: 114060039677540804}
   - component: {fileID: 58298216782556954}
+  - component: {fileID: 114538356124664474}
+  - component: {fileID: 114540358205280898}
   m_Layer: 10
   m_Name: MinionTest
   m_TagString: Untagged
@@ -31,6 +49,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &4372838445493472
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1138475571313896}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 6.8769546, y: 4.0178556, z: 0}
+  m_LocalScale: {x: 0.6666667, y: 0.6666667, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4741102810678986}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4741102810678986
 Transform:
   m_ObjectHideFlags: 1
@@ -38,9 +69,10 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1441858223127896}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 230.61984, y: 74.394554, z: 0}
+  m_LocalPosition: {x: -7.440793, y: -6.378779, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4372838445493472}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -96,7 +128,22 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114060039677540804
+--- !u!114 &114538356124664474
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1441858223127896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7edc53f432c9db54998266d035f78519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skins: []
+  defSkin: {fileID: 0}
+  currentSkin: {fileID: 0}
+  skinHolder: {fileID: 1138475571313896}
+--- !u!114 &114540358205280898
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -107,9 +154,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 021f034b4eba68e4d9a3354e021fab16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 0}
+  data: {fileID: 11400000, guid: 04b2c1ce57e7be4469c6b4a0b253c0a6, type: 2}
   skinDB: {fileID: 0}
-  right: 1
+  CenterPoint: {fileID: 0}
+  right: 0
+--- !u!114 &114554169385797360
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1138475571313896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c03c26b40194b9048a635630f1bcf574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skinName: NotNormal
+  Icon: {fileID: 21300000, guid: 3f374fcbf14d3ed48be02381ab5299cf, type: 3}
+  Attributes: []
+  Price:
+    Amount: 100
+    type: 0
+  skinParts: []
+--- !u!114 &114831962449910160
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1138475571313896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c03c26b40194b9048a635630f1bcf574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skinName: Normal
+  Icon: {fileID: 21300000, guid: b323eca94af81ca4aa9896dcd13c7fbd, type: 3}
+  Attributes: []
+  Price:
+    Amount: 0
+    type: 0
+  skinParts: []
 --- !u!212 &212667221865952890
 SpriteRenderer:
   m_ObjectHideFlags: 1

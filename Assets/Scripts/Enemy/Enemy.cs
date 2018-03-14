@@ -7,6 +7,7 @@ using CodeStage.AntiCheat.ObscuredTypes;
 public class Enemy : MonoBehaviour,IHitable,IAttackable {
     public EnemyData data;
     public IntRange timeForMove;
+    public GameObject centerPoint;
     public int powerRate;
     public bool Gurdian;
 
@@ -56,8 +57,8 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
         if (detectedCharacter)
         {
             time += Time.deltaTime;
-            if (attackSpeed <= time&&!Attacking)
-                Attack();
+            if (attackSpeed <= time && !Attacking)
+                AttackAnimation();
             move = false;
         }
         else
@@ -142,9 +143,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
 
     public virtual void Attack()
     {
-        detectedCharacter.SendMessage("GetHit",(float) damage);
-
-        time = 0;
+        
     }
 
 
@@ -198,10 +197,13 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
 
     public void AttackAnimation()
     {
+        anim.SetTrigger("Attack");
+        Attacking = true;
     }
 
     public void AttackAllower()
     {
+        Attacking = false;
     }
 }
 

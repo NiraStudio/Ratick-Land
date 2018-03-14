@@ -33,7 +33,11 @@ public class ArrangeSceneManager : MainBehavior {
         OpenScreen();
     }
 
-
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            GoToScene("MainMenu");
+    }
     //character Panel
 
     void RepaintArranges(SlotContainer SC)

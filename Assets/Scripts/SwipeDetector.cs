@@ -13,9 +13,10 @@ public class SwipeDetector : MonoBehaviour
     bool touch;
     public void FixedUpdate()
     {
-        if (Input.touches.Length > 0)
+        if (Input.touches.Length > 0 )
         {
             Touch t = Input.GetTouch(0);
+            if(!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(t.fingerId))
             switch (t.phase)
             {
                 case TouchPhase.Began:

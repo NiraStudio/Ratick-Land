@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-namespace Nira.Localization
+namespace Alpha.Localization
 {
     [System.Serializable]
     public class LocalizationData

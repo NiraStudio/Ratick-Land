@@ -4,13 +4,13 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 
-namespace Nira.Localization
+namespace Alpha.Localization
 {
     public class LocalizedTextEditor : EditorWindow
     {
         public LocalizationData localizationData;
         Vector2 scrollPos;
-        [MenuItem("NiraTool/Localization")]
+        [MenuItem("AlphaTool/Localization")]
         static void InIt()
         {
             EditorWindow.GetWindow(typeof(LocalizedTextEditor)).Show();

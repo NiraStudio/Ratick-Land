@@ -9,6 +9,7 @@ public class MainMenuCamera : MonoBehaviour
     public Pos[] poses;
     [Range(0, 500)]
     public float smoothness;
+    public bool Allow=true;
     // Use this for initialization
     void Start()
     {
@@ -21,6 +22,7 @@ public class MainMenuCamera : MonoBehaviour
             ChangeView(-1);
         if (Input.GetKeyDown(KeyCode.RightArrow))
             ChangeView(1);
+        
     }
     // Update is called once per frame
     void Update()
@@ -32,11 +34,17 @@ public class MainMenuCamera : MonoBehaviour
     }
     public void ChangeView(int state)
     {
+        if (!Allow)
+            return;
+
         if (state < 0 && CurrentState ==(CameraPos)0)
             return;
         if (state > 0 && CurrentState == (CameraPos)(System.Enum.GetValues(typeof(CameraPos)).Length - 1))
             return;
+        
+        if((CameraPos)(CurrentState + state)!=CameraPos.Sky)
         CurrentState = (CameraPos)(CurrentState + state);
+        
         ChangeByCurrentState();
     }
 
@@ -51,11 +59,16 @@ public class MainMenuCamera : MonoBehaviour
             }
         }
     }
+    public void SendToSky()
+    {
+        CurrentState = CameraPos.Sky;
+        ChangeByCurrentState();
 
+    }
     //views by order
     public enum CameraPos
     {
-        Shop,Campaign, Main, CommingSoon
+        Shop,Campaign, Main, CommingSoon,Sky
     }
     [System.Serializable]
     public class Pos

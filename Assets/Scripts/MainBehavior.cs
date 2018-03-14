@@ -7,9 +7,16 @@ public class MainBehavior : MonoBehaviour
 {
     public static LayerMask CharacterLayer = 1 << 10, EnemyLayer = 1 << 8, WallLayer = 1 << 11, BlocksLayer = 1 << 12, TargetLayer = 1 << 9;
 
-   
+    string PreviousScene;
+   public void GoPreviousScene()
+    {
+       /* print(PreviousScene);
+
+        LoadingScreenManager.Instance.GoToScene(PreviousScene);
+        */
+    }
     // Update is called once per frame
-    
+
     public void GoToScene(string SceneName)
     {
         LoadingScreenManager.Instance.GoToScene(SceneName);

@@ -16,9 +16,11 @@ public class InformationPanel : MonoBehaviour {
     public InformationByType[] Panels;
     public Animator PanelAnimator;
     public GameObject BackPanel;
+    public AdScript AdPanelScript;
     // Use this for initialization
-    void Start()
+    IEnumerator Start()
     {
+        yield return new WaitForSeconds(0.5f);
         PanelAnimator.gameObject.SetActive(false);
         BackPanel.SetActive(false);
     }
@@ -34,7 +36,7 @@ public class InformationPanel : MonoBehaviour {
                 item.buttons[0].onClick.RemoveAllListeners();
                 if(OkAction!=null)
                 item.buttons[0].onClick.AddListener(OkAction);
-                item.buttons[0].onClick.AddListener(Close);
+                item.buttons[0].onClick.AddListener(AnimationClose);
                 item.buttons[0].transform.GetChild(0).GetComponent<Text>().text = OkButtonText;
             }
         }
@@ -56,7 +58,7 @@ public class InformationPanel : MonoBehaviour {
                 item.buttons[0].onClick.RemoveAllListeners();
                 if (OkAction != null)
                     item.buttons[0].onClick.AddListener(OkAction);
-                item.buttons[0].onClick.AddListener(Close);
+                item.buttons[0].onClick.AddListener(AnimationClose);
                 item.buttons[0].transform.GetChild(0).GetComponent<Text>().text = OkButtonText;
             }
         }
@@ -65,10 +67,32 @@ public class InformationPanel : MonoBehaviour {
         BackPanel.SetActive(true);
 
     }
-    void Close()
+
+    public void OpenADRewardPanel()
+    {
+        DeactiveAll();
+        foreach (var item in Panels)
+        {
+            if (item.Type == InformationType.AdReward)
+            {
+                item.Panel.SetActive(true);
+                //item.buttons[0].onClick.AddListener(Close);
+            }
+        }
+        PanelAnimator.gameObject.SetActive(true);
+        PanelAnimator.SetTrigger("Open");
+        BackPanel.SetActive(true);
+
+    }
+    public void Close()
     {
         PanelAnimator.gameObject.SetActive(false);
         BackPanel.SetActive(false);
+
+    }
+    public void AnimationClose()
+    {
+        PanelAnimator.SetTrigger("Close");
 
     }
     void DeactiveAll()
@@ -90,5 +114,5 @@ public class InformationPanel : MonoBehaviour {
 }
 public enum InformationType
 {
-    Reward,Info
+    Reward,Info,AdReward
 }

@@ -16,7 +16,7 @@ public class AchievmentCreator : EditorWindow
     Achievement temp;
     Texture2D t;
 
-    [MenuItem("AchievmentSystem/AchievmentCreator")]
+    [MenuItem("AlphaTool/AchievmentSystem/AchievmentCreator")]
     public static void Init()
     {
         AchievmentCreator window = EditorWindow.GetWindow<AchievmentCreator>();

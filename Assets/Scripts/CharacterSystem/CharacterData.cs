@@ -33,9 +33,11 @@ public class CharacterData:ScriptableObject
         this.hitPoint = hitPoint;
         this.damage = damage;
         this.description = description;
+    }
+    public CharacterData() {
+
 
     }
-    public CharacterData() { }
 
 
 

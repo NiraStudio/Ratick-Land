@@ -7,11 +7,17 @@ public class testShoot : MonoBehaviour {
     public UnityEvent e;
     public GameObject target,Bullet;
     public Chest s;
-	// Use this for initialization
-	void Start () {
-        
-        
+    public Skin[] skins;
+    public string[] skissssns;
+    // Use this for initialization
+    void Start () {
 
+        //skins = target.GetComponents<Skin>();
+        skissssns = new string[skins.Length];
+        for (int i = 0; i < skins.Length; i++)
+        {
+            skissssns[i] = skins[i].skinName;
+        }
     }
     void Update()
     {
@@ -50,5 +56,9 @@ public class testShoot : MonoBehaviour {
         
         print(answer);
         return answer;
+    }
+    public void Tests()
+    {
+        InformationPanel.Instance.OpenADRewardPanel();
     }
 }

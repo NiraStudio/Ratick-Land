@@ -30,12 +30,13 @@ public class NonUiTouch : MonoBehaviour
         }
 
 
+
 #elif UNITY_ANDROID || UNITY_IOS
-         if (Input.touchCount == 1)
+        if (Input.touchCount == 1)
         {
             if (Input.GetTouch(0).phase == TouchPhase.Began)
             {
-                RaycastHit2D hitInfo = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.GetTouch(i).position), Vector2.zero);
+                RaycastHit2D hitInfo = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position), Vector2.zero);
                 if (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId) && hitInfo)
                     if (hitInfo.collider.gameObject == gameObject)
                     {

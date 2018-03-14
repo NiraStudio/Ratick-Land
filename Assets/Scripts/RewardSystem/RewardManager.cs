@@ -110,6 +110,7 @@ public enum RewardType
 {
     UpgradeCard, Coin, Gem, Card,NewCharacter
 }
+
 [System.Serializable]
 public class RewardInfo
 {
