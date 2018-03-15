@@ -8,30 +8,30 @@ namespace Alpha.Localization
 {
     public class LocalizedText : MonoBehaviour
     {
-        public string Key;
+        public string key;
         public string BeforeExtra, AfterExtra;
         public RtlText t;
-        public bool Checkable;
+        public bool Checkable=true;
         bool Allow;
-        public string ChangeAfter
+        public string After
         {
             set
             {
-                AfterExtra = value;
+                AfterExtra = LocalizationManager.LastChanger(value);
             }
         }
-        public string ChangeKey
+        public string Key
         {
             set
             {
-                Key = value;
+                key = value;
             }
         }
-        public string ChangeBefore
+        public string Before
         {
             set
             {
-                BeforeExtra = value;
+                BeforeExtra = LocalizationManager.LastChanger( value);
             }
         }
 
@@ -42,8 +42,8 @@ namespace Alpha.Localization
         {
             yield return new WaitUntil(() => LocalizationManager.Instance.GetIsReady);
             LM = LocalizationManager.Instance;
-            if(Key==null)
-            t.text =BeforeExtra+ LM.GetLocalizationValue(Key)  +AfterExtra;
+            if(key==null)
+            t.text =BeforeExtra+ LM.GetLocalizationValue(key)  +AfterExtra;
             Allow = true;
            
 
@@ -53,7 +53,7 @@ namespace Alpha.Localization
         {
             if (!Allow)
                 return;
-            t.text = BeforeExtra + LM.GetLocalizationValue(Key) +  AfterExtra;
+            t.text = BeforeExtra + LM.GetLocalizationValue(key) +  AfterExtra;
             switch (LM.LanguageCode)
             {
                 case Language.EN:
@@ -85,17 +85,7 @@ namespace Alpha.Localization
             }
             t.resizeTextForBestFit = true;
             t.alignment = TextAnchor.MiddleCenter;
-            switch (LM.LanguageCode)
-            {
-                case Language.EN:
-                    t.font = LM.ENFont;
-                    break;
-                case Language.FA:
-                    t.font = LM.FAFont;
-
-                    break;
-
-            }
+            
             Checkable = true;
         }
 

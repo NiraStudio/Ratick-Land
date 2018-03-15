@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Alpha.Localization;
 
 public class CampaignMenuManager : MonoBehaviour {
     #region Singleton
@@ -21,6 +22,10 @@ public class CampaignMenuManager : MonoBehaviour {
     public CharacterCampaignCard[] cardHolders;
     GameManager GM;
 
+    [SerializeField]
+    CampaignDetailPanelBehaivior detailHolder;
+    [SerializeField]
+    Skin ss;
     List<string> SD = new List<string>();
     List<SkinData> skinData = new List<SkinData>();
     CharacterData CurrentCharacter;
@@ -35,7 +40,7 @@ public class CampaignMenuManager : MonoBehaviour {
 	void Update () {
 		if(CurrentCharacter!=null)
         {
-            UpgradeButton.transform.GetChild(0).GetComponent<Text>().text = GM.CharacterUpgradeCost(CurrentCharacter).ToString();
+            UpgradeButton.transform.GetChild(0).GetComponent<LocalizedText>().AfterExtra = GM.CharacterUpgradeCost(CurrentCharacter).ToString();
             if (GM.CharacterCard(CurrentCharacter.id) < GM.CharacterCardUpgradeCost(CurrentCharacter.id) || GM.coinAmount< GM.CharacterUpgradeCost(CurrentCharacter))
                 UpgradeButton.interactable = false;
             else
@@ -129,6 +134,7 @@ public class CampaignMenuManager : MonoBehaviour {
         g.transform.SetParent(characterInstansiatePos.transform);
         g.GetComponent<Character>().enabled = false;
         g.transform.localScale = Vector3.one;
+        detailHolder.RePaint(data,ss);
 
     }
 }

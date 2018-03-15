@@ -17,12 +17,12 @@ public class CharacterData:ScriptableObject
     public float attackSpeed;
     public float hitPoint;
     public float attackRange;
-    public IntRange damage=new IntRange(0,0);
+    public int damage;
     public Upgrade[] UpgradesForEachLevel;
     public string description;
 
 
-    public CharacterData(string characterName, GameObject prefab, int id, Sprite icon, float speed, float attackSpeed, float hitPoint, IntRange damage, string description)
+    public CharacterData(string characterName, GameObject prefab, int id, Sprite icon, float speed, float attackSpeed, float hitPoint, int damage, string description)
     {
         this.characterName = characterName;
         this.prefab = prefab;

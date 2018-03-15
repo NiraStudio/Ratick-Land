@@ -93,8 +93,8 @@ public class GameManager : MainBehavior
     {
         _mainData = new MainData();
         _currencyData = new CurrencyData();
-        mainData.characterInfos.Add(new characterInfo(1, 5, 0));
-        mainData.characterInfos.Add(new characterInfo(5, 1, 0));
+        mainData.characterInfos.Add(new characterInfo(2, 5, 0));
+        mainData.characterInfos.Add(new characterInfo(1, 1, 0));
         _currencyData.Coins = 100;
         SaveCurrencyData();
         SaveMainData();
@@ -312,6 +312,39 @@ public class GameManager : MainBehavior
                 return item.CurrentSkin;
         }
         return null;
+    }
+    public DetailState CharacterState(CharacterData Data)
+    {
+        DetailState state = new DetailState();
+
+        float a,c,d;
+        a = Data.damage;
+        c = Data.attackSpeed;
+        d= Data.hitPoint;
+
+        for (int i = 0; i < CharacterLevel(Data.id); i++)
+        {
+            for (int j = 0; j < Data.UpgradesForEachLevel.Length; j++)
+            {
+                switch (Data.UpgradesForEachLevel[j].type)
+                {
+                   
+                    case Upgrade.Type.Damage:
+                        a += Data.UpgradesForEachLevel[j].amount;
+                        break;
+                    case Upgrade.Type.Hp:
+                        d += Data.UpgradesForEachLevel[j].amount;
+
+                        break;
+                }
+            }
+            
+        }
+        state.AttackDamage =(int) a;
+        state.AttackSpeed = c;
+        state.HitPint =(int) d;
+        return state;
+
     }
     #endregion
 }

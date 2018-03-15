@@ -11,7 +11,7 @@ public class MainMenuManager : MainBehavior {
     float coinTemp,lerp;
 	// Use this for initialization
 	void Start () {
-        print("here");
+
         GM = GameManager.instance;
         OpenScreen();
 	}

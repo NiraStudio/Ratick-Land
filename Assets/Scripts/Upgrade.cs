@@ -4,7 +4,7 @@ using UnityEngine;
 
 [System.Serializable]
 public class Upgrade {
-    public enum Type { MinDamage, MaxDamage,Damage, Hp };
+    public enum Type { Damage, Hp };
 
     public Type type;
 

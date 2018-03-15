@@ -9,7 +9,6 @@ using System;
 public class Character : MainBehavior,IAttackable,IHitable,IHealable
 {
     public CharacterData data;
-    public SkinDataBase skinDB;
     public GameObject CenterPoint;
     public bool right;
     protected SkinManager skinManager;
@@ -64,7 +63,7 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
         skinManager = GetComponent<SkinManager>();
        // sr.sortingOrder = IsoMetricHandler.giveSortingOrderNumber(transform.position.y);
         IsoMetricHandler.ChangeByTransform(transform);
-        anim.GetBehaviour<AttackingStateMachine>().OnExit.AddListener(AttackAllower);
+       // anim.GetBehaviour<AttackingStateMachine>().OnExit.AddListener(AttackAllower);
 
     }
    
@@ -135,7 +134,9 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
         speedMultiPly = data.speed;
         attackSpeed = data.attackSpeed;
         hitPoint = data.hitPoint;
-        damage = new IntRange(data.damage.m_Min * controller.WorldAttackMultiPly, data.damage.m_Max * controller.WorldAttackMultiPly);
+        damage = new IntRange(0,0);
+        damage.m_Max = data.damage * controller.WorldAttackMultiPly;
+        damage.m_Min=(int)( data.damage-(data.damage*0.2f)) * controller.WorldAttackMultiPly;
         attackRange = data.attackRange;
         MaxHp = hitPoint;
     }
@@ -156,7 +157,10 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
 
     public virtual void Attack()
     {
-        detectedEnemy.SendMessage("GetHit", (float)damage.Random);
+        int f = damage.Random;
+        detectedEnemy.SendMessage("GetHit", f);
+        GameObject a = Resources.Load("DmgPopUp", typeof(GameObject)) as GameObject;
+        Instantiate(a, detectedEnemy.transform.position, Quaternion.identity).GetComponent<DmgPopUpBehaivior>().RePaint(f.ToString(), DmgPopUpBehaivior.AttackType.playerAttack);
     }
 
     public virtual void GetHit(float dmg)
@@ -182,13 +186,6 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
             {
                 switch (item.type)
                 {
-                    case Upgrade.Type.MinDamage:
-                        damage.m_Min += item.amount;
-                        break;
-
-                    case Upgrade.Type.MaxDamage:
-                        damage.m_Max += item.amount;
-                        break;
 
                     case Upgrade.Type.Damage:
                         damage.m_Min += item.amount;
@@ -214,7 +211,7 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
     {
         Attacking = true;
         Attack();
-        AttackAllower();
+        //AttackAllower();
     }
 
 

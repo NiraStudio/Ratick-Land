@@ -98,6 +98,7 @@ public class ScrollRectSnap : MonoBehaviour, IEndDragHandler, IBeginDragHandler
     {
         wait = true;
         yield return new WaitForSeconds(0.1f);
+
         childTransforms = null;
         childTransforms = new RectTransform[_RectScroll.content.transform.childCount];
 

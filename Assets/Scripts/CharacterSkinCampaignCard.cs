@@ -32,14 +32,14 @@ public class CharacterSkinCampaignCard : MonoBehaviour {
             ChooseBtn.gameObject.SetActive(true);
             if (Choosed)
             {
-                ChooseTxt.ChangeKey = "Choosed";
+                ChooseTxt.key = "Choosed";
                 ChooseBtn.interactable = false;
             }
             else
             {
                 ChooseBtn.interactable = true; ;
 
-                ChooseTxt.ChangeKey = "Choose";
+                ChooseTxt.key = "Choose";
 
             }
 

@@ -4,7 +4,6 @@ using UnityEngine;
 using Anima2D;
 
 [System.Serializable]
-[RequireComponent(typeof(SkinDataBase))]
 public class Skin : MonoBehaviour
 {
     
@@ -16,5 +15,25 @@ public class Skin : MonoBehaviour
     [HideInInspector]
     [SerializeField]
     public List<SkinPart> skinParts;
+
+    public DetailState State()
+    {
+        DetailState state = new DetailState();
+        foreach (var item in Attributes)
+        {
+            switch (item.type)
+            {
+                case Upgrade.Type.Damage:
+                    state.AttackDamage = item.amount;
+                    break;
+                case Upgrade.Type.Hp:
+                    state.HitPint = item.amount;
+
+                    break;
+
+            }
+        }
+        return state;
+    }
 }
 

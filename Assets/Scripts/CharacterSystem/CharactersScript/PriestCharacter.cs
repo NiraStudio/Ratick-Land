@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PriestCharacter : MonoBehaviour {
+public class PriestCharacter : Character {
+    GameObject leader;
+    public override void Start()
+    {
+        base.Start();
+        leader = GameObject.FindWithTag("Leader");
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    }
+    public override void Attack()
+    {
+        leader.SendMessage("GetHeal", damage.Random);
+    }
 }

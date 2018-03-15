@@ -99,12 +99,69 @@ namespace Alpha.Localization
                 return null;
 
         if (LocalizationText.ContainsKey(Key))
-            return LocalizationText[Key];
+            return LastChanger( LocalizationText[Key]);
         else
             return "Localization Text Not Find";
     }
 
+        public static string LastChanger(string text)
+        {
+            string a="";
+            char[] aa = text.ToCharArray();
+            if (LocalizationManager.Instance.LanguageCode == Language.FA)
+            {
+                for (int i = 0; i < aa.Length; i++)
+                {
+                    switch (aa[i])
+                    {
+                        case '1':
+                            a += "۱";
+                            break;
+                        case '2':
+                            a += "۲";
+                            break;
+                        case '3':
+                            a += "۳";
+                            break;
+                        case '4':
+                            a += "۴";
+                            break;
+                        case '5':
+                            a += "۵";
+                            break;
+                        case '6':
+                            a += "۶";
+                            break;
+                        case '7':
+                            a += "۷";
+                            break;
+                        case '8':
+                            a += "۸";
+                            break;
+                        case '9':
+                            a += "۹";
+                            break;
+                        case '0':
+                            a += "۰";
+                            break;
 
+                        default:
+                            a += aa[i];
+                            break;
+
+
+                    }
+                }
+            }
+            else
+            {
+                a = text;
+            }
+
+
+
+            return a;
+        }
 }
     public enum Language
     {

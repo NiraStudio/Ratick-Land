@@ -16,26 +16,26 @@ public class Wave : MonoBehaviour {
         public GameObject Enemy;
 
     }
-
-
+    public bool Gurdian;
     public List<GameObject> currentEnemies = new List<GameObject>();
     public List<WaveEnemy> Enemies = new List<WaveEnemy>();
     [Header("MeleeNormal = 0,MeleeFast = 1,RangeShort = 2,RangeLong = 3,Tank = 4,EliteMeleeNormal = 5 ")]
     [Header("EliteMeleeFast = 6,EliteRangeShort = 7, EliteRangeLong = 8, EliteTank = 9")]
-    public UnityEvent[] events;
+    public UnityEvent[] events=new UnityEvent[10];
     [Header("PowerRate Parameters")]
     public float FormulaBase;
     public float FormulaChanger;
 
-    int powerRate;
+    int powerRate=70;
     LevelController LC;
 
     void Start()
     {
         LC = LevelController.instance;
-        foreach (var item in events)
+        for (int i = 0; i <= LC.BrokenCage; i++)
         {
-            item.Invoke();
+
+            events[i].Invoke();
         }
         powerRate = PowerRate();
         Spawn();
@@ -70,6 +70,7 @@ public class Wave : MonoBehaviour {
         {
             Vector3 t = Random.insideUnitCircle * 0.2f;
             GameObject g = Instantiate(currentEnemies[Random.Range(0, currentEnemies.Count)], transform.position + t, Quaternion.identity);
+            g.GetComponent<Enemy>().Gurdian = Gurdian;
             g.transform.SetParent(transform);
             a += g.GetComponent<Enemy>().data.PowerRate;
         } while (a<powerRate);

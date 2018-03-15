@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
 	// Use this for initialization
     public virtual void Start()
     {
-        gameObject.layer = MainBehavior.BlocksLayer.value;
+        gameObject.layer = 0;
         levelController = LevelController.instance;
         aim = GameObject.FindWithTag("Aim");
         rg = GetComponent<Rigidbody2D>();
@@ -50,7 +50,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     {
 
 
-        detectedCharacter = Physics2D.OverlapCircle(transform.position, range, MainBehavior.CharacterLayer);
+        detectedCharacter = Physics2D.OverlapCircle(centerPoint.transform.position, range, MainBehavior.CharacterLayer);
 
 
 
@@ -192,7 +192,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     public IEnumerator LayerChanger()
     {
         yield return new WaitForSeconds(0.7f);
-        gameObject.layer = MainBehavior.EnemyLayer.value;
+        gameObject.layer = 8;
     }
 
     public void AttackAnimation()

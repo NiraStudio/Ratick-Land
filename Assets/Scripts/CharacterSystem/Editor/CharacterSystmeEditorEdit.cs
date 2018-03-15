@@ -205,8 +205,7 @@ public class CharacterSystmeEditorEdit : EditorWindow
         GUILayout.Label("Attributes", EditorStyles.boldLabel);
 
 
-        temp.damage.m_Min = EditorGUILayout.IntField("Damage Min:", temp.damage.m_Min);
-        temp.damage.m_Max = EditorGUILayout.IntField("Damage Max:", temp.damage.m_Max);
+        temp.damage = EditorGUILayout.IntField("Damage:", temp.damage);
         temp.hitPoint = EditorGUILayout.FloatField("Hit Point:", temp.hitPoint);
 
 

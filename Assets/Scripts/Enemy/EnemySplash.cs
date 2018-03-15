@@ -8,7 +8,7 @@ public class EnemySplash : Enemy
     public override void Attack()
     {
         
-        characters = Physics2D.OverlapCircleAll(transform.position, range, MainBehavior.CharacterLayer);
+        characters = Physics2D.OverlapCircleAll(centerPoint.transform.position, range, MainBehavior.CharacterLayer);
         foreach (var item in characters)
         {
             item.SendMessage("GetHit", (float)damage);
