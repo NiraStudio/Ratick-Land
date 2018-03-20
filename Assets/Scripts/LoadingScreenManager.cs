@@ -20,28 +20,33 @@ public class LoadingScreenManager : MonoBehaviour
     string SceneName;
     int SceneId=-1;
     Animator anim;
+    SFX sfx;
     // Use this for initialization
     void Start()
     {
         anim = GetComponent<Animator>();
+        sfx = GetComponent<SFX>();
     }
     
     // Update is called once per frame
     public void Open()
     {
         anim.SetTrigger(OpenId);
+        sfx.PlaySound("Stone");
         DisableSceen.SetActive(false);
     }
     public void GoToScene(string SceneName)
     {
         DisableSceen.SetActive(true);
         anim.SetTrigger(CloseId);
+        sfx.PlaySound("Stone");
         this.SceneName = SceneName;
     }
     public void GoToScene(int SceneId)
     {
         DisableSceen.SetActive(true);
         anim.SetTrigger(CloseId);
+        sfx.PlaySound("Stone");
         this.SceneId = SceneId;
     }
     public void SceneChange()

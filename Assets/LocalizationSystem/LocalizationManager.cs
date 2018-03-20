@@ -14,7 +14,15 @@ namespace Alpha.Localization
             DontDestroyOnLoad(gameObject);
         }
         #endregion
-        public Dictionary<string, string> LocalizationText = new Dictionary<string, string>();
+        #region Database Values
+        public const string FOLDER_NAME = "DataBase";
+        public const string FILE_NAME = "LocalizationDataBase.asset";
+        public const string FULL_PATH = @"Assets/" + FOLDER_NAME + "/" + FILE_NAME;
+        [HideInInspector]
+       public LocalizationDatabase data;
+
+        #endregion
+        //public Dictionary<string, string> LocalizationText = new Dictionary<string, string>();
         public Language LanguageCode;
         bool IsReady = false;
 
@@ -38,58 +46,84 @@ namespace Alpha.Localization
         }
         public void LoadData(Language language)
         {
+            LanguageCode = language;
+            IsReady = true;
+            #region OldVersion
 
-            string FileName = language.ToString() + ".json";
-            string filePath;
 
-            #region Path
+            /* string FileName = language.ToString() + ".json";
+             string filePath;
 
-#if UNITY_EDITOR
-            filePath = Path.Combine(Application.streamingAssetsPath, FileName);
+             #region Path
 
-#elif UNITY_IOS
-         filePath = Path.Combine (Application.dataPath + "/Raw", FileName);
- 
-#elif UNITY_ANDROID
-         filePath = Path.Combine ("jar:file://" + Application.dataPath + "!assets/", FileName);
- 
-#endif
+ #if UNITY_EDITOR
+             filePath = Path.Combine(Application.streamingAssetsPath, FileName);
 
+ #elif UNITY_IOS
+          filePath = Path.Combine (Application.dataPath + "/Raw", FileName);
+
+ #elif UNITY_ANDROID
+          filePath = Path.Combine ("jar:file://" + Application.dataPath + "!assets/", FileName);
+
+ #endif
+
+             #endregion
+
+
+             string dataAsJSON = null;
+
+             #region GetData
+ #if UNITY_EDITOR || UNITY_IOS
+             if (File.Exists(filePath))
+             {
+                 dataAsJSON = File.ReadAllText(filePath);
+             }
+ #elif UNITY_ANDROID
+             WWW reader = new WWW (filePath);
+             while (!reader.isDone) {
+             }
+             dataAsJSON = reader.text;
+ #endif
+             #endregion
+             if (!string.IsNullOrEmpty(dataAsJSON))
+             {
+                 LocalizationText = new Dictionary<string, string>();
+
+
+                 LocalizationData loadedData = JsonUtility.FromJson<LocalizationData>(dataAsJSON);
+                 foreach (var item in loadedData.Data)
+                 {
+                     LocalizationText.Add(item.Key, item.Value);
+                 }
+                 Debug.Log("Data Loaded , Dictionary Contains " + LocalizationText.Count + " Enteries");
+                 IsReady = true;
+             }
+             else
+                 Debug.LogError("Cannot Find Data");*/
             #endregion
-
-
-            string dataAsJSON = null;
-
-            #region GetData
-#if UNITY_EDITOR || UNITY_IOS
-            if (File.Exists(filePath))
-            {
-                dataAsJSON = File.ReadAllText(filePath);
-            }
-#elif UNITY_ANDROID
-            WWW reader = new WWW (filePath);
-            while (!reader.isDone) {
-            }
-            dataAsJSON = reader.text;
-#endif
-            #endregion
-            if (!string.IsNullOrEmpty(dataAsJSON))
-            {
-                LocalizationText = new Dictionary<string, string>();
-
-
-                LocalizationData loadedData = JsonUtility.FromJson<LocalizationData>(dataAsJSON);
-                foreach (var item in loadedData.Data)
-                {
-                    LocalizationText.Add(item.Key, item.Value);
-                }
-                Debug.Log("Data Loaded , Dictionary Contains " + LocalizationText.Count + " Enteries");
-                IsReady = true;
-            }
-            else
-                Debug.LogError("Cannot Find Data");
         }
-            
+
+
+        void Reset()
+        {
+#if UNITY_EDITOR
+            data = UnityEditor. AssetDatabase.LoadAssetAtPath(FULL_PATH, typeof(LocalizationDatabase)) as LocalizationDatabase;
+
+            if (data == null)
+            {
+                if (!UnityEditor.AssetDatabase.IsValidFolder(@"Assets/" + FOLDER_NAME))
+                    UnityEditor.AssetDatabase.CreateFolder(@"Assets", FOLDER_NAME);
+
+                data = new LocalizationDatabase();
+                UnityEditor.AssetDatabase.CreateAsset(data, FULL_PATH);
+                UnityEditor.AssetDatabase.SaveAssets();
+                UnityEditor.AssetDatabase.Refresh();
+            }
+
+
+#endif
+        }
+        
 
 
 
@@ -97,21 +131,17 @@ namespace Alpha.Localization
 
 
 
-
-
-
-
-    public bool GetIsReady
+        public bool GetIsReady
     {
         get { return IsReady; }
     }
     public string GetLocalizationValue(string Key)
     {
             if (string.IsNullOrEmpty(Key))
-                return null;
+                return " ";
 
-        if (LocalizationText.ContainsKey(Key))
-            return LastChanger( LocalizationText[Key]);
+        if (data.ContainKey(Key))
+            return LastChanger( data.GiveValue(Key,LanguageCode));
         else
             return "Localization Text Not Find";
     }

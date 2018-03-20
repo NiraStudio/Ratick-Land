@@ -119,6 +119,7 @@ public class CampaignMenuManager : MonoBehaviour {
         GM.ChangeCoin(-GM.CharacterUpgradeCost(CurrentCharacter));
         GM.AddCharacterCard(CurrentCharacter.id, -GM.CharacterCardUpgradeCost(CurrentCharacter.id));
         GM.IncreaseLevel(CurrentCharacter.id, 1);
+        GameAnalyticsManager.SendCustomEvent(CurrentCharacter.characterName);
     }
     public void ChangeCurrentCharacter(CharacterData data)
     {
@@ -131,9 +132,10 @@ public class CampaignMenuManager : MonoBehaviour {
 
         CurrentCharacter = data;
         GameObject g = Instantiate(data.prefab, characterInstansiatePos.transform.position, Quaternion.identity);
+        Vector3 aa = g.transform.localScale; 
         g.transform.SetParent(characterInstansiatePos.transform);
         g.GetComponent<Character>().enabled = false;
-        g.transform.localScale = Vector3.one;
+        g.transform.localScale = aa;
         detailHolder.RePaint(data,ss);
 
     }

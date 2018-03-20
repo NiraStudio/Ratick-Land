@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Alpha.Localization;
 
 public class MainBehavior : MonoBehaviour
 {
@@ -35,6 +36,14 @@ public class MainBehavior : MonoBehaviour
         Gizmos.DrawCube(Vector3.zero, Vector3.one);
 
         Gizmos.matrix = oldGizmosMatrix;
+    }
+    public static void BroadcastAll<T>(string Method, Object msg) where T : MonoBehaviour
+    {
+        T[] gos = FindObjectsOfType<T>();
+        foreach (T go in gos)
+        {
+            go.BroadcastMessage(Method, msg);
+        }
     }
 
 }

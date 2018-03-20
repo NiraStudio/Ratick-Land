@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     public EnemyData data;
     public IntRange timeForMove=new IntRange(2,5);
     public GameObject centerPoint;
-    public bool Gurdian;
+    public bool Gurdian,right;
 
     protected ObscuredFloat speedMultiPly;
     protected ObscuredFloat attackSpeed;
@@ -29,11 +29,10 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     protected GameObject DmgPopUp;
     bool detect,move;
     protected float time;
-    protected bool Attacking;
+    protected bool Attacking=false;
     GameObject text;
-    Vector2 tt,direction;
+    Vector2 tt,direction,diffrences;
     [HideInInspector]
-    public Wave Father;
 	// Use this for initialization
     public virtual void Start()
     {
@@ -42,21 +41,45 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
         aim = GameObject.FindWithTag("Aim");
         rg = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-       // RenewData();
+        RenewData();
         if (!Gurdian)
             StartCoroutine(Move());
         DmgPopUp = Resources.Load("DmgPopUp", typeof(GameObject)) as GameObject;
         StartCoroutine(LayerChanger());
+
+
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (levelController.gameState == GamePlayState.Finish)
+            return;
+
+
         detectedCharacter= Physics2D.OverlapCircle(centerPoint.transform.position, range, MainBehavior.CharacterLayer);
-        
 
-        
 
+        if (detectedCharacter)
+        {
+            diffrences = detectedCharacter.transform.position - transform.position;
+            if (Vector2.Distance(transform.position, detectedCharacter.transform.position) > 0.5f)
+            {
+                if (diffrences.x > 0 && !right)
+                    Flip();
+                else if (diffrences.x < 0 && right)
+                    Flip();
+            }
+
+        }
+        else
+        {
+            if (direction.x > 0 && !right)
+                Flip();
+            else if (direction.x < 0 && right)
+                Flip();
+        }
+        
 
         time += Time.fixedDeltaTime;
         if (attackSpeed <= time && !Attacking && detectedCharacter)
@@ -73,6 +96,8 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
         if (move & !Attacking)
         {
             rg.velocity = direction * speed;
+
+
 
         }
         anim.SetBool("Moving", move);
@@ -111,18 +136,14 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
             {
                 Vector2 t = aim.transform.position - transform.position;
                 t = t.normalized;
-                // rg.velocity = t * speed;
 
                 direction = t;
 
-               // print("Follow");
 
             }
             else
             {
-                //rg.velocity = GiveRandomMoveDiretion() * speed ;
                 direction = GiveRandomMoveDiretion();
-                //print("Random");
 
             }
         }
@@ -164,7 +185,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
         levelController.ChangeCoin(coin);
         KeyManager.Instance.ChangeKeyPart(1);
         Lean.Pool.LeanPool.Despawn(gameObject);
-        Father.Decrease();
+        GameAnalyticsManager.SendCustomEvent(data.enemyName);
     }
     void OnDrawGizmos()
     {
@@ -174,6 +195,15 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
         Gizmos.color = Color.black;
         Gizmos.DrawLine(transform.position,(Vector2)transform.position+( tt*4f));
     }
+    void Flip()
+    {
+
+        Vector3 aa = transform.localScale;
+        aa.x *= -1;
+        transform.localScale = aa;
+        right = !right;
+    }
+
 
     public Vector2 GiveRandomMoveDiretion()
     {
@@ -211,6 +241,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
 
     public void AttackAnimation()
     {
+
         anim.SetTrigger("Attack");
         Attacking = true;
     }

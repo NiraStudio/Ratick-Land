@@ -47,6 +47,7 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
         if (controller == null)
         {
             this.enabled = false;
+            GetComponent<IsoMetricHandler>().enabled = false;
             return;
         }
         DmgPopUp = Resources.Load("DmgPopUp", typeof(GameObject)) as GameObject;
@@ -77,7 +78,7 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
         #region Move
 
 
-        if (GPI.Move)
+        if (GPI.Move&&!Attacking)
         {
             rg.bodyType = RigidbodyType2D.Dynamic;
 
@@ -85,15 +86,17 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
             tt.Normalize();
             tt = tt * speed;
             rg.velocity = tt;
-
-            if (tt.x > 0 && !right)
+            if (Vector2.Distance(transform.position, Aimer.transform.position) > 0.2f)
             {
-                Flip();
-            }
-            else if (tt.x < 0 && right)
-            {
-                Flip();
+                if (tt.x > 0 && !right)
+                {
+                    Flip();
+                }
+                else if (tt.x < 0 && right)
+                {
+                    Flip();
 
+                }
             }
 
         }
@@ -108,7 +111,7 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
         #region Attack
         detectedEnemy = Physics2D.OverlapCircle(CenterPoint.transform.position, attackRange, EnemyLayer);
 
-            if (waitTime > attackSpeed && detectedEnemy&&!Attacking)
+            if (waitTime > attackSpeed && detectedEnemy!=null&&!Attacking)
                 AttackAnimation();
 
         waitTime += Time.deltaTime;
@@ -154,12 +157,20 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
         if (detectedEnemy != null)
         {
             int f = damage.Random;
-            detectedEnemy.SendMessage("GetHit", (float)f);
+            try
+            {
+                detectedEnemy.SendMessage("GetHit", (float)f);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
             Instantiate(DmgPopUp, detectedEnemy.transform.position, Quaternion.identity).GetComponent<DmgPopUpBehaivior>().RePaint(f.ToString(), DmgPopUpBehaivior.AttackType.playerAttack, detectedEnemy.gameObject.transform.position);
         }
         waitTime = 0;
         Attacking = false;
-        print(gameObject.name + " Attack");
+
 
     }
 

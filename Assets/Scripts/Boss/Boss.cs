@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using CodeStage.AntiCheat.ObscuredTypes;
-using System;
 
 public class Boss : MainBehavior,IHitable,IAttackable {
     public BossAction[] Actions;
@@ -19,13 +18,12 @@ public class Boss : MainBehavior,IHitable,IAttackable {
     Transform aimer;
     LevelController LC;
     Collider2D[] temp;
-    LayerMask charactersLayer;
     Animator anim;
     Vector2 ChoosedDirection;
 
     [SerializeField]
     bool right;
-    bool Counter;
+    bool Counter=true;
     bool InArea;
     float angle,time;
     int waitTime;
@@ -35,10 +33,9 @@ public class Boss : MainBehavior,IHitable,IAttackable {
         Sorting();
         RenewData();
         anim = GetComponent<Animator>();
-        charactersLayer = 1 << 10;
         waitTime = attackCoolDown.Random;
         LC = LevelController.instance;
-        aimer = GameObject.FindWithTag("Aim").transform;
+        aimer = GameObject.FindWithTag("Leader").transform;
     }
 	
 
@@ -77,19 +74,15 @@ public class Boss : MainBehavior,IHitable,IAttackable {
 
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-            ChooseAction();
-            temp = Physics2D.OverlapCircleAll(transform.position, range * 1.5f, charactersLayer);
+        
+            temp = Physics2D.OverlapCircleAll(transform.position, range * 1.5f, MainBehavior.CharacterLayer);
         if (temp.Length > 0)
         {
             time += Time.deltaTime;
             if (time >= waitTime)
                 ChooseAction();
         }
-        else
-        {
-            time = 0;
-        }
+        
     }
 
     void Sorting()
@@ -116,25 +109,41 @@ public class Boss : MainBehavior,IHitable,IAttackable {
             temp += Actions[i].chance;
             if (dice < temp)
             {
+                int a = Random.Range(0, 101);
+                if (a <= 30)
+                    Flip();
                 anim.SetTrigger(Actions[i].ActionName);
+                Counter = false;
                 break;
             }
         }
 
     }
+    void Flip()
+    {
+
+        Vector3 aa = transform.localScale;
+        aa.x *= -1;
+        transform.localScale = aa;
+        right = !right;
+    }
 
     public virtual void Splash()
     {
-        Collider2D[] temp = Physics2D.OverlapCircleAll(transform.position, range,charactersLayer);
+        Collider2D[] temp = Physics2D.OverlapCircleAll(transform.position, range, MainBehavior.CharacterLayer);
         foreach (var item in temp)
         {
-            item.SendMessage("GetHit", damage);
+            item.SendMessage("GetHit",(float) damage);
         }
         Counter = true;
+        waitTime = attackCoolDown.Random;
+        time = 0;
     }
     public  void ChooseRandomDirection()
     {
         Vector2 dir = target.transform.position - LineHitter.transform.position;
+
+
          angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         angle -= 90;
         LineHitter.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
@@ -143,12 +152,20 @@ public class Boss : MainBehavior,IHitable,IAttackable {
 
         ChoosedDirection = new Vector2(dir.x > 0 ? 1 : -1, dir.y > 0 ? 1 : -1);
 
-        
-        
+        if (ChoosedDirection.x > 0 && !right)
+        {
+            Flip();
+        }
+        else if (ChoosedDirection.x < 0 && right)
+        {
+            Flip();
+
+        }
+
     }
     public virtual void AttackDirection()
     {
-        temp = Physics2D.OverlapBoxAll(transform.position, new Vector2(1, range * 2),angle, charactersLayer);
+        temp = Physics2D.OverlapBoxAll(transform.position, new Vector2(1, range * 2),angle, MainBehavior.CharacterLayer);
         foreach (var item in temp)
         {
             Vector2 dir = item.transform.position - transform.position;
@@ -156,19 +173,17 @@ public class Boss : MainBehavior,IHitable,IAttackable {
             if (t == ChoosedDirection)
             {
                 dir.Normalize();
-                print(item.gameObject.name);
+                item.SendMessage("GetHit", (float)damage);
+
                 item.GetComponent<Rigidbody2D>().AddForce(dir *100);
             }
         }
         Counter = true;
+        waitTime = attackCoolDown.Random;
+        time = 0;
+
     }
-    public void Flip()
-    {
-        Vector3 t = transform.localScale;
-        t.x *=-1;
-        right = !right;
-        transform.localScale = t;
-    }
+
     void OnDrawGizmos()
     {
        /* Gizmos.color = Color.red;
@@ -179,12 +194,14 @@ public class Boss : MainBehavior,IHitable,IAttackable {
 
     public virtual void GetHit(float dmg)
     {
-        hitPoint -=(int) dmg;
-        if (hitPoint <= 0)
-        {
-            hitPoint = 0;
-            Die();
-        }
+        
+            hitPoint -= (int)dmg;
+            if (hitPoint <= 0)
+            {
+                hitPoint = 0;
+                Die();
+            }
+        
     }
 
     public virtual void Die()
@@ -205,7 +222,6 @@ public class Boss : MainBehavior,IHitable,IAttackable {
 
     public void AttackAllower()
     {
-        throw new NotImplementedException();
     }
 }
 

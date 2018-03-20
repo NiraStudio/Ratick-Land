@@ -63,8 +63,8 @@ public class GamePlayInput : MonoBehaviour {
             t.x += Direction.x * (JS.speed * speed) * Time.deltaTime;
             t.y += Direction.y * (JS.speed * speed) * Time.deltaTime;
             aimer.transform.position = t;
-        }
-
+        }else
+        aimer.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         #endregion
     }
     void JoyStickTurnOn(Vector2 pos)

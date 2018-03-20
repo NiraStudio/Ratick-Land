@@ -20,7 +20,7 @@ public class LevelController : MainBehavior
     public float ChanceToRespawnSecretMap;
 
     [Header("Map Parameters")]
-    public GameObject cage;
+    public GameObject cage,Boss;
     public GameObject[] Blocks,Maps;
     public GameObject SecretMap,wave;
     public IntRange BlockAmount;
@@ -34,6 +34,7 @@ public class LevelController : MainBehavior
     List<GameObject> currentWaves=new List<GameObject>();
     List<Vector2> freeSpots = new List<Vector2>();
     List<Vector2> BlockSpots = new List<Vector2>();
+    List<Vector2> BossSpots = new List<Vector2>();
     List<GameObject> characters=new List<GameObject>();
     SlotContainer sc = new SlotContainer();
     GameObject aimer;
@@ -82,6 +83,7 @@ public class LevelController : MainBehavior
 
         //Starting the game
         OpenScreen();
+        GameAnalyticsManager.SendCustomEvent("PlayGame");
     }
 
     // Update is called once per frame
@@ -203,9 +205,16 @@ public class LevelController : MainBehavior
 
         freeSpots = map.points(PointsType.Free);
         BlockSpots = map.points(PointsType.Block);
+        BossSpots = map.points(PointsType.Boss);
         startPos =map.startPoint.transform.position;
+        GameObject.FindWithTag("Aim").transform.position = startPos;
         map.DestroyGameObjects();
         MakeBlocks();
+        MakeBoss();
+    }
+    void MakeBoss()
+    {
+        Instantiate(Boss, BossSpots[Random.Range(0, BossSpots.Count)], Quaternion.identity);
     }
     void MakeBlocks()
     {
@@ -228,6 +237,7 @@ public class LevelController : MainBehavior
         GM.mainData.cardHolder.Remove(card.cardType);
         GM.SlotData.card = null;
         GM.SaveMainData();
+        GameAnalyticsManager.SendCustomEvent(card.cardType.ToString());
     }
     Vector2 giveMapPos()
     {
@@ -256,15 +266,28 @@ public class LevelController : MainBehavior
         StartCoroutine(SpawnWaves());
 
     }
-    public void FinishTheGame()
+    public void FinishTheGame(string State)
     {
-        gameState = GamePlayState.Finish;
-        print("GameFinished");
-        GM.ChangeCoin(coinAmount);
-        GoToScene("MainMenu");
+        if (gameState != GamePlayState.Finish)
+        {
+            gameState = GamePlayState.Finish;
+            GM.ChangeCoin(coinAmount);
+            if (PlayerPrefs.GetInt("Tutorial") == 1)
+            {
+                PlayerPrefs.SetInt("Tutorial", 2);
 
+            }
+
+            InformationPanel.Instance.OpenFinshPanel(State, coinAmount, () =>
+              {
+                  GoToScene("MainMenu");
+              });
+        }
     }
-
+    public void RemoveWave(GameObject go)
+    {
+        currentWaves.Remove(go);
+    }
 
 
     public void ChangeCoin(int Amount)

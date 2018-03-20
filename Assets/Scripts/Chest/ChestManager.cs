@@ -32,6 +32,7 @@ public class ChestManager : MonoBehaviour {
                 item.chest.gameObject.SetActive(true);
                 BTN.onClick.RemoveAllListeners();
                 BTN.onClick.AddListener(item.chest.Animation.buttonDown);
+                GameAnalyticsManager.SendCustomEvent(Name);
             }
         }
     }

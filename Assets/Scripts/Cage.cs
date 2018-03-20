@@ -5,12 +5,14 @@ using CodeStage.AntiCheat.ObscuredTypes;
 
 public class Cage : MonoBehaviour, IHitable
 {
+    public GameObject Poof;
     public float hitPoint;
     public CharacterDataBase data;
     public GameObject Wave;
     public Transform[] Poses;
     List<GameObject> prisoners=new List<GameObject>();
 
+    GameObject p;
     KeyManager KM;
     SpriteRenderer sr;
     // Use this for initialization
@@ -28,7 +30,6 @@ public class Cage : MonoBehaviour, IHitable
         }
         sr = GetComponent<SpriteRenderer>();
         KM = KeyManager.Instance;
-        
     }
 
     // Update is called once per frame
@@ -69,6 +70,7 @@ public class Cage : MonoBehaviour, IHitable
         }
         LevelController.instance.MakeCage();
         KM.ChangeKeyCount(-1);
+        Instantiate(Poof, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }

@@ -4,15 +4,21 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class MainMenuManager : MainBehavior {
+    public static MainMenuManager Instance;
+
     public MainMenuCamera MMC;
     public UnityEngine.Events.UnityEvent PreGamePlay;
     GameManager GM;
-    
+    void Awake()
+    {
+        Instance = this;
+    }
     float coinTemp,lerp;
 	// Use this for initialization
 	void Start () {
 
         GM = GameManager.instance;
+        if(!GM.sfx.IsPlaying("MainMenu"))
         GM.sfx.PlaySound("MainMenu");
         if (PlayerPrefs.GetFloat("BossKilled") == 1)
         {
@@ -23,6 +29,8 @@ public class MainMenuManager : MainBehavior {
             }, "OK");
             
         }
+        if(PlayerPrefs.GetInt("Tutorial")==1)
+        TutorialManager.Instance.OpenStep("Tut_1");
         OpenScreen();
 	}
 

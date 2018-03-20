@@ -459,6 +459,7 @@ GameObject:
   - component: {fileID: 58568390306688872}
   - component: {fileID: 114537928860578804}
   - component: {fileID: 114417657993840194}
+  - component: {fileID: 114216276190660408}
   m_Layer: 0
   m_Name: Boar
   m_TagString: Untagged
@@ -530,7 +531,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1925284352126916}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.7500292, y: -0.4039839, z: 0}
+  m_LocalPosition: {x: 5.196174, y: -2.9614427, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4468287494184550}
@@ -898,8 +899,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 100
-  m_LinearDrag: 100
+  m_Mass: 50
+  m_LinearDrag: 50
   m_AngularDrag: 6.6
   m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: 4ed62c550975c3341a8648faf456ab66, type: 2}
@@ -1074,7 +1075,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 0.65985143
+  m_Length: 0.659852
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4546370403915028}
   m_AttachedIK: {fileID: 0}
@@ -1094,6 +1095,35 @@ MonoBehaviour:
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 0}
   m_AttachedIK: {fileID: 0}
+--- !u!114 &114216276190660408
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1925284352126916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcc213b486415254bad36c30bcbefd9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Manager: 0
+  sounds:
+  - ClipId: Attack
+    Clip: {fileID: 8300000, guid: 705cbac8a7d000644bfe99237d5313a9, type: 3}
+    loop: 0
+    PlayOnAwake: 0
+    Volume: 70
+    Pitch: 1
+    Sound3D: 0
+    Sound3DRange: 0
+  - ClipId: Sound
+    Clip: {fileID: 8300000, guid: 19287dccd13f25e4f963f844af06c5a8, type: 3}
+    loop: 0
+    PlayOnAwake: 0
+    Volume: 40
+    Pitch: 1
+    Sound3D: 0
+    Sound3DRange: 0
 --- !u!114 &114252854371713798
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1106,7 +1136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 1.1613792
+  m_Length: 1.1613793
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4317438005171040}
   m_AttachedIK: {fileID: 0}
@@ -1127,8 +1157,8 @@ MonoBehaviour:
     m_Max: 5
   centerPoint: {fileID: 1081606450023090}
   Gurdian: 0
+  right: 1
   coinObject: {fileID: 0}
-  Father: {fileID: 0}
 --- !u!114 &114336591146946396
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1141,7 +1171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 0.67240787
+  m_Length: 0.67240804
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4395383438596306}
   m_AttachedIK: {fileID: 0}
@@ -1179,7 +1209,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 1.5544217
+  m_Length: 1.5544214
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4132662492895844}
   m_AttachedIK: {fileID: 0}
@@ -1195,7 +1225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 0.8816667
+  m_Length: 0.88166744
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4598028348858902}
   m_AttachedIK: {fileID: 0}
@@ -1244,7 +1274,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 1.6449351
+  m_Length: 1.6449345
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4544638291907160}
   m_AttachedIK: {fileID: 0}
@@ -1296,7 +1326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 0.65401536
+  m_Length: 0.6540161
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4802909821800520}
   m_AttachedIK: {fileID: 0}
@@ -1312,7 +1342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 1.8754071
+  m_Length: 1.8754067
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4821237075663446}
   m_AttachedIK: {fileID: 0}
@@ -1350,7 +1380,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 0.68322
+  m_Length: 0.68322027
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4016692510238882}
   m_AttachedIK: {fileID: 0}
@@ -1388,7 +1418,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 0.69718915
+  m_Length: 0.69719005
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4202798902830824}
   m_AttachedIK: {fileID: 0}
@@ -1765,8 +1795,8 @@ SpriteRenderer:
   m_SortingLayerID: -1652636569
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 8d1b9fa3502ed43429030729c3fbfc15, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.384}
+  m_Sprite: {fileID: 21300000, guid: 3d428f86eb77e0b4f94384b3fac58fd0, type: 3}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.384}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

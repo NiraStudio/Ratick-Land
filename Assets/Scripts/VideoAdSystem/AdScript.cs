@@ -10,7 +10,7 @@ public class AdScript :MainBehavior
     public string AdName;
     public string ZoneID;
     public AdByType[] adsType = new AdByType[System.Enum.GetValues(typeof(RewardType)).Length];
-    public bool HaveAd;
+    public bool HaveAd,GiveReward;
     public UnityEvent Extra;
     TapsellAd ad;
     RewardManager RM;
@@ -90,10 +90,13 @@ public class AdScript :MainBehavior
         RewardInfo r=new RewardInfo();
         Tapsell.setRewardListener((TapsellAdFinishedResult result) =>
         {
-            r = GiveRandom();
-            RM.AddReward(r);
+            if (GiveReward)
+            {
+                r = GiveRandom();
+                RM.AddReward(r);
+                InformationPanel.Instance.OpenRewardPanel(r, null, "Awesome");
+            }
             Extra.Invoke();
-            InformationPanel.Instance.OpenRewardPanel(r, null, "Awesome");
             ad = null;
             HaveAd = false;
             findAd();

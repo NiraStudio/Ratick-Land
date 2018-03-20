@@ -70,6 +70,73 @@ public class InformationPanel : MonoBehaviour {
 
     }
 
+    public void OpenFinshPanel(string StateKey,int CointAmount ,UnityAction OkAction)
+    {
+        DeactiveAll();
+        LocalizedDynamicText t=new LocalizedDynamicText();
+        foreach (var item in Panels)
+        {
+            if (item.Type == InformationType.FinishPanel)
+            {
+                item.Panel.SetActive(true);
+                item.buttons[0].onClick.RemoveAllListeners();
+                if (OkAction != null)
+                    item.buttons[0].onClick.AddListener(OkAction);
+
+                Color c = new Color();
+                
+                switch (StateKey)
+                {
+                    case "Defeat":
+                        c = Color.red;
+                        break;
+
+                    case "Victory":
+                        c = Color.green;
+                        break;
+
+                    default:
+                        break;
+                }
+
+                item.Panel.transform.GetChild(0).GetComponent<Image>().color = item.Panel.transform.GetChild(1).GetComponent<Image>().color = c;
+                item.Panel.transform.GetChild(2).GetChild(0).GetComponent<LocalizedKeyText>().Key = StateKey;
+                t = item.text;
+                t.Number = "0";
+                item.buttons[0].onClick.AddListener(AnimationClose);
+            }
+        }
+        PanelAnimator.gameObject.SetActive(true);
+        PanelAnimator.SetTrigger("Open");
+        BackPanel.SetActive(true);
+        if (OkAction != null)
+        {
+            BackPanel.GetComponent<Button>().onClick.AddListener(OkAction);
+            BackPanel.GetComponent<Button>().onClick.AddListener(RestartBackPanel);
+        }
+        StartCoroutine(changeCoinText(t, CointAmount));
+    }
+    void RestartBackPanel()
+    {
+        BackPanel.GetComponent<Button>().onClick.RemoveAllListeners();
+        BackPanel.GetComponent<Button>().onClick.AddListener(AnimationClose);
+
+    }
+    IEnumerator changeCoinText(LocalizedDynamicText text, int amount)
+    {
+        yield return new WaitForSeconds(0.7f);
+        float coinTemp = 0;
+        float lerp = 0;
+        while (coinTemp < amount)
+        {
+            yield return null;
+            lerp += Time.deltaTime / 1;
+            coinTemp = Mathf.Lerp(coinTemp, amount, lerp);
+
+
+            text.Number = ((int)coinTemp).ToString();
+        }
+    }
     public void OpenADRewardPanel()
     {
         DeactiveAll();
@@ -117,5 +184,5 @@ public class InformationPanel : MonoBehaviour {
 }
 public enum InformationType
 {
-    Reward,Info,AdReward
+    Reward,Info,AdReward,FinishPanel
 }

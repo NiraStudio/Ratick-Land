@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class LeaderCharacter : Character {
 
+    public override void Start()
+    {
+        base.Start();
+        if (LevelController.instance == null)
+            DestroyImmediate(gameObject.GetComponent<AudioListener>());
+    }
+
     public override void Die()
     {
         base.Die();
-        controller.FinishTheGame();
+        controller.FinishTheGame("Defeat");
     }
     
 

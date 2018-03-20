@@ -196,7 +196,6 @@ GameObject:
   - component: {fileID: 175155986}
   - component: {fileID: 175155985}
   - component: {fileID: 175155984}
-  - component: {fileID: 175155983}
   - component: {fileID: 175155987}
   - component: {fileID: 175155988}
   m_Layer: 0
@@ -206,13 +205,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &175155983
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 175155982}
-  m_Enabled: 1
 --- !u!124 &175155984
 Behaviour:
   m_ObjectHideFlags: 0
@@ -1467,6 +1459,7 @@ GameObject:
   - component: {fileID: 1384633659}
   - component: {fileID: 1384633660}
   - component: {fileID: 1384633661}
+  - component: {fileID: 1384633662}
   m_Layer: 0
   m_Name: LevelManagers
   m_TagString: Untagged
@@ -1492,6 +1485,7 @@ MonoBehaviour:
   bgm: {fileID: 0}
   ChanceToRespawnSecretMap: 0
   cage: {fileID: 1599364267321120, guid: 32743f247c3b8eb47815eb7821e8771e, type: 2}
+  Boss: {fileID: 1931649566722250, guid: 128a60a972e32ba41b854120248f97f2, type: 2}
   Blocks:
   - {fileID: 1928222237716090, guid: e9bfa67723c30a54f8932ffd46e8fa7a, type: 2}
   - {fileID: 1571959274129214, guid: 936edea71fbcaa548be04f9fd471caf4, type: 2}
@@ -1593,14 +1587,18 @@ MonoBehaviour:
       PlayOnAwake: 0
       Volume: 100
       Pitch: 1
+      Sound3D: 0
+      Sound3DRange: 0
   - state: 1
     Clip:
       ClipId: Boss
       Clip: {fileID: 8300000, guid: 9585d9299f9515844808321b85e28be0, type: 3}
-      loop: 0
+      loop: 1
       PlayOnAwake: 0
       Volume: 100
       Pitch: 1
+      Sound3D: 0
+      Sound3DRange: 0
   BetweenSound:
     ClipId: 
     Clip: {fileID: 0}
@@ -1608,6 +1606,8 @@ MonoBehaviour:
     PlayOnAwake: 0
     Volume: 0
     Pitch: 1
+    Sound3D: 0
+    Sound3DRange: 100
   BetweenTime: 0
   Audio: {fileID: 0}
 --- !u!114 &1384633661
@@ -1629,6 +1629,15 @@ MonoBehaviour:
     PlayOnAwake: 0
     Volume: 100
     Pitch: 1
+    Sound3D: 0
+    Sound3DRange: 0
+--- !u!81 &1384633662
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1384633654}
+  m_Enabled: 1
 --- !u!1 &1405943326
 GameObject:
   m_ObjectHideFlags: 0
@@ -1809,8 +1818,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1447150330}
   - component: {fileID: 1447150329}
-  - component: {fileID: 1447150328}
   - component: {fileID: 1447150331}
+  - component: {fileID: 1447150328}
   m_Layer: 9
   m_Name: Aim
   m_TagString: Aim
@@ -1830,9 +1839,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.08091842}
   serializedVersion: 2
-  m_Radius: 0.08
+  m_Radius: 0.5036704
 --- !u!212 &1447150329
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1864,10 +1873,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1568586731
-  m_SortingLayer: 3
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_SortingLayerID: -1361207513
+  m_SortingLayer: 1
+  m_SortingOrder: 25
+  m_Sprite: {fileID: 21300000, guid: c90c2252a7ccfc24c92646eabd7bfc88, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1883,13 +1892,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1447150327}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.47031897, y: 0, z: 0, w: 0.88249654}
+  m_LocalPosition: {x: 1.02, y: 0.027, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -56.11, y: 0, z: 0}
 --- !u!50 &1447150331
 Rigidbody2D:
   serializedVersion: 4

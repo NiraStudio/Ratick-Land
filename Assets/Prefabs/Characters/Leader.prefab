@@ -154,6 +154,7 @@ GameObject:
   - component: {fileID: 58763957517877760}
   - component: {fileID: 114269553871638740}
   - component: {fileID: 114383027216727404}
+  - component: {fileID: 114266907920919988}
   m_Layer: 10
   m_Name: Leader
   m_TagString: Leader
@@ -1065,7 +1066,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1167308339814158}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 18.418, y: 0.013, z: 0}
+  m_LocalPosition: {x: 5.833101, y: -3.023618, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4015493307997088}
@@ -1146,8 +1147,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1171138480720360}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.013999939, y: -0.008000016, z: 0.00074333936}
-  m_LocalScale: {x: 1.28, y: 0.54, z: 1}
+  m_LocalPosition: {x: -0.0034, y: -0.008000016, z: 0.00074333936}
+  m_LocalScale: {x: 1.5319651, y: 0.54, z: 1}
   m_Children: []
   m_Father: {fileID: 4815947817265828}
   m_RootOrder: 13
@@ -1284,10 +1285,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 0.5890294
+  m_Length: 0.5890285
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4763149280661516}
-  m_AttachedIK: {fileID: 114694984920648250}
+  m_AttachedIK: {fileID: 0}
 --- !u!114 &114069358747019774
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1337,10 +1338,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 0.6009933
+  m_Length: 0.60099304
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4420050263648884}
-  m_AttachedIK: {fileID: 114884359225438070}
+  m_AttachedIK: {fileID: 0}
 --- !u!114 &114171087530043250
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1356,7 +1357,7 @@ MonoBehaviour:
   m_Length: 0.27
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 0}
-  m_AttachedIK: {fileID: 114661688901536314}
+  m_AttachedIK: {fileID: 0}
 --- !u!114 &114215337518280402
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1369,7 +1370,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 0.29681978
+  m_Length: 0.29682016
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4222595645858692}
   m_AttachedIK: {fileID: 0}
@@ -1385,7 +1386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 0.88000107
+  m_Length: 0.88000023
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4441287566737996}
   m_AttachedIK: {fileID: 0}
@@ -1401,7 +1402,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 0.03676468, g: 0.9202839, b: 1, a: 1}
-  m_Length: 0.969825
+  m_Length: 0.9698316
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4926464462056656}
   m_AttachedIK: {fileID: 0}
@@ -1439,6 +1440,27 @@ MonoBehaviour:
     targetPosition: {x: 18.416039, y: 0.0006800033, z: 0.01091766}
     iterations: 10
     damping: 0.8
+--- !u!114 &114266907920919988
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1167308339814158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcc213b486415254bad36c30bcbefd9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Manager: 0
+  sounds:
+  - ClipId: Attack
+    Clip: {fileID: 8300000, guid: 9aa0cb8e0d46c7942b94717440a96723, type: 3}
+    loop: 0
+    PlayOnAwake: 0
+    Volume: 85
+    Pitch: 1
+    Sound3D: 100
+    Sound3DRange: 100
 --- !u!114 &114269553871638740
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1480,10 +1502,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 0.29424873
+  m_Length: 0.29424936
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4785748217607338}
-  m_AttachedIK: {fileID: 114884359225438070}
+  m_AttachedIK: {fileID: 0}
 --- !u!114 &114300612280066496
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1516,7 +1538,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 0.85000515
+  m_Length: 0.85000217
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4559853787886398}
   m_AttachedIK: {fileID: 0}
@@ -1658,7 +1680,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 1.1900293
+  m_Length: 1.1900295
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4421139670524988}
   m_AttachedIK: {fileID: 0}
@@ -1721,7 +1743,7 @@ MonoBehaviour:
   m_Length: 0.39
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 0}
-  m_AttachedIK: {fileID: 114259652717015558}
+  m_AttachedIK: {fileID: 0}
 --- !u!114 &114585040722100418
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1734,10 +1756,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 0.28589767
+  m_Length: 0.28589725
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4708168648719938}
-  m_AttachedIK: {fileID: 114694984920648250}
+  m_AttachedIK: {fileID: 0}
 --- !u!114 &114590104784084984
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1750,7 +1772,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 0.29070157
+  m_Length: 0.29069903
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4372980294908002}
   m_AttachedIK: {fileID: 0}
@@ -1980,7 +2002,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 0.9485294, g: 0.07671931, b: 0.07671931, a: 1}
-  m_Length: 0.42695338
+  m_Length: 0.42695105
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4604289345946246}
   m_AttachedIK: {fileID: 0}
@@ -2453,8 +2475,8 @@ SpriteRenderer:
   m_SortingLayerID: -1652636569
   m_SortingLayer: 2
   m_SortingOrder: -7
-  m_Sprite: {fileID: 21300000, guid: 8d1b9fa3502ed43429030729c3fbfc15, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.434}
+  m_Sprite: {fileID: 21300000, guid: 3d428f86eb77e0b4f94384b3fac58fd0, type: 3}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.434}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

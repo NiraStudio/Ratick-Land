@@ -14,7 +14,7 @@ public class test : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if (Input.GetKeyDown(KeyCode.Space))
-            GiveRandomMoveDiretion();
+            InformationPanel.Instance.OpenFinshPanel("Victory", 500, null);
 	}
     public Vector2 GiveRandomMoveDiretion()
     {

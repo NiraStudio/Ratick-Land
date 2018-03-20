@@ -93,17 +93,15 @@ public class GameManager : MainBehavior
     {
         _mainData = new MainData();
         _currencyData = new CurrencyData();
-        mainData.characterInfos.Add(new characterInfo(2, 35, 0));
+        mainData.characterInfos.Add(new characterInfo(2, 5, 0));
         mainData.characterInfos.Add(new characterInfo(1, 1, 0));
-        mainData.characterInfos.Add(new characterInfo(3, 1, 0));
-        mainData.characterInfos.Add(new characterInfo(4, 1, 0));
-        mainData.characterInfos.Add(new characterInfo(5, 1, 0));
         _currencyData.Coins = 100;
         SaveCurrencyData();
         SaveMainData();
         PlayerPrefs.SetInt("FirstTime", 1);
         PlayerPrefs.SetInt("FirstBoss", 1);
         PlayerPrefs.SetInt("BossKilled", 0);
+        PlayerPrefs.SetInt("Tutorial", 1);
 
     }
 

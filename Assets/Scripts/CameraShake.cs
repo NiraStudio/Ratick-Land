@@ -10,6 +10,11 @@ public class CameraShake : MonoBehaviour {
 
     bool allow;
     float t;
+    void Awake()
+    {
+        Instance = this;
+    }
+
 	// Use this for initialization
 	void Start () {
         t = Duration;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DemoBoss : Boss {
-    public ParticleSystem SplashPS,DirectPs;
+    public ParticleSystem SplashPS, DirectPs;
 
     public override void Splash()
     {
@@ -20,9 +20,12 @@ public class DemoBoss : Boss {
     }
     public override void Die()
     {
-        if(PlayerPrefs.GetInt("FirstBoss")==1)
-        PlayerPrefs.SetInt("BossKilled", 1);
-        LevelController.instance.FinishTheGame();
+        if (PlayerPrefs.GetInt("FirstBoss") == 1)
+        {
+            PlayerPrefs.SetInt("BossKilled", 1);
+        }
+        LevelController.instance.FinishTheGame("Victory");
+        GameAnalyticsManager.SendCustomEvent("BossDefeated");
         base.Die();
     }
 }

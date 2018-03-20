@@ -30,7 +30,10 @@ public class ArrangeSceneManager : MainBehavior {
         if (GM.SlotData != null)
             RepaintArranges(GM.SlotData);
 
+
         OpenScreen();
+        if (PlayerPrefs.GetInt("Tutorial") == 1)
+            TutorialManager.Instance.OpenStep("Tut_3");
     }
 
     void Update()

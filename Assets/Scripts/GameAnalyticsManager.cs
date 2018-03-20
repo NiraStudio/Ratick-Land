@@ -27,5 +27,6 @@ public class GameAnalyticsManager : MonoBehaviour {
     public static void SendCustomEvent(string EventName)
     {
         GameAnalytics.NewDesignEvent(EventName);
+        
     }
 }

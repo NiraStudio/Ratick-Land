@@ -22,30 +22,31 @@ public class AdScriptEditor : Editor {
         GUILayout.Label("AD ZoneID:");
         t.ZoneID = EditorGUILayout.TextField(t.ZoneID);
 
-
         GUILayout.Space(20);
-
-        GUILayout.BeginVertical();
-        for (int i = 0; i < t.adsType.Length; i++)
+        t.GiveReward= EditorGUILayout.ToggleLeft("GiveReward", t.GiveReward , GUILayout.Width(150));
+        GUILayout.Space(20);
+        if (t.GiveReward)
         {
-            GUILayout.BeginHorizontal("Box");
-            t.adsType[i].type = (RewardType)i;
-            GUILayout.Label(t.adsType[i].type.ToString(),GUILayout.Width(100));
+            GUILayout.BeginVertical();
+            for (int i = 0; i < t.adsType.Length; i++)
+            {
+                GUILayout.BeginHorizontal("Box");
+                t.adsType[i].type = (RewardType)i;
+                GUILayout.Label(t.adsType[i].type.ToString(), GUILayout.Width(100));
 
-            t.adsType[i].Allow= EditorGUILayout.ToggleLeft("", t.adsType[i].Allow, GUILayout.Width(50));
+                t.adsType[i].Allow = EditorGUILayout.ToggleLeft("", t.adsType[i].Allow, GUILayout.Width(50));
 
-            GUILayout.Label("Min Amount");
-            t.adsType[i].Amount.m_Min = EditorGUILayout.IntField(t.adsType[i].Amount.m_Min);
-            GUILayout.Label("Max Amount");
-            t.adsType[i].Amount.m_Max = EditorGUILayout.IntField(t.adsType[i].Amount.m_Max);
-            GUILayout.EndHorizontal();
+                GUILayout.Label("Min Amount");
+                t.adsType[i].Amount.m_Min = EditorGUILayout.IntField(t.adsType[i].Amount.m_Min);
+                GUILayout.Label("Max Amount");
+                t.adsType[i].Amount.m_Max = EditorGUILayout.IntField(t.adsType[i].Amount.m_Max);
+                GUILayout.EndHorizontal();
+            }
+
+            GUILayout.EndVertical();
+
         }
-
-        GUILayout.EndVertical();
-
-
         GUILayout.Space(20);
-
 
         GUILayout.Label("Extra Method");
 

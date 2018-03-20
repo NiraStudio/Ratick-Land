@@ -99,10 +99,11 @@ public class BGM : MonoBehaviour {
                 Audio = gameObject.AddComponent<AudioSource>();
 
         }
-        print(s.Clip.name);
         Audio.clip = s.Clip;
         Audio.volume = s.Volume;
         Audio.pitch = s.Pitch;
+        Audio.loop = s.loop;
+        Audio.playOnAwake = s.PlayOnAwake;
     }
     [System.Serializable]
     public class SoundByState{

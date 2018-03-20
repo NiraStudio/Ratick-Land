@@ -44,7 +44,10 @@ public class SFX : MonoBehaviour
             t.volume = sounds[i].Volume / 100;
             t.pitch = sounds[i].Pitch ;
             t.loop = sounds[i].loop;
+            t.spatialBlend = sounds[i].Sound3D/100;
             t.playOnAwake = sounds[i].PlayOnAwake;
+            t.minDistance = 0; t.maxDistance = sounds[i].Sound3DRange;
+            t.rolloffMode = AudioRolloffMode.Linear;
             audioSources[i] = t;
         }
         ready = true;
@@ -61,7 +64,7 @@ public class SFX : MonoBehaviour
             if (sounds[i].ClipId == ID)
             {
                 audioSources[i].Play();
-                print("Played "+ID);
+
                 break;
             }
 
@@ -81,6 +84,21 @@ public class SFX : MonoBehaviour
             }
 
         }
+    }
+    public bool IsPlaying(string ID)
+    {
+        if (!checkForID(ID))
+        { return false; }
+
+        for (int i = 0; i < sounds.Length; i++)
+        {
+            if (sounds[i].ClipId == ID)
+            {
+                return audioSources[i].isPlaying;
+            }
+
+        }
+        return false;
     }
     public void UnPauseSound(string ID)
     {
@@ -193,10 +211,15 @@ public class Sound
     public bool loop,PlayOnAwake;
     [Range(0, 100)]
 
-    public float Volume;
+    public float Volume=100;
 
     [Range(-3, 3)]
     public float Pitch=1;
+
+    [Range(0, 100)]
+    public float Sound3D = 0;
+    [Range(0, 100)]
+    public float Sound3DRange = 100;
 
 
 

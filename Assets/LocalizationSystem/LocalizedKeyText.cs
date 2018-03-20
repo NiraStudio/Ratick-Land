@@ -11,7 +11,7 @@ namespace Alpha.Localization
         [SerializeField]
         string key;
         public RtlText Text;
-
+        public bool DefultSize;
         public string Key
         {
             set
@@ -22,13 +22,14 @@ namespace Alpha.Localization
 
         LocalizationManager LM;
         bool Allow;
+        int a;
         // Use this for initialization
-        IEnumerator Start()
+        void Start()
         {
-            yield return new WaitUntil(() => LocalizationManager.Instance.GetIsReady);
             LM = LocalizationManager.Instance;
             Text = GetComponent<RtlText>();
-            Text.text = LM.GetLocalizationValue(key);
+            if (!string.IsNullOrEmpty(key))
+                Text.text = LM.GetLocalizationValue(key);
 
             Allow = true;
             Text.font = LM.Font;
@@ -38,7 +39,20 @@ namespace Alpha.Localization
         {
             if (!Allow)
                 return;
+
+
             Text.text = LM.GetLocalizationValue(key);
+            if(DefultSize)
+            switch (LM.LanguageCode)
+            {
+                case Language.EN:
+                    Text.resizeTextMaxSize = 20;
+                    break;
+                case Language.FA:
+                    Text.resizeTextMaxSize = 25;
+
+                    break;
+            }
         }
 
         void Reset()
@@ -59,6 +73,7 @@ namespace Alpha.Localization
             Text.alignment = TextAnchor.MiddleCenter;
             
         }
-        
+       
+
     }
 }

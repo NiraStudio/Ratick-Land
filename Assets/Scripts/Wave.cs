@@ -72,7 +72,6 @@ public class Wave : MonoBehaviour {
             Vector3 t = Random.insideUnitCircle * 0.2f;
             GameObject g =LeanPool.Spawn(  currentEnemies[Random.Range(0, currentEnemies.Count)], transform.position + t, Quaternion.identity);
             g.GetComponent<Enemy>().Gurdian = Gurdian;
-            g.GetComponent<Enemy>().Father = this;
             g.transform.SetParent(transform);
             a += g.GetComponent<Enemy>().data.PowerRate;
             SpawnedEnemies.Add(g);
@@ -87,11 +86,14 @@ public class Wave : MonoBehaviour {
 
         return answer;
     }
-    public void Decrease()
+    public void Update()
     {
-        enemyNumber -= 1;
-        if (enemyNumber <= 0)
+        if (transform.childCount <= 0)
+        {
+            LC.RemoveWave(gameObject);
+            print("wave destroyed");
             Destroy(gameObject);
+        }
     }
     
     

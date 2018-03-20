@@ -7,7 +7,19 @@ namespace Alpha.Localization
     public class LocalizationData
     {
 
-        public LocalizationItem[] Data=new LocalizationItem[0];
+        public List<LocalizationItem> Data = new List<LocalizationItem>();
+
+        public void Remove(string Key)
+        {
+            foreach (var item in Data)
+            {
+                if(item.Key==Key)
+                {
+                    Data.Remove(item);
+                    break;
+                }
+            }
+        }
     }
     [System.Serializable]
     public class LocalizationItem
