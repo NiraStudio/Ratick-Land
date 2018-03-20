@@ -229,6 +229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skinName: Normal
+  Icon: {fileID: 0}
   Attributes: []
   Price:
     Amount: 0
@@ -248,6 +249,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skinName: Hat
+  Icon: {fileID: 0}
   Attributes: []
   Price:
     Amount: 0
@@ -267,6 +269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skinName: Sword
+  Icon: {fileID: 0}
   Attributes: []
   Price:
     Amount: 0
@@ -447,14 +450,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 652c2e554dc6e6d419c6d1f28a6fe75d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  e:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
+  aaa: 0
   target: {fileID: 0}
   Bullet: {fileID: 0}
   s: {fileID: 0}
+  skins: []
+  skissssns: []
 --- !u!1 &925857787
 GameObject:
   m_ObjectHideFlags: 0
@@ -497,6 +498,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skinName: 
+  Icon: {fileID: 0}
   Attributes: []
   Price:
     Amount: 0
@@ -513,7 +515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 532974b07abe0a8429e5a80fd72d743e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skins: []
+  DB: []
 --- !u!1001 &1208184897
 Prefab:
   m_ObjectHideFlags: 0
@@ -1092,6 +1094,19 @@ Prefab:
       objectReference: {fileID: 2077838096}
     - target: {fileID: 1149832040230206, guid: c97bbd7ba356f59408fdc7ac4d5f112f, type: 2}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1816366025768292, guid: c97bbd7ba356f59408fdc7ac4d5f112f, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1198142971771136, guid: c97bbd7ba356f59408fdc7ac4d5f112f, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212839737460123594, guid: c97bbd7ba356f59408fdc7ac4d5f112f,
+        type: 2}
+      propertyPath: m_Color.a
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1570,4 +1585,5 @@ MonoBehaviour:
   aimer: {fileID: 1361086266}
   JS: {fileID: 1551935477}
   speed: 6
+  Direction: {x: 0, y: 0}
   Move: 0

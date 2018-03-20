@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MainBehavior : MonoBehaviour
 {
-    public static LayerMask CharacterLayer = 1 << 10, EnemyLayer = 1 << 8, WallLayer = 1 << 11, BlocksLayer = 1 << 12, TargetLayer = 1 << 9;
+    public static LayerMask CharacterLayer = 1 << 10, EnemyLayer = 1 << 8, WallLayer = 1 << 11, BlocksLayer = 1 << 12, TargetLayer = 1 << 9,LeaderLayer=1<<13;
 
     string PreviousScene;
    public void GoPreviousScene()

@@ -8,7 +8,11 @@ public class SFX : MonoBehaviour
     public bool Manager;
 
     public Sound[] sounds;
-
+    public bool IsReady
+    {
+        get { return ready; }
+    }
+    bool ready;
     AudioSource[] audioSources;
     #region Singleton
     void Awake()
@@ -38,10 +42,12 @@ public class SFX : MonoBehaviour
             t = gameObject.AddComponent<AudioSource>();
             t.clip = sounds[i].Clip;
             t.volume = sounds[i].Volume / 100;
-            t.pitch = sounds[i].Pitch / 300;
+            t.pitch = sounds[i].Pitch ;
+            t.loop = sounds[i].loop;
+            t.playOnAwake = sounds[i].PlayOnAwake;
             audioSources[i] = t;
         }
-
+        ready = true;
     }
 
     // Update is called once per frame
@@ -55,11 +61,43 @@ public class SFX : MonoBehaviour
             if (sounds[i].ClipId == ID)
             {
                 audioSources[i].Play();
+                print("Played "+ID);
                 break;
             }
 
         }
     }
+    public void PauseSound(string ID)
+    {
+        if (!checkForID(ID))
+        { return; }
+
+        for (int i = 0; i < sounds.Length; i++)
+        {
+            if (sounds[i].ClipId == ID)
+            {
+                audioSources[i].Pause();
+                break;
+            }
+
+        }
+    }
+    public void UnPauseSound(string ID)
+    {
+        if (!checkForID(ID))
+        { return; }
+
+        for (int i = 0; i < sounds.Length; i++)
+        {
+            if (sounds[i].ClipId == ID)
+            {
+                audioSources[i].UnPause();
+                break;
+            }
+
+        }
+    }
+
     public void StopSound(string ID)
     {
         if (!checkForID(ID))
@@ -152,12 +190,13 @@ public class Sound
 {
     public string ClipId;
     public AudioClip Clip;
+    public bool loop,PlayOnAwake;
     [Range(0, 100)]
 
     public float Volume;
 
-    [Range(-300, 300)]
-    public float Pitch;
+    [Range(-3, 3)]
+    public float Pitch=1;
 
 
 

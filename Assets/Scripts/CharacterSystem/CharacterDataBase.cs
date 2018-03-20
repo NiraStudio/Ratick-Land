@@ -86,7 +86,7 @@ public class CharacterDataBase : ScriptableObject {
 
         return d;
     }
-    void setDirty()
+    public void setDirty()
     {
 #if UNITY_EDITOR
         UnityEditor.EditorUtility.SetDirty(this);

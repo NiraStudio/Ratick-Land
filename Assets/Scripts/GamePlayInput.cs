@@ -16,13 +16,15 @@ public class GamePlayInput : MonoBehaviour {
     public GameObject aimer;
     public JoyStick JS;
     public float speed;
-
-    public bool Move;
+    public Vector2 Direction;
+    public bool Move=true;
     Vector2 t;
     Touch[] touches;
+    Rigidbody2D leaderRG;
+    SFX sfx;
 	// Use this for initialization
 	void Start () {
-		
+        sfx = GetComponent<SFX>();
 	}
 	
 	// Update is called once per frame
@@ -53,16 +55,16 @@ public class GamePlayInput : MonoBehaviour {
 
 
         //Aimer Moves
-        #region AimerMoves
+        #region LeaderMove
+        Direction = JS.direction;
         if (Move)
         {
-
             t = aimer.transform.position;
-            t.x += JS.direction.x * (JS.speed* speed) * Time.deltaTime;
-            t.y += JS.direction.y * (JS.speed * speed) * Time.deltaTime;
+            t.x += Direction.x * (JS.speed * speed) * Time.deltaTime;
+            t.y += Direction.y * (JS.speed * speed) * Time.deltaTime;
             aimer.transform.position = t;
-
         }
+
         #endregion
     }
     void JoyStickTurnOn(Vector2 pos)
@@ -70,10 +72,15 @@ public class GamePlayInput : MonoBehaviour {
         JS.gameObject.SetActive(true);
         JS.transform.position = pos;
         Move = true;
+        sfx.PlaySound("Walking");
+
     }
     void JoyStickTurnOff()
     {
         JS.gameObject.SetActive(false);
         Move = false;
+        sfx.StopSound("Walking");
+
     }
+
 }

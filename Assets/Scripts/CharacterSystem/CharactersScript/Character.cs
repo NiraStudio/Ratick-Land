@@ -12,7 +12,7 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
     public GameObject CenterPoint;
     public bool right;
     protected SkinManager skinManager;
-    protected GameObject aimer;
+    protected GameObject Aimer;
     protected LevelController controller;
     protected GamePlayInput GPI;
     protected Rigidbody2D rg;
@@ -28,17 +28,18 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
     protected ObscuredFloat attackRange;
     protected Collider2D detectedEnemy;
     protected bool Attacking;
-
+    protected bool isLeader=false;
+    protected GameObject DmgPopUp;
     public int HP
     {
         get { return (int) hitPoint; }
     }
 
-    float waitTime;
+    protected float waitTime;
     Vector2 t, tt;
     protected bool free;
     float MaxHp;
-
+    CharacterMoveState situation;
     public void Awake()
     {
         controller = LevelController.instance;
@@ -48,87 +49,79 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
             this.enabled = false;
             return;
         }
+        DmgPopUp = Resources.Load("DmgPopUp", typeof(GameObject)) as GameObject;
+
         RenewData();
         UpgradeTheCharacter(GameManager.instance.CharacterLevel(data.id));
         
     }
     public virtual void Start()
     {
-        
 
-        aimer = GPI.aimer;
+        Aimer = GameObject.FindWithTag("Aim");
         rg = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
         skinManager = GetComponent<SkinManager>();
-       // sr.sortingOrder = IsoMetricHandler.giveSortingOrderNumber(transform.position.y);
-        IsoMetricHandler.ChangeByTransform(transform);
-       // anim.GetBehaviour<AttackingStateMachine>().OnExit.AddListener(AttackAllower);
-
+        speed = speedMultiPly;
     }
-   
-    public virtual void FixedUpdate()
+
+    public virtual void Update()
     {
         
         if (!free)
             return;
 
+
+
         #region Move
+
+
         if (GPI.Move)
         {
-            speed = speedMultiPly;
-           
-            tt = (aimer.transform.position - transform.position);
+            rg.bodyType = RigidbodyType2D.Dynamic;
+
+            tt = (Aimer.transform.position - transform.position);
             tt.Normalize();
             tt = tt * speed;
-            if (Vector2.Distance(transform.position, aimer.transform.position) > 0.2f)
-                rg.velocity = tt;
-            else
-                rg.velocity = Vector2.zero;
-            
-            if (aimer.transform.position.x > transform.position.x && !right)
+            rg.velocity = tt;
+
+            if (tt.x > 0 && !right)
             {
                 Flip();
             }
-            else if (aimer.transform.position.x < transform.position.x && right)
+            else if (tt.x < 0 && right)
             {
                 Flip();
 
             }
+
         }
         else
-            rg.velocity = Vector3.zero;
+        {
+            rg.velocity = Vector2.zero;
+            rg.bodyType = RigidbodyType2D.Static;
+        }
 
         #endregion
 
         #region Attack
-        detectedEnemy = Physics2D.OverlapCircle(CenterPoint.transform.position, attackRange, MainBehavior.EnemyLayer);
-        if (detectedEnemy)
-        {
-            waitTime += Time.deltaTime;
+        detectedEnemy = Physics2D.OverlapCircle(CenterPoint.transform.position, attackRange, EnemyLayer);
 
             if (waitTime > attackSpeed && detectedEnemy&&!Attacking)
                 AttackAnimation();
-        }
-        else
-            waitTime = 0;
-       
 
-
-        ///ISOMETRIC
-       // sr.sortingOrder = IsoMetricHandler.giveSortingOrderNumber(transform.position.y);
-        IsoMetricHandler.ChangeByTransform(transform);
+        waitTime += Time.deltaTime;
 
 
         #endregion
 
         if (anim)
-            anim.SetBool("Move", GPI.Move);
+            anim.SetBool("Moving", GPI.Move);
     }
 
 
-
-
+   
     void RenewData()
     {
         speedMultiPly = data.speed;
@@ -138,7 +131,6 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
         damage.m_Max = data.damage * controller.WorldAttackMultiPly;
         damage.m_Min=(int)( data.damage-(data.damage*0.2f)) * controller.WorldAttackMultiPly;
         attackRange = data.attackRange;
-        MaxHp = hitPoint;
     }
 
     public void Release(bool state)
@@ -151,16 +143,24 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
     void Flip()
     {
 
-        sr.flipX = !sr.flipX;
+        Vector3 aa = transform.localScale;
+        aa.x *= -1;
+        transform.localScale = aa;
         right = !right;
     }
 
     public virtual void Attack()
     {
-        int f = damage.Random;
-        detectedEnemy.SendMessage("GetHit", f);
-        GameObject a = Resources.Load("DmgPopUp", typeof(GameObject)) as GameObject;
-        Instantiate(a, detectedEnemy.transform.position, Quaternion.identity).GetComponent<DmgPopUpBehaivior>().RePaint(f.ToString(), DmgPopUpBehaivior.AttackType.playerAttack);
+        if (detectedEnemy != null)
+        {
+            int f = damage.Random;
+            detectedEnemy.SendMessage("GetHit", (float)f);
+            Instantiate(DmgPopUp, detectedEnemy.transform.position, Quaternion.identity).GetComponent<DmgPopUpBehaivior>().RePaint(f.ToString(), DmgPopUpBehaivior.AttackType.playerAttack, detectedEnemy.gameObject.transform.position);
+        }
+        waitTime = 0;
+        Attacking = false;
+        print(gameObject.name + " Attack");
+
     }
 
     public virtual void GetHit(float dmg)
@@ -199,6 +199,8 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
             }
             
         }
+        MaxHp = hitPoint;
+
     }
 
     public void AttackAllower()
@@ -210,8 +212,7 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
     public virtual void AttackAnimation()
     {
         Attacking = true;
-        Attack();
-        //AttackAllower();
+        anim.SetTrigger("Attack");
     }
 
 
@@ -221,7 +222,7 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
 
 
 
-    void Reset()
+    public virtual void Reset()
     {
         GameObject a = new GameObject();
         a.transform.SetParent(transform);
@@ -235,7 +236,9 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
 
         if (gameObject.GetComponent<CircleCollider2D>() == null)
             gameObject.AddComponent<CircleCollider2D>();
+        GetComponent<IsoMetricHandler>().Center = gameObject;
 
+        GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
         /*Object s = Resources.Load("FirctionLess");
         rg.sharedMaterial =(PhysicsMaterial2D) s as PhysicsMaterial2D;*/
 
@@ -247,4 +250,8 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
         if (hitPoint > MaxHp)
             hitPoint = MaxHp;
     }
+}
+public enum CharacterMoveState
+{
+    InArea,Far
 }

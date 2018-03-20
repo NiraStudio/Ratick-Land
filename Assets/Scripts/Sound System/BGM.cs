@@ -19,7 +19,7 @@ public class BGM : MonoBehaviour {
     public float BetweenTime;
 
 
-    AudioSource Audio;
+    public AudioSource Audio;
 
 	// Use this for initialization
     #region Singleton
@@ -42,6 +42,7 @@ public class BGM : MonoBehaviour {
     void Start()
     {
         Audio = gameObject.AddComponent<AudioSource>();
+        Audio = GetComponent<AudioSource>();
     }
 
 
@@ -61,11 +62,27 @@ public class BGM : MonoBehaviour {
                 t = Sounds[i].Clip;
             }
         }
-
+        print(t.ClipId);
         return t;
     }
-
-
+    public void PlaySound(State state)
+    {
+        Sound a = soundByState(state);
+        ChangeAudio(a);
+        Audio.Play();
+    }
+    public void stopSound()
+    {
+        Audio.Stop();
+    }
+    public void ResumeSound()
+    {
+        Audio.UnPause();
+    }
+    public void pauseSound()
+    {
+        Audio.Pause();
+    }
 
     IEnumerator changeSong(State s)
     {
@@ -75,10 +92,19 @@ public class BGM : MonoBehaviour {
     }
     void ChangeAudio(Sound s)
     {
+        if(Audio==null)
+        {
+            Audio = GetComponent<AudioSource>();
+            if(Audio==null)
+                Audio = gameObject.AddComponent<AudioSource>();
+
+        }
+        print(s.Clip.name);
         Audio.clip = s.Clip;
         Audio.volume = s.Volume;
         Audio.pitch = s.Pitch;
     }
+    [System.Serializable]
     public class SoundByState{
         public State state;
         public Sound Clip;

@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 58298216782556954}
   - component: {fileID: 114538356124664474}
   - component: {fileID: 114540358205280898}
+  - component: {fileID: 114819731272432254}
   m_Layer: 10
   m_Name: MinionTest
   m_TagString: Untagged
@@ -134,7 +135,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1441858223127896}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7edc53f432c9db54998266d035f78519, type: 3}
   m_Name: 
@@ -175,6 +176,19 @@ MonoBehaviour:
     Amount: 100
     type: 0
   skinParts: []
+--- !u!114 &114819731272432254
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1441858223127896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 434909045d324084b926ac47be535753, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Static: 0
+  Center: {fileID: 1441858223127896}
 --- !u!114 &114831962449910160
 MonoBehaviour:
   m_ObjectHideFlags: 1

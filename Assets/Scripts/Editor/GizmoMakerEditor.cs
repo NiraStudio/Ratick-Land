@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(GizmoMaker))]
+[ExecuteInEditMode]
+
 public class GizmoMakerEditor : Editor {
     
     

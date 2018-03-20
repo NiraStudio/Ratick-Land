@@ -41,7 +41,7 @@ public class Cage : MonoBehaviour, IHitable
             Vector2 a = Random.insideUnitCircle * 0.3f;
             a.y = Random.Range(0.01f, 0.1f);
             a = (Vector2)transform.position + a;
-            GameObject g = Instantiate(data.GiveByID(1).prefab, a, Quaternion.identity);
+            GameObject g = Instantiate(data.GiveByID(2).prefab, a, Quaternion.identity);
             g.transform.SetParent(gameObject.transform);
             g.GetComponent<Character>().Release(false);
             prisoners.Add(g);

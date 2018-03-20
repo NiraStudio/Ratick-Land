@@ -20,4 +20,10 @@ public class StringDataBase : ScriptableObject {
         }
         return answer;
     }
+    public string GiveRandom
+    {
+        get{
+            return DB[Random.Range(0, DB.Count)];
+        }
+    }
 }

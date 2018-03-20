@@ -6,7 +6,7 @@ using Alpha.Localization;
 
 public class HUDManager : MonoBehaviour {
 
-    public LocalizedText CoinAmountText;
+    public LocalizedDynamicText CoinAmountText;
 
     GameManager GM;
     float coinTemp, lerp;
@@ -25,7 +25,6 @@ public class HUDManager : MonoBehaviour {
         else
             lerp = 0;
 
-        CoinAmountText.BeforeExtra = "X";
-        CoinAmountText.AfterExtra = ((int)coinTemp).ToString();
+        CoinAmountText.Number = ((int)coinTemp).ToString();
     }
 }

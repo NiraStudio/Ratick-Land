@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: Leader
   m_EditorClassIdentifier: 
   characterName: Leader
-  prefab: {fileID: 1493839835674680, guid: 3cc56b6f382b8a34ea323773f1c30a87, type: 2}
+  prefab: {fileID: 1167308339814158, guid: c6d92a737d2d2614985b2c0735d23289, type: 2}
   upgradePrice:
     Amount: 1000
     type: 0
@@ -21,17 +21,15 @@ MonoBehaviour:
   type: 2
   id: 1
   maxLevel: 5
-  icon: {fileID: 21300000, guid: 455e45fce47f3ab4a99b7f6ace2a083d, type: 3}
+  icon: {fileID: 21300000, guid: da9e8ba67e5e130418a27dfd8a3683e1, type: 3}
   speed: 3
   attackSpeed: 1
   hitPoint: 500
   attackRange: 0.7
-  damage:
-    m_Min: 30
-    m_Max: 35
+  damage: 40
   UpgradesForEachLevel:
-  - type: 2
+  - type: 0
     amount: 15
-  - type: 3
+  - type: 1
     amount: 70
   description: This is Leader XD

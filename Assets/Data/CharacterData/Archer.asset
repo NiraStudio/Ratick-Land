@@ -12,26 +12,24 @@ MonoBehaviour:
   m_Name: Archer
   m_EditorClassIdentifier: 
   characterName: Archer
-  prefab: {fileID: 0}
+  prefab: {fileID: 1029446364341838, guid: a8aacaab599606b41acd71519166937f, type: 2}
   upgradePrice:
     Amount: 600
     type: 0
   baseCardNeed: 2
   CardNeedIncrease: 4
-  type: 0
+  type: 1
   id: 4
   maxLevel: 5
-  icon: {fileID: 0}
+  icon: {fileID: 21300004, guid: 99624ae3b2552f341b0cef3ba5cb5339, type: 3}
   speed: 3
-  attackSpeed: 0
+  attackSpeed: 0.7
   hitPoint: 100
   attackRange: 1.5
-  damage:
-    m_Min: 25
-    m_Max: 20
+  damage: 25
   UpgradesForEachLevel:
-  - type: 2
-    amount: 15
   - type: 0
+    amount: 15
+  - type: 1
     amount: 20
   description: Archer

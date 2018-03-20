@@ -4,29 +4,27 @@ using UnityEngine;
 using Alpha.Localization;
 
 public class DmgPopUpBehaivior : MonoBehaviour {
-    public LocalizedText text;
+    public LocalizedDynamicText text;
     public Color EnemyAttackColor, PlayerAttackColor, PlayerHealColor;
-    public GameObject a;
     void Start()
     {
-        a = Resources.Load("DmgPopUp", typeof(GameObject)) as GameObject;
     }
-    public void RePaint(string text,AttackType attackType)
+    public void RePaint(string text,AttackType attackType,Vector2 position)
     {
-        this.text.After = text;
+        this.text.Number = text;
         switch (attackType)
         {
             case AttackType.playerAttack:
-                this.text.t.color = PlayerAttackColor;
+                this.text.Text.color = PlayerAttackColor;
                 break;
             case AttackType.EnemyAttack:
-                this.text.t.color = EnemyAttackColor;
+                this.text.Text.color = EnemyAttackColor;
                 break;
             case AttackType.PlayerHeal:
-                this.text.t.color = PlayerHealColor;
+                this.text.Text.color = PlayerHealColor;
                 break;
         }
-
+        gameObject.transform.position = position;
     }
     public enum AttackType
     {

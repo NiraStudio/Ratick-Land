@@ -25,7 +25,8 @@ public class GameManager : MainBehavior
 
     public CharacterDataBase characterDB;
     public SkinDataBase skinDB;
-
+    public StringDataBase RewardCodes;
+    public SFX sfx;
     //Datas
     [SerializeField]
     MainData _mainData = new MainData();
@@ -41,6 +42,7 @@ public class GameManager : MainBehavior
         get { return _mainData; }
     }
 
+    bool LoadFinished;
     // Use this for initialization
 
     void Awake()
@@ -60,18 +62,16 @@ public class GameManager : MainBehavior
             LoadCurrencyData();
             LoadMainData();
         }
-        yield return new WaitUntil(() => PreCheck());
-
+        StartCoroutine(PreCheck());
+        yield return new WaitUntil(() => LoadFinished);
+        yield return new WaitForSeconds(0.3f);
 
         SceneManager.LoadScene("MainMenu");
         
     }
 
     // Update is called once per frame
-    void Update()
-    {
 
-    }
     public void ChangeCoin(int Amount)
     {
         _currencyData.Coins += Amount;
@@ -93,12 +93,17 @@ public class GameManager : MainBehavior
     {
         _mainData = new MainData();
         _currencyData = new CurrencyData();
-        mainData.characterInfos.Add(new characterInfo(2, 5, 0));
+        mainData.characterInfos.Add(new characterInfo(2, 35, 0));
         mainData.characterInfos.Add(new characterInfo(1, 1, 0));
+        mainData.characterInfos.Add(new characterInfo(3, 1, 0));
+        mainData.characterInfos.Add(new characterInfo(4, 1, 0));
+        mainData.characterInfos.Add(new characterInfo(5, 1, 0));
         _currencyData.Coins = 100;
         SaveCurrencyData();
         SaveMainData();
         PlayerPrefs.SetInt("FirstTime", 1);
+        PlayerPrefs.SetInt("FirstBoss", 1);
+        PlayerPrefs.SetInt("BossKilled", 0);
 
     }
 
@@ -107,13 +112,17 @@ public class GameManager : MainBehavior
         SlotData.card = null;
         SaveMainData();
     }
-    public bool PreCheck()
+    public IEnumerator PreCheck()
     {
-        bool answer;
 
-        answer = LocalizationManager.Instance.GetIsReady;
+        yield return new WaitUntil(()=> LocalizationManager.Instance.GetIsReady);
+        yield return new WaitUntil(()=> sfx.IsReady);
 
-        return answer;
+        LoadFinished = true;
+    }
+    public string giveeRandomRewardCode()
+    {
+        return RewardCodes.GiveRandom;
     }
 
     #region Save/Load Methods

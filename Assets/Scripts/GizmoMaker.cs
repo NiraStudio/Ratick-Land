@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
+
 public class GizmoMaker : MonoBehaviour {
     public Transform Center;
     public Color lineColor = Color.white, CircleColor = Color.white, BoxColor = Color.white, CubeColor = Color.white, SphereColor = Color.white;

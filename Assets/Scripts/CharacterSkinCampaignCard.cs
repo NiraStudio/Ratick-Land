@@ -7,7 +7,7 @@ using Alpha.Localization;
 public class CharacterSkinCampaignCard : MonoBehaviour {
     public Image Icon;
     public Button ChooseBtn, GoToShopBtn;
-    public LocalizedText ChooseTxt, GoToShopTxt;
+    public LocalizedKeyText ChooseTxt, GoToShopTxt;
 
     void Start()
     {
@@ -32,14 +32,14 @@ public class CharacterSkinCampaignCard : MonoBehaviour {
             ChooseBtn.gameObject.SetActive(true);
             if (Choosed)
             {
-                ChooseTxt.key = "Choosed";
+                ChooseTxt.Key = "Choosed";
                 ChooseBtn.interactable = false;
             }
             else
             {
                 ChooseBtn.interactable = true; ;
 
-                ChooseTxt.key = "Choose";
+                ChooseTxt.Key = "Choose";
 
             }
 

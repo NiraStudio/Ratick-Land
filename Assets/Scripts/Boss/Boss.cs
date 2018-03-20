@@ -16,6 +16,7 @@ public class Boss : MainBehavior,IHitable,IAttackable {
     protected ObscuredInt hitPoint;
     protected ObscuredFloat range;
 
+    Transform aimer;
     LevelController LC;
     Collider2D[] temp;
     LayerMask charactersLayer;
@@ -25,6 +26,7 @@ public class Boss : MainBehavior,IHitable,IAttackable {
     [SerializeField]
     bool right;
     bool Counter;
+    bool InArea;
     float angle,time;
     int waitTime;
 	// Use this for initialization
@@ -34,11 +36,9 @@ public class Boss : MainBehavior,IHitable,IAttackable {
         RenewData();
         anim = GetComponent<Animator>();
         charactersLayer = 1 << 10;
-        Vector2 t= LineHitter.transform.localScale;
-        t.y = range ;
-        LineHitter.transform.localScale = t;
         waitTime = attackCoolDown.Random;
         LC = LevelController.instance;
+        aimer = GameObject.FindWithTag("Aim").transform;
     }
 	
 
@@ -53,13 +53,33 @@ public class Boss : MainBehavior,IHitable,IAttackable {
     // Update is called once per frame
     void Update()
     {
-        if (LC.gameState==GamePlayState.Finish)
-            return;
-        if (!Counter)
-            return;
+         if (LC.gameState==GamePlayState.Finish)
+              return;
+          if (!Counter)
+              return;
+              
 
+        if (Vector2.Distance(transform.position, aimer.position) < range)
+        {
+            if(!InArea)
+            {
+                LC.bgm.PlaySound(BGM.State.BossFight);
+                InArea = true;
+            }
+        }
+        else if (Vector2.Distance(transform.position, aimer.position) > range)
+        {
+            if (InArea)
+            {
+                LC.bgm.PlaySound(BGM.State.Main);
+                InArea = false;
+            }
 
-        temp = Physics2D.OverlapCircleAll(transform.position, range * 1.5f, charactersLayer);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            ChooseAction();
+            temp = Physics2D.OverlapCircleAll(transform.position, range * 1.5f, charactersLayer);
         if (temp.Length > 0)
         {
             time += Time.deltaTime;
@@ -84,7 +104,7 @@ public class Boss : MainBehavior,IHitable,IAttackable {
                     Actions[j + 1] = aa;
                 }
     }
-    public void ChooseAction()
+    public virtual void ChooseAction()
     {
         float dice;
         float temp;
@@ -103,7 +123,7 @@ public class Boss : MainBehavior,IHitable,IAttackable {
 
     }
 
-    public void Splash()
+    public virtual void Splash()
     {
         Collider2D[] temp = Physics2D.OverlapCircleAll(transform.position, range,charactersLayer);
         foreach (var item in temp)
@@ -111,9 +131,8 @@ public class Boss : MainBehavior,IHitable,IAttackable {
             item.SendMessage("GetHit", damage);
         }
         Counter = true;
-
     }
-    public void ChooseRandomDirection()
+    public  void ChooseRandomDirection()
     {
         Vector2 dir = target.transform.position - LineHitter.transform.position;
          angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
@@ -123,20 +142,23 @@ public class Boss : MainBehavior,IHitable,IAttackable {
         ChoosedDirection = dir;
 
         ChoosedDirection = new Vector2(dir.x > 0 ? 1 : -1, dir.y > 0 ? 1 : -1);
-        print(ChoosedDirection);
 
         
         
     }
-    public void AttackDirection()
+    public virtual void AttackDirection()
     {
-        temp = Physics2D.OverlapBoxAll(transform.position, new Vector2(0.5f, range * 2),angle, charactersLayer);
+        temp = Physics2D.OverlapBoxAll(transform.position, new Vector2(1, range * 2),angle, charactersLayer);
         foreach (var item in temp)
         {
             Vector2 dir = item.transform.position - transform.position;
             Vector2 t= new Vector2(dir.x > 0 ? 1 : -1, dir.y > 0 ? 1 : -1);
-            if(t==ChoosedDirection)
-            print(item.gameObject.name);
+            if (t == ChoosedDirection)
+            {
+                dir.Normalize();
+                print(item.gameObject.name);
+                item.GetComponent<Rigidbody2D>().AddForce(dir *100);
+            }
         }
         Counter = true;
     }
@@ -149,8 +171,8 @@ public class Boss : MainBehavior,IHitable,IAttackable {
     }
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        DrawCube(transform.position, Quaternion.Euler(0, 0, angle), new Vector2(0.5f, range * 2));
+       /* Gizmos.color = Color.red;
+        DrawCube(LineHitter.transform.position, Quaternion.Euler(0, 0, angle), new Vector2(1, range * 2));*/
     }
 
     

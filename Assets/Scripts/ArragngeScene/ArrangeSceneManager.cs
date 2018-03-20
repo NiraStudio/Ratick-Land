@@ -184,7 +184,7 @@ public class ArrangeSceneManager : MainBehavior {
             return;
         SaveSlot();
         GoToScene("PlayScene");
-        
+        GM.sfx.StopSound("MainMenu");
     }
     public void SaveSlot()
     {

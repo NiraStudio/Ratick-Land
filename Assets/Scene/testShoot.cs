@@ -4,11 +4,13 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class testShoot : MonoBehaviour {
-    public UnityEvent e;
+   // public EZObjectPools.EZObjectPool e;
+    public bool aaa;
     public GameObject target,Bullet;
     public Chest s;
     public Skin[] skins;
     public string[] skissssns;
+    GameObject GO;
     // Use this for initialization
     void Start () {
 
@@ -23,9 +25,8 @@ public class testShoot : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            RewardInfo a = RewardManager.Instance.MakeReward(RewardType.Coin, 10);
-
-            InformationPanel.Instance.OpenRewardPanel(a,null,"Get");
+           // e.TryGetNextObject(Vector3.zero, Quaternion.identity);
+            
 
         }
     }

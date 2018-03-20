@@ -6,12 +6,14 @@ public class LeaderCharacter : Character {
 
     public override void Die()
     {
-        controller.FinishTheGame();
         base.Die();
+        controller.FinishTheGame();
     }
-    public override void AttackAnimation()
+    
+
+    public override void Reset()
     {
-        anim.SetTrigger("Attack");
-        base.AttackAnimation();
+        base.Reset();
+        gameObject.layer = 13;
     }
 }

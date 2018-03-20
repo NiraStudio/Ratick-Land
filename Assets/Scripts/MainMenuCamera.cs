@@ -37,14 +37,14 @@ public class MainMenuCamera : MonoBehaviour
         if (!Allow)
             return;
 
-        if (state < 0 && CurrentState ==(CameraPos)0)
+        if (state < 0 && CurrentState == 0)
             return;
         if (state > 0 && CurrentState == (CameraPos)(System.Enum.GetValues(typeof(CameraPos)).Length - 1))
             return;
-        
-        if((CameraPos)(CurrentState + state)!=CameraPos.Sky)
-        CurrentState = (CameraPos)(CurrentState + state);
-        
+
+       /* if (CurrentState + state != CameraPos.Sky)*/
+            CurrentState = CurrentState + state;
+
         ChangeByCurrentState();
     }
 

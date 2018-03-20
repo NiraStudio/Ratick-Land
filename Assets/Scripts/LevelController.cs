@@ -15,7 +15,7 @@ public class LevelController : MainBehavior
     
     public int WorldCoinMultiply=1,WorldAttackMultiPly=1,maxWave;
 
-
+    public BGM bgm;
     [Range(0,100)]
     public float ChanceToRespawnSecretMap;
 
@@ -62,7 +62,8 @@ public class LevelController : MainBehavior
         //Camera
         cameraController = Camera.main.GetComponent<CameraController>();
         aimer = GetComponent<GamePlayInput>().aimer;
-
+        bgm = GetComponent<BGM>();
+        bgm.PlaySound(BGM.State.Main);
         //designing the map  (Blocks , map &...)
         designMap();
         sc = GM.SlotData;
@@ -86,8 +87,7 @@ public class LevelController : MainBehavior
     // Update is called once per frame
     void Update()
     {
-        if (characters.Count <= 0)
-            FinishTheGame();
+        
     }
 
 
@@ -142,6 +142,15 @@ public class LevelController : MainBehavior
     {
         GameObject p = new GameObject("Characters");
         p.transform.position = startPos;
+        if (sc.mainId >= 0)
+        {
+            CharacterData c = characterDataBase.GiveByID(sc.mainId);
+            GameObject a = Instantiate(c.prefab, p.transform);
+            a.transform.position = startPos;
+            a.GetComponent<Character>().Release(true);
+            AddCharacters(a);
+            GetComponent<LevelUIManager>().GetMain(a.GetComponent<Character>());
+        }
         foreach (var item in sc.Heros)
         {
             CharacterData c = characterDataBase.GiveByID(item);
@@ -173,17 +182,8 @@ public class LevelController : MainBehavior
 
         }
 
-        if (sc.mainId >= 0)
-        {
-            CharacterData c = characterDataBase.GiveByID(sc.mainId);
-            GameObject a = Instantiate(c.prefab, p.transform);
-            a.transform.position =startPos+ Random.insideUnitCircle * 3;
-            a.GetComponent<Character>().Release(true);
-            AddCharacters(a);
-            GetComponent<LevelUIManager>().GetMain(a.GetComponent<Character>());
+        
 
-        }
-        aimer.transform.position = startPos;
         
     }
     void designMap()
@@ -249,7 +249,6 @@ public class LevelController : MainBehavior
             while (currentWaves.Count < maxWave)
             {
                 GameObject g = Instantiate(wave.gameObject, giveMapPos(7), Quaternion.identity);
-                print("Hello");
                currentWaves.Add(g);
             }
         }
@@ -273,7 +272,7 @@ public class LevelController : MainBehavior
         coinAmount += Amount;
        
     }
-
+    
 
 
 

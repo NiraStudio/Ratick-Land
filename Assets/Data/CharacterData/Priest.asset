@@ -12,26 +12,24 @@ MonoBehaviour:
   m_Name: Priest
   m_EditorClassIdentifier: 
   characterName: Priest
-  prefab: {fileID: 0}
+  prefab: {fileID: 1822895421240230, guid: 1cda9e6ec931e1647b2f97527d4b3d01, type: 2}
   upgradePrice:
     Amount: 800
     type: 0
   baseCardNeed: 2
   CardNeedIncrease: 3
-  type: 1
+  type: 3
   id: 5
   maxLevel: 5
-  icon: {fileID: 0}
+  icon: {fileID: 21300002, guid: 549d0ead74e82af40819033611429340, type: 3}
   speed: 3
   attackSpeed: 1.5
   hitPoint: 110
   attackRange: 2
-  damage:
-    m_Min: 25
-    m_Max: 20
+  damage: 25
   UpgradesForEachLevel:
-  - type: 2
+  - type: 0
     amount: 10
-  - type: 3
+  - type: 1
     amount: 15
   description: Priest

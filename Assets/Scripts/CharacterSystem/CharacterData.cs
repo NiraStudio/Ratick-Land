@@ -40,7 +40,12 @@ public class CharacterData:ScriptableObject
     }
 
 
-
+    public void setDirty()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorUtility.SetDirty(this);
+#endif
+    }
 
     public enum Type
     {

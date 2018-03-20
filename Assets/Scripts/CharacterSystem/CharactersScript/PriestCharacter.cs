@@ -12,6 +12,11 @@ public class PriestCharacter : Character {
     }
     public override void Attack()
     {
-        leader.SendMessage("GetHeal", damage.Random);
+        float f = damage.Random;
+        leader.SendMessage("GetHeal", f);
+        Instantiate(DmgPopUp, null).GetComponent<DmgPopUpBehaivior>().RePaint(((int)f).ToString(),DmgPopUpBehaivior.AttackType.PlayerHeal,leader.transform.position);
+        print("Healed");
+        waitTime = 0;
+        Attacking = false;
     }
 }

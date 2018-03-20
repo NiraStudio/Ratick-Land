@@ -4,11 +4,11 @@ using UnityEngine;
 using CodeStage.AntiCheat.ObscuredTypes;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(IsoMetricHandler))]
 public class Enemy : MonoBehaviour,IHitable,IAttackable {
     public EnemyData data;
-    public IntRange timeForMove;
+    public IntRange timeForMove=new IntRange(2,5);
     public GameObject centerPoint;
-    public int powerRate;
     public bool Gurdian;
 
     protected ObscuredFloat speedMultiPly;
@@ -22,15 +22,18 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     protected Animator anim;
 
     [SerializeField]
-    GameObject coinObject,aim;
+    GameObject coinObject;
+    GameObject aim;
     LevelController levelController;
-    public Collider2D detectedCharacter;
+    protected Collider2D detectedCharacter;
+    protected GameObject DmgPopUp;
     bool detect,move;
     protected float time;
-
-    [HideInInspector]
-    public bool Attacking;
+    protected bool Attacking;
+    GameObject text;
     Vector2 tt,direction;
+    [HideInInspector]
+    public Wave Father;
 	// Use this for initialization
     public virtual void Start()
     {
@@ -39,40 +42,40 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
         aim = GameObject.FindWithTag("Aim");
         rg = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        RenewData();
+       // RenewData();
         if (!Gurdian)
             StartCoroutine(Move());
+        DmgPopUp = Resources.Load("DmgPopUp", typeof(GameObject)) as GameObject;
         StartCoroutine(LayerChanger());
     }
-	
-	// Update is called once per frame
-    void Update()
+
+    // Update is called once per frame
+    void FixedUpdate()
     {
+        detectedCharacter= Physics2D.OverlapCircle(centerPoint.transform.position, range, MainBehavior.CharacterLayer);
+        
+
+        
 
 
-        detectedCharacter = Physics2D.OverlapCircle(centerPoint.transform.position, range, MainBehavior.CharacterLayer);
-
-
-
-        if (detectedCharacter)
+        time += Time.fixedDeltaTime;
+        if (attackSpeed <= time && !Attacking && detectedCharacter)
         {
-            time += Time.deltaTime;
-            if (attackSpeed <= time && !Attacking)
-                AttackAnimation();
+            AttackAnimation();
             move = false;
         }
-        else
-            time = 0;
-        
 
 
 
-        
-        if (move)
+
+
+
+        if (move & !Attacking)
         {
-            rg.velocity = direction* speed;
-        }
+            rg.velocity = direction * speed;
 
+        }
+        anim.SetBool("Moving", move);
 
     }
 
@@ -143,17 +146,25 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
 
     public virtual void Attack()
     {
-        
+
+        if (detectedCharacter != null)
+        {
+            float f = (float)damage;
+            detectedCharacter.SendMessage("GetHit", f);
+            Instantiate(DmgPopUp, detectedCharacter.transform.position, Quaternion.identity).GetComponent<DmgPopUpBehaivior>().RePaint(f.ToString(), DmgPopUpBehaivior.AttackType.EnemyAttack,detectedCharacter.gameObject.transform.position);
+        }
+        time = 0;
+        Attacking = false;
     }
 
 
     public void Die()
     {
-       // Instantiate(coinObject, transform.position, Quaternion.identity).transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<UnityEngine.UI.Text>().text = coin.ToString();
         LevelUIManager.Instance.MakeGoldBrust(transform.position);
         levelController.ChangeCoin(coin);
         KeyManager.Instance.ChangeKeyPart(1);
-        Destroy(gameObject);
+        Lean.Pool.LeanPool.Despawn(gameObject);
+        Father.Decrease();
     }
     void OnDrawGizmos()
     {
@@ -188,6 +199,9 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
         GetComponent<Rigidbody2D>().mass = 100;
         GetComponent<Rigidbody2D>().angularDrag = 6.6f;
         GetComponent<Rigidbody2D>().drag = 100;
+        GetComponent<Rigidbody2D>().gravityScale = 0;
+        GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+        GetComponent<IsoMetricHandler>().Center = gameObject;
     }
     public IEnumerator LayerChanger()
     {
@@ -204,6 +218,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     public void AttackAllower()
     {
         Attacking = false;
+        time = 0;
     }
 }
 

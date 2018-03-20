@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Lean.Pool;
 
 public class Wave : MonoBehaviour {
 
@@ -19,6 +20,7 @@ public class Wave : MonoBehaviour {
     public bool Gurdian;
     public List<GameObject> currentEnemies = new List<GameObject>();
     public List<WaveEnemy> Enemies = new List<WaveEnemy>();
+    public List<GameObject> SpawnedEnemies = new List<GameObject>();
     [Header("MeleeNormal = 0,MeleeFast = 1,RangeShort = 2,RangeLong = 3,Tank = 4,EliteMeleeNormal = 5 ")]
     [Header("EliteMeleeFast = 6,EliteRangeShort = 7, EliteRangeLong = 8, EliteTank = 9")]
     public UnityEvent[] events=new UnityEvent[10];
@@ -26,9 +28,8 @@ public class Wave : MonoBehaviour {
     public float FormulaBase;
     public float FormulaChanger;
 
-    int powerRate=70;
+    int powerRate=70,enemyNumber;
     LevelController LC;
-
     void Start()
     {
         LC = LevelController.instance;
@@ -40,6 +41,7 @@ public class Wave : MonoBehaviour {
         powerRate = PowerRate();
         Spawn();
     }
+    
     public void AddEnemy(int type)
     {
         EnemyType t = (EnemyType)type;
@@ -48,7 +50,6 @@ public class Wave : MonoBehaviour {
             if(item.type==t)
             {
                 currentEnemies.Add(item.Enemy);
-                print("aa");
             }
         }
     }
@@ -69,10 +70,13 @@ public class Wave : MonoBehaviour {
         do
         {
             Vector3 t = Random.insideUnitCircle * 0.2f;
-            GameObject g = Instantiate(currentEnemies[Random.Range(0, currentEnemies.Count)], transform.position + t, Quaternion.identity);
+            GameObject g =LeanPool.Spawn(  currentEnemies[Random.Range(0, currentEnemies.Count)], transform.position + t, Quaternion.identity);
             g.GetComponent<Enemy>().Gurdian = Gurdian;
+            g.GetComponent<Enemy>().Father = this;
             g.transform.SetParent(transform);
             a += g.GetComponent<Enemy>().data.PowerRate;
+            SpawnedEnemies.Add(g);
+            enemyNumber++;
         } while (a<powerRate);
            
     }
@@ -82,6 +86,12 @@ public class Wave : MonoBehaviour {
         answer =(int)( Mathf.Pow(FormulaChanger, LC.BrokenCage) * (FormulaBase - LC.BrokenCage));
 
         return answer;
+    }
+    public void Decrease()
+    {
+        enemyNumber -= 1;
+        if (enemyNumber <= 0)
+            Destroy(gameObject);
     }
     
     

@@ -13,6 +13,16 @@ public class MainMenuManager : MainBehavior {
 	void Start () {
 
         GM = GameManager.instance;
+        GM.sfx.PlaySound("MainMenu");
+        if (PlayerPrefs.GetFloat("BossKilled") == 1)
+        {
+            InformationPanel.Instance.OpenInfoPanel( "تو خرس رو کشتی \n  کد رو تا رو انتشار اصلی بازی نگه دار"+"\n"+GM.giveeRandomRewardCode(),"You killed the Bear \n Keep this code till the game release\n"+GM.giveeRandomRewardCode(),false, () =>
+            {
+                PlayerPrefs.SetInt("FirstBoss", 0);
+                PlayerPrefs.SetInt("BossKilled", 0);
+            }, "OK");
+            
+        }
         OpenScreen();
 	}
 

@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class AimedProjectile : MonoBehaviour, IHitable
 {
-    public bool aimed;
-    public float speed;
+    public float speed,diffrenceAngular;
 
     float orginalRange, yRange, damage;
     GameObject target;
@@ -14,6 +13,17 @@ public class AimedProjectile : MonoBehaviour, IHitable
     // Use this for initialization
     void Start()
     {
+        t = target.transform.position - transform.position;
+        t.Normalize();
+
+
+        yRange = Mathf.Lerp(yRange, 0, 4 * Time.deltaTime);
+        speed += 2 * Time.deltaTime;
+
+        var dir = target.transform.position - transform.position;
+        var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        angle -= diffrenceAngular;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
         yRange = speed * 2;
         orginalRange = yRange;
@@ -38,13 +48,14 @@ public class AimedProjectile : MonoBehaviour, IHitable
 
         var dir = target.transform.position - transform.position;
         var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        angle -= diffrenceAngular;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
         Vector2 b = t * speed * Time.deltaTime;
         b.y += yRange * Time.deltaTime;
 
         transform.position = (Vector2)transform.position + b;
-        if (Vector2.Distance(transform.position, target.transform.position) < 0.1f)
+        if (Vector2.Distance(transform.position, target.transform.position) < 0.3f)
             Die();
 
     }

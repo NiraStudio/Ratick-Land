@@ -261,6 +261,8 @@ public class CharacterSystmeEditorEdit : EditorWindow
         GUILayout.EndScrollView();
         GUILayout.EndVertical();
         #endregion
+        dataBase.setDirty();
+        temp.setDirty(); 
 
 
     }

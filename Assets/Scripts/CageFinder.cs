@@ -26,7 +26,7 @@ public class CageFinder : MonoBehaviour {
     Vector2 distance;
 
 
-    float xDis = 3, yDis = 5;
+    float xDis = 2.5f, yDis = 4.5f;
 	// Use this for initialization
 
     // Update is called once per frame
@@ -55,6 +55,10 @@ public class CageFinder : MonoBehaviour {
         t.x*= xDis;
         t.y *= yDis;
         transform.position =(Vector2)CameraPos+ t;
+        var angle = Mathf.Atan2(t.y, t.x) * Mathf.Rad2Deg;
+        img.gameObject.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        meterText.text = (int)t.magnitude + " M";
+
 
         #region PreviousMethod
         /*

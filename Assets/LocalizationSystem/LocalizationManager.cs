@@ -18,8 +18,20 @@ namespace Alpha.Localization
         public Language LanguageCode;
         bool IsReady = false;
 
-        public Font ENFont, FAFont;
+        [SerializeField]
+        Font ENFont, FAFont;
+        public Font Font
+        {
+            get
+            {
+                if (LanguageCode == Language.FA)
+                    return FAFont;
+                else if (LanguageCode == Language.EN)
+                    return ENFont;
 
+                return null;
+            }
+        }
         void Start()
         {
             LoadData(LanguageCode);
@@ -155,7 +167,48 @@ namespace Alpha.Localization
             }
             else
             {
-                a = text;
+                for (int i = 0; i < aa.Length; i++)
+                {
+                    switch (aa[i])
+                    {
+                        case '۱':
+                            a += "1";
+                            break;
+                        case '۲':
+                            a += "2";
+                            break;
+                        case '۳':
+                            a += "3";
+                            break;
+                        case '۴':
+                            a += "4";
+                            break;
+                        case '۵':
+                            a += "5";
+                            break;
+                        case '۶':
+                            a += "6";
+                            break;
+                        case '۷':
+                            a += "7";
+                            break;
+                        case '۸':
+                            a += "8";
+                            break;
+                        case '۹':
+                            a += "9";
+                            break;
+                        case '۰':
+                            a += "0";
+                            break;
+
+                        default:
+                            a += aa[i];
+                            break;
+
+
+                    }
+                }
             }
 
 

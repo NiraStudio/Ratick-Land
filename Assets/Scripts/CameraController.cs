@@ -61,6 +61,7 @@ public class CameraController : MonoBehaviour {
 
         foreach (var item in Targets)
         {
+            if(item!=null)
             bound.Encapsulate(item.transform.position);
         }
         return bound.center;

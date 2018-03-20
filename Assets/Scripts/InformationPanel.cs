@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
-
+using Alpha.Localization;
 public class InformationPanel : MonoBehaviour {
     #region SingleTon
     public static InformationPanel Instance;
@@ -20,11 +20,11 @@ public class InformationPanel : MonoBehaviour {
     // Use this for initialization
     IEnumerator Start()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0f);
         PanelAnimator.gameObject.SetActive(false);
         BackPanel.SetActive(false);
     }
-    public void OpenInfoPanel(string Text, UnityAction OkAction, string OkButtonText)
+    public void OpenInfoPanel(string Persian,string English,bool changeNumbers, UnityAction OkAction, string OkButtonText)
     {
         DeactiveAll();
         foreach (var item in Panels)
@@ -32,7 +32,7 @@ public class InformationPanel : MonoBehaviour {
             if (item.Type == InformationType.Info)
             {
                 item.Panel.SetActive(true);
-                item.text.text = Text;
+                item.text.ChangeText(Persian, English,false, changeNumbers);
                 item.buttons[0].onClick.RemoveAllListeners();
                 if(OkAction!=null)
                 item.buttons[0].onClick.AddListener(OkAction);
@@ -46,6 +46,8 @@ public class InformationPanel : MonoBehaviour {
 
 
     }
+
+   
     public void OpenRewardPanel(RewardInfo Info, UnityAction OkAction,string OkButtonText)
     {
         DeactiveAll();
@@ -94,6 +96,7 @@ public class InformationPanel : MonoBehaviour {
     {
         PanelAnimator.SetTrigger("Close");
 
+
     }
     void DeactiveAll()
     {
@@ -107,7 +110,7 @@ public class InformationPanel : MonoBehaviour {
     {
         public InformationType Type;
         public GameObject Panel;
-        public Text text;
+        public LocalizedDynamicText text;
         public Button[] buttons;
     }
     

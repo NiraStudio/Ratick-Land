@@ -40,7 +40,7 @@ public class CampaignMenuManager : MonoBehaviour {
 	void Update () {
 		if(CurrentCharacter!=null)
         {
-            UpgradeButton.transform.GetChild(0).GetComponent<LocalizedText>().AfterExtra = GM.CharacterUpgradeCost(CurrentCharacter).ToString();
+            UpgradeButton.transform.GetChild(0).GetComponent<LocalizedDynamicText>().Number =GM.CharacterUpgradeCost(CurrentCharacter).ToString();
             if (GM.CharacterCard(CurrentCharacter.id) < GM.CharacterCardUpgradeCost(CurrentCharacter.id) || GM.coinAmount< GM.CharacterUpgradeCost(CurrentCharacter))
                 UpgradeButton.interactable = false;
             else

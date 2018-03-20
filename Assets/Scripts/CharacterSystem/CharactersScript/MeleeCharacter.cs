@@ -6,11 +6,7 @@ public class MeleeCharacter : Character
 {
 
 
-    public override void AttackAnimation()
-    {
-        anim.SetTrigger("Attack");
-        base.AttackAnimation();
-    }
+   
 
     void OnDrawGizmos()
     {
