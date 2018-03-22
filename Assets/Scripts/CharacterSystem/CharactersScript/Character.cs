@@ -73,7 +73,7 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
         if (!free)
             return;
 
-
+        
 
         #region Move
 

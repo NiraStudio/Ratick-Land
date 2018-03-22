@@ -96,6 +96,7 @@ public class GameManager : MainBehavior
         mainData.characterInfos.Add(new characterInfo(2, 5, 0));
         mainData.characterInfos.Add(new characterInfo(1, 1, 0));
         _currencyData.Coins = 100;
+        mainData.defultSlot.mainId = 1;
         SaveCurrencyData();
         SaveMainData();
         PlayerPrefs.SetInt("FirstTime", 1);
@@ -187,7 +188,25 @@ public class GameManager : MainBehavior
 
 
     #region Characters Methods
-    public void IncreaseLevel(int ID, int levelAmount)
+    public void RemoveCharacter(int id)
+    {
+        foreach (var item in mainData.characterInfos)
+        {
+            if (item.Id == id)
+            {
+                mainData.characterInfos.Remove(item);
+                break;
+            }
+        }
+        SaveMainData();
+    }
+    public void AddCharacter(int id,int level,int Card) 
+    {
+        mainData.characterInfos.Add(new characterInfo(id, level, Card));
+        SaveMainData();
+
+    }
+    public void IncreaseCharacterLevel(int ID, int levelAmount)
     {
         foreach (var item in mainData.characterInfos.ToArray())
         {
@@ -354,6 +373,20 @@ public class GameManager : MainBehavior
 
     }
     #endregion
+
+
+
+
+
+
+
+    void OnApplicationQuit()
+    {
+        if (PlayerPrefs.GetInt("Tutorial") == 1)
+        {
+            FirstTimeChanges();
+        }
+    }
 }
 
 [System.Serializable]

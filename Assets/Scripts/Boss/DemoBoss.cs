@@ -5,17 +5,27 @@ using UnityEngine;
 public class DemoBoss : Boss {
     public ParticleSystem SplashPS, DirectPs;
 
+    public override void Start()
+    {
+        base.Start();
+        if(PlayerPrefs.GetInt("Tutorial")==1)
+        {
+            damage *= 1.5f;
+            hitPoint *= 2;
+        }
+    }
     public override void Splash()
     {
         base.Splash();
-        SplashPS.Emit(30);
+        SplashPS.gameObject.SetActive(true);
         CameraShake.Instance.Shake(1, 0.4f);
 
     }
     public override void AttackDirection()
     {
         base.AttackDirection();
-        DirectPs.Emit(30);
+        DirectPs.gameObject.SetActive(true);
+
 
     }
     public override void Die()

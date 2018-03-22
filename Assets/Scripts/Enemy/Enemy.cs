@@ -53,8 +53,11 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (levelController.gameState == GamePlayState.Finish)
+        if (levelController.gameState != GamePlayState.Playing)
+        {
+            rg.velocity = Vector2.zero;
             return;
+        }
 
 
         detectedCharacter= Physics2D.OverlapCircle(centerPoint.transform.position, range, MainBehavior.CharacterLayer);

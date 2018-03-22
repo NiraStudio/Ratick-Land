@@ -37,7 +37,7 @@ public class CharacterPanelBtn : MonoBehaviour {
     public void Upgrade()
     {
         GM.ChangeCoin(-cost);
-        GM.IncreaseLevel(data.id, 1);
+        GM.IncreaseCharacterLevel(data.id, 1);
         Repaint(data);
     }
 }

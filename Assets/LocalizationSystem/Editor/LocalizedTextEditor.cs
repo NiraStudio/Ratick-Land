@@ -102,6 +102,8 @@ namespace Alpha.Localization
                 }
                 GUILayout.EndHorizontal();
                 GUILayout.EndScrollView();
+                dataBase.setDirty();
+
 
             }
             else

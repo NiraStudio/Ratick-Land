@@ -28,7 +28,7 @@ public class Boss : MainBehavior,IHitable,IAttackable {
     float angle,time;
     int waitTime;
 	// Use this for initialization
-	void Start () {
+	public virtual void Start () {
         //Sorting The Actions In Order
         Sorting();
         RenewData();
@@ -50,7 +50,7 @@ public class Boss : MainBehavior,IHitable,IAttackable {
     // Update is called once per frame
     void Update()
     {
-         if (LC.gameState==GamePlayState.Finish)
+         if (LC.gameState!=GamePlayState.Playing)
               return;
           if (!Counter)
               return;

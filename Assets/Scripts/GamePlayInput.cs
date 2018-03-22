@@ -22,13 +22,18 @@ public class GamePlayInput : MonoBehaviour {
     Touch[] touches;
     Rigidbody2D leaderRG;
     SFX sfx;
+    LevelController LC;
 	// Use this for initialization
 	void Start () {
         sfx = GetComponent<SFX>();
+        LC = GetComponent<LevelController>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        if (LC.gameState!=GamePlayState.Playing)
+            return;
+
         #region inputs
         if (Application.isMobilePlatform)
         {

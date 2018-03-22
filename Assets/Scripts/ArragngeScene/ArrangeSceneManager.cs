@@ -65,6 +65,22 @@ public class ArrangeSceneManager : MainBehavior {
 
 
     }
+
+    public void MinionChange(int id)
+    {
+        Minion.Repaint(characterDatabase.GiveByID(id));
+
+    }
+    public void SuppChange(int id)
+    {
+        Support.Repaint(characterDatabase.GiveByID(id));
+
+    }
+    public void HeroChange(int id, int heroIconId)
+    {
+        Heros[heroIconId].Repaint(characterDatabase.GiveByID(id));
+
+    }
     public void OpenCharacterChoosePanel(ArrangeIcon btn)
     {
         currentIcon = btn;

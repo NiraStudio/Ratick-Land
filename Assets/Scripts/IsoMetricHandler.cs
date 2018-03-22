@@ -15,6 +15,8 @@ public class IsoMetricHandler : MainBehavior {
         Vector3 t = transform.position;
         t.z = (Center.transform.position.y);
         transform.position = t;
+        if (Static)
+            this.enabled = false;
 	}
 	
 	// Update is called once per frame

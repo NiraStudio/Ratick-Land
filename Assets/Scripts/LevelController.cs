@@ -12,9 +12,9 @@ public class LevelController : MainBehavior
 {
     public static LevelController instance;
     public CharacterDataBase characterDataBase;
-    
+    public string PersianMissionText, EnglishMissionText;
     public int WorldCoinMultiply=1,WorldAttackMultiPly=1,maxWave;
-
+    public MissionTextBehaivior missionText;
     public BGM bgm;
     [Range(0,100)]
     public float ChanceToRespawnSecretMap;
@@ -32,9 +32,10 @@ public class LevelController : MainBehavior
 
 
     List<GameObject> currentWaves=new List<GameObject>();
-    List<Vector2> freeSpots = new List<Vector2>();
+    List<Vector2> WavePoints = new List<Vector2>();
     List<Vector2> BlockSpots = new List<Vector2>();
     List<Vector2> BossSpots = new List<Vector2>();
+    List<Vector2> CagePoints = new List<Vector2>();
     List<GameObject> characters=new List<GameObject>();
     SlotContainer sc = new SlotContainer();
     GameObject aimer;
@@ -46,7 +47,7 @@ public class LevelController : MainBehavior
     int _CageBroken=-1;
     bool move;
     MapClass map;
-    
+    public bool Allow;
    
     public int BrokenCage
     {
@@ -57,8 +58,11 @@ public class LevelController : MainBehavior
     {
         instance = this;
     }
-    void Start()
+    IEnumerator Start()
     {
+        gameState = GamePlayState.Pause;
+        //start Text
+        
         GM=GameManager.instance;
         //Camera
         cameraController = Camera.main.GetComponent<CameraController>();
@@ -83,14 +87,12 @@ public class LevelController : MainBehavior
 
         //Starting the game
         OpenScreen();
+        yield return new WaitForSeconds(1);
+        missionText.MakeText(PersianMissionText, EnglishMissionText);
         GameAnalyticsManager.SendCustomEvent("PlayGame");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 
 
 
@@ -121,18 +123,11 @@ public class LevelController : MainBehavior
         characters.Add(character);
         cameraController.ChangeTargets(characters);
     }
-    public void AddCharacter()
-    {
-        GameObject g = Instantiate(characterDataBase.GiveByID(1).prefab);
-        g.transform.position = Random.insideUnitCircle * 3;
-        g.GetComponent<Character>().Release(true);
-        AddCharacters(g);
-
-    }
+    
     public void MakeCage()
     {
         Vector2 a;
-        a = giveMapPos(10);
+        a = giveMapPos(4,CagePoints);
         GameObject g = Instantiate(cage, a, Quaternion.identity);
 
         CageFinder.Instance.ChangeTarget(g);
@@ -157,7 +152,7 @@ public class LevelController : MainBehavior
         {
             CharacterData c = characterDataBase.GiveByID(item);
             GameObject a = Instantiate(c.prefab, p.transform);
-            a.transform.position =startPos+ Random.insideUnitCircle * 3;
+            a.transform.position =startPos+ Random.insideUnitCircle * 1.5f;
             a.GetComponent<Character>().Release(true);
             AddCharacters(a);
 
@@ -169,7 +164,7 @@ public class LevelController : MainBehavior
             for (int i = 0; i < a; i++)
             {
                 GameObject b = Instantiate(c.prefab, p.transform);
-                b.transform.position =startPos+ Random.insideUnitCircle * 3;
+                b.transform.position =startPos+ Random.insideUnitCircle * 1.5f;
                 b.GetComponent<Character>().Release(true);
                 AddCharacters(b);
             }
@@ -178,7 +173,7 @@ public class LevelController : MainBehavior
         {
             CharacterData c = characterDataBase.GiveByID(sc.supportId);
             GameObject a = Instantiate(c.prefab, p.transform);
-            a.transform.position =startPos+ Random.insideUnitCircle * 3;
+            a.transform.position =startPos+ Random.insideUnitCircle * 1.5f;
             a.GetComponent<Character>().Release(true);
             AddCharacters(a);
 
@@ -192,10 +187,9 @@ public class LevelController : MainBehavior
     {
         int a = Random.Range(0, 100);
         GameObject g;
-        Vector3 r=new Vector3(0, 0, Random.Range(0, 360));
         if (a < ChanceToRespawnSecretMap)
         {
-            g = Instantiate(SecretMap, Vector2.zero, Quaternion.Euler(r));
+            g = Instantiate(SecretMap, Vector2.zero, Quaternion.identity);
         }
         else
         {
@@ -203,13 +197,16 @@ public class LevelController : MainBehavior
         }
         map = g.GetComponent<MapClass>();
 
-        freeSpots = map.points(PointsType.Free);
+        WavePoints = map.points(PointsType.Wave);
         BlockSpots = map.points(PointsType.Block);
         BossSpots = map.points(PointsType.Boss);
+        CagePoints = map.points(PointsType.Cage);
+
         startPos =map.startPoint.transform.position;
         GameObject.FindWithTag("Aim").transform.position = startPos;
         map.DestroyGameObjects();
-        MakeBlocks();
+        //Blocks = map.blocks;
+       // MakeBlocks();
         MakeBoss();
     }
     void MakeBoss()
@@ -241,24 +238,26 @@ public class LevelController : MainBehavior
     }
     Vector2 giveMapPos()
     {
-        return freeSpots[Random.Range(0, freeSpots.Count)];
+        return WavePoints[Random.Range(0, WavePoints.Count)];
     }
-    Vector2 giveMapPos(float distance)
+    Vector2 giveMapPos(float distance,List<Vector2> poses)
     {
         Vector2 t = new Vector2();
          do
         {
-            t =freeSpots[Random.Range(0, freeSpots.Count)];
+            t = poses[Random.Range(0, poses.Count)];
         } while (Vector2.Distance(t, Camera.main.transform.position) < distance);
          return t;
     }
+
+    
     IEnumerator SpawnWaves()
     {
         if (currentWaves.Count < maxWave)
         {
             while (currentWaves.Count < maxWave)
             {
-                GameObject g = Instantiate(wave.gameObject, giveMapPos(7), Quaternion.identity);
+                GameObject g = Instantiate(wave.gameObject, giveMapPos(7,WavePoints), Quaternion.identity);
                currentWaves.Add(g);
             }
         }
@@ -275,7 +274,14 @@ public class LevelController : MainBehavior
             if (PlayerPrefs.GetInt("Tutorial") == 1)
             {
                 PlayerPrefs.SetInt("Tutorial", 2);
-
+                GM.RemoveCharacter(2);
+                GM.AddCharacter(2, 5, 0);
+                GM.RemoveCharacter(3);
+                GM.RemoveCharacter(4);
+                GM.RemoveCharacter(5);
+                GM.SlotData = new SlotContainer();
+                GM.SlotData.mainId = 1;
+                GM.SaveMainData();
             }
 
             InformationPanel.Instance.OpenFinshPanel(State, coinAmount, () =>
@@ -283,6 +289,7 @@ public class LevelController : MainBehavior
                   GoToScene("MainMenu");
               });
         }
+        bgm.stopSound();
     }
     public void RemoveWave(GameObject go)
     {

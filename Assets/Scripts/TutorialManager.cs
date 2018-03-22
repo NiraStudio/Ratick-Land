@@ -14,6 +14,8 @@ public class TutorialManager : MonoBehaviour {
     public GameObject[] Pointers;
     public Animator anim;
     public LocalizedKeyText text;
+
+    GameManager GM;
 	// Use this for initialization
 	void Awake () {
         Instance = this;
@@ -22,6 +24,7 @@ public class TutorialManager : MonoBehaviour {
 	void Start()
     {
         DeActivePointers();
+        GM = GameManager.instance;
     }
 	// Update is called once per frame
 
@@ -42,9 +45,17 @@ public class TutorialManager : MonoBehaviour {
             }
         }
     }
-    public void GiveMinions()
+    public void GiveCharacters()
     {
+        GM.IncreaseCharacterLevel(2, 25);
+        GM.AddCharacter(3, 1, 0);
+        GM.AddCharacter(4, 1, 0);
+        GM.AddCharacter(5, 1, 0);
 
+        ArrangeSceneManager.Instance.MinionChange(2);
+        ArrangeSceneManager.Instance.SuppChange(5);
+        ArrangeSceneManager.Instance.HeroChange(3,0);
+        ArrangeSceneManager.Instance.HeroChange(4,2);
     }
     public void GameObjectState(bool state)
     {

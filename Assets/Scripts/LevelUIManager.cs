@@ -46,11 +46,12 @@ public class LevelUIManager : MonoBehaviour {
 
 
         #region Main HP
-
-        mainHpSlider.maxValue = maxMainHp;
-        mainHpSlider.value = main.HP;
-        MainHpText.text = main.HP + "/" + maxMainHp;
-
+        if (main != null)
+        {
+            mainHpSlider.maxValue = maxMainHp;
+            mainHpSlider.value = main.HP;
+            MainHpText.text = main.HP + "/" + maxMainHp;
+        }
         #endregion
 
         #region Key
