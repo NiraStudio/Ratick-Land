@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using CodeStage.AntiCheat.ObscuredTypes;
+using Cinemachine;
 
 [RequireComponent(typeof(LevelUIManager))]
 [RequireComponent(typeof(KeyManager))]
@@ -14,8 +15,10 @@ public class LevelController : MainBehavior
     public CharacterDataBase characterDataBase;
     public string PersianMissionText, EnglishMissionText;
     public int WorldCoinMultiply=1,WorldAttackMultiPly=1,maxWave;
+    public float EnemyDamageMultiPly=1;
     public MissionTextBehaivior missionText;
     public BGM bgm;
+    public GameObject PausePanel;
     [Range(0,100)]
     public float ChanceToRespawnSecretMap;
 
@@ -33,9 +36,8 @@ public class LevelController : MainBehavior
 
     List<GameObject> currentWaves=new List<GameObject>();
     List<Vector2> WavePoints = new List<Vector2>();
-    List<Vector2> BlockSpots = new List<Vector2>();
     List<Vector2> BossSpots = new List<Vector2>();
-    List<Vector2> CagePoints = new List<Vector2>();
+    public List<Vector2> CagePoints = new List<Vector2>();
     List<GameObject> characters=new List<GameObject>();
     SlotContainer sc = new SlotContainer();
     GameObject aimer;
@@ -48,7 +50,7 @@ public class LevelController : MainBehavior
     bool move;
     MapClass map;
     public bool Allow;
-   
+    CinemachineConfiner cinemachine;
     public int BrokenCage
     {
         get { return _CageBroken; }
@@ -65,10 +67,10 @@ public class LevelController : MainBehavior
         
         GM=GameManager.instance;
         //Camera
-        cameraController = Camera.main.GetComponent<CameraController>();
+        cameraController = CameraController.Instance;
+        cinemachine = cameraController.GetComponent<CinemachineConfiner>();
         aimer = GetComponent<GamePlayInput>().aimer;
-        bgm = GetComponent<BGM>();
-        bgm.PlaySound(BGM.State.Main);
+       
         //designing the map  (Blocks , map &...)
         designMap();
         sc = GM.SlotData;
@@ -87,9 +89,12 @@ public class LevelController : MainBehavior
 
         //Starting the game
         OpenScreen();
+        bgm = GetComponent<BGM>();
+        bgm.PlaySound(BGM.State.Main);
         yield return new WaitForSeconds(1);
         missionText.MakeText(PersianMissionText, EnglishMissionText);
         GameAnalyticsManager.SendCustomEvent("PlayGame");
+        
     }
 
    
@@ -127,8 +132,10 @@ public class LevelController : MainBehavior
     public void MakeCage()
     {
         Vector2 a;
-        a = giveMapPos(4,CagePoints);
-        GameObject g = Instantiate(cage, a, Quaternion.identity);
+        a = giveMapPos(CagePoints);
+        GameObject g = Instantiate(cage,map.gameObject.transform);
+        g.transform.localPosition = a;
+        g.transform.SetParent(null);
 
         CageFinder.Instance.ChangeTarget(g);
         _CageBroken++;
@@ -198,32 +205,18 @@ public class LevelController : MainBehavior
         map = g.GetComponent<MapClass>();
 
         WavePoints = map.points(PointsType.Wave);
-        BlockSpots = map.points(PointsType.Block);
         BossSpots = map.points(PointsType.Boss);
         CagePoints = map.points(PointsType.Cage);
 
         startPos =map.startPoint.transform.position;
         GameObject.FindWithTag("Aim").transform.position = startPos;
         map.DestroyGameObjects();
-        //Blocks = map.blocks;
-       // MakeBlocks();
+        cinemachine.m_BoundingShape2D = map.Bounds;
         MakeBoss();
     }
     void MakeBoss()
     {
         Instantiate(Boss, BossSpots[Random.Range(0, BossSpots.Count)], Quaternion.identity);
-    }
-    void MakeBlocks()
-    {
-        Vector2 tt;
-        GameObject a = new GameObject();
-        a.name = "Blocks";
-        for (int i = 0; i < BlockAmount.Random; i++)
-        {
-            tt=BlockSpots[Random.Range(0,BlockSpots.Count)];
-            Instantiate(Blocks[Random.Range(0, Blocks.Length)], tt, Quaternion.identity).transform.SetParent(a.transform);
-            BlockSpots.Remove(tt);
-        }
     }
 
     void UseCard(Card card)
@@ -236,9 +229,9 @@ public class LevelController : MainBehavior
         GM.SaveMainData();
         GameAnalyticsManager.SendCustomEvent(card.cardType.ToString());
     }
-    Vector2 giveMapPos()
+    Vector2 giveMapPos(List<Vector2> poses)
     {
-        return WavePoints[Random.Range(0, WavePoints.Count)];
+        return poses[Random.Range(0, poses.Count)];
     }
     Vector2 giveMapPos(float distance,List<Vector2> poses)
     {
@@ -283,11 +276,13 @@ public class LevelController : MainBehavior
                 GM.SlotData.mainId = 1;
                 GM.SaveMainData();
             }
-
+            if (PlayerPrefs.GetInt("Played") < 5)
+                PlayerPrefs.SetInt("Played", PlayerPrefs.GetInt("Played") + 1);
             InformationPanel.Instance.OpenFinshPanel(State, coinAmount, () =>
               {
                   GoToScene("MainMenu");
               });
+            
         }
         bgm.stopSound();
     }
@@ -305,6 +300,24 @@ public class LevelController : MainBehavior
     
 
 
+    public void Pause()
+    {
+        PausePanel.SetActive(true);
+        gameState = GamePlayState.Pause;
+        GamePlayInput.Instance.JoyStickTurnOff();
+        Time.timeScale = 0;
+    }
+    public void Resume()
+    {
+        Time.timeScale =1;
+        PausePanel.SetActive(false);
+        gameState = GamePlayState.Playing;
+    }
+    public void Exit()
+    {
+        Time.timeScale = 1;
+        FinishTheGame("Defeat");
+    }
 
 
 
@@ -314,8 +327,7 @@ public class LevelController : MainBehavior
 
 
 
-    
-    
+
 }
 
 

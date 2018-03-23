@@ -13,7 +13,7 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
     public bool right;
     protected SkinManager skinManager;
     protected GameObject Aimer;
-    protected LevelController controller;
+    protected LevelController LC;
     protected GamePlayInput GPI;
     protected Rigidbody2D rg;
     protected Animator anim;
@@ -30,6 +30,7 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
     protected bool Attacking;
     protected bool isLeader=false;
     protected GameObject DmgPopUp;
+
     public int HP
     {
         get { return (int) hitPoint; }
@@ -40,11 +41,13 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
     protected bool free;
     float MaxHp;
     CharacterMoveState situation;
+    KeyManager keyManager;
     public void Awake()
     {
-        controller = LevelController.instance;
+        LC = LevelController.instance;
         GPI = GamePlayInput.Instance;
-        if (controller == null)
+        keyManager = KeyManager.Instance;
+        if (LC == null)
         {
             this.enabled = false;
             GetComponent<IsoMetricHandler>().enabled = false;
@@ -69,16 +72,17 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
 
     public virtual void Update()
     {
-        
+
         if (!free)
             return;
 
-        
+        if (LC.gameState != GamePlayState.Playing)
+            return;
 
         #region Move
 
 
-        if (GPI.Move&&!Attacking)
+        if (GPI.Move && !Attacking)
         {
             rg.bodyType = RigidbodyType2D.Dynamic;
 
@@ -86,7 +90,7 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
             tt.Normalize();
             tt = tt * speed;
             rg.velocity = tt;
-            if (Vector2.Distance(transform.position, Aimer.transform.position) > 0.2f)
+            if (Vector2.Distance(transform.position, Aimer.transform.position) > 0.1f)
             {
                 if (tt.x > 0 && !right)
                 {
@@ -102,6 +106,19 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
         }
         else
         {
+            if (detectedEnemy != null)
+            {
+                tt = (detectedEnemy.transform.position - transform.position);
+                if (tt.x > 0 && !right)
+                {
+                    Flip();
+                }
+                else if (tt.x < 0 && right)
+                {
+                    Flip();
+
+                }
+            }
             rg.velocity = Vector2.zero;
             rg.bodyType = RigidbodyType2D.Static;
         }
@@ -109,10 +126,15 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
         #endregion
 
         #region Attack
-        detectedEnemy = Physics2D.OverlapCircle(CenterPoint.transform.position, attackRange, EnemyLayer);
+        if (keyManager.keyCount > 0)
+            detectedEnemy = Physics2D.OverlapCircle(CenterPoint.transform.position, attackRange, CageLayer);
+        else
+            detectedEnemy = null;
+        if (detectedEnemy == null)
+            detectedEnemy = Physics2D.OverlapCircle(CenterPoint.transform.position, attackRange, EnemyLayer);
 
-            if (waitTime > attackSpeed && detectedEnemy!=null&&!Attacking)
-                AttackAnimation();
+        if (waitTime > attackSpeed && detectedEnemy != null && !Attacking)
+            AttackAnimation();
 
         waitTime += Time.deltaTime;
 
@@ -131,8 +153,8 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
         attackSpeed = data.attackSpeed;
         hitPoint = data.hitPoint;
         damage = new IntRange(0,0);
-        damage.m_Max = data.damage * controller.WorldAttackMultiPly;
-        damage.m_Min=(int)( data.damage-(data.damage*0.2f)) * controller.WorldAttackMultiPly;
+        damage.m_Max = data.damage * LC.WorldAttackMultiPly;
+        damage.m_Min=(int)( data.damage-(data.damage*0.2f)) * LC.WorldAttackMultiPly;
         attackRange = data.attackRange;
     }
 
@@ -185,7 +207,7 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
     public virtual void Die()
     {
         //animation
-        controller.RemoveCharacter(gameObject);
+        LC.RemoveCharacter(gameObject);
         Destroy(gameObject);
     }
 

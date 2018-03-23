@@ -7,32 +7,20 @@ public class SFX : MonoBehaviour
     public static SFX Instance;
     public bool Manager;
 
+    bool Mute;
     public Sound[] sounds;
     public bool IsReady
     {
         get { return ready; }
     }
-    bool ready;
+    bool ready,s;
     AudioSource[] audioSources;
+
     #region Singleton
-    void Awake()
-    {
-        if (!Manager)
-            return;
 
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        { Destroy(this); }
-
-
-    }
     #endregion
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         audioSources = new AudioSource[sounds.Length];
 
@@ -51,19 +39,54 @@ public class SFX : MonoBehaviour
             audioSources[i] = t;
         }
         ready = true;
-    }
 
+        if (!Manager)
+            return;
+
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        { Destroy(this); }
+
+    }
+    void Start()
+    {
+        Mute = SettingManager.Instance.SFXMute;
+        s = Mute;
+    }
+    void FixedUpdate()
+    {
+        Mute = SettingManager.Instance.SFXMute;
+        if (Mute != s)
+        {
+            if (Mute)
+            {
+                foreach (var item in sounds)
+                {
+                    StopSound(item.ClipId);
+                }
+
+            }
+            s = Mute;
+
+        }
+    }
     // Update is called once per frame
     public void PlaySound(string ID)
     {
-        if (!checkForID(ID))
+        if (!checkForID(ID)||Mute)
         { return; }
 
         for (int i = 0; i < sounds.Length; i++)
         {
             if (sounds[i].ClipId == ID)
             {
-                audioSources[i].Play();
+                if (audioSources[i] != null)
+
+                    audioSources[i].Play();
 
                 break;
             }
@@ -77,9 +100,11 @@ public class SFX : MonoBehaviour
 
         for (int i = 0; i < sounds.Length; i++)
         {
-            if (sounds[i].ClipId == ID)
+            if (sounds[i].ClipId == ID&&audioSources[i].isPlaying)
             {
-                audioSources[i].Pause();
+                if (audioSources[i] != null)
+
+                    audioSources[i].Pause();
                 break;
             }
 
@@ -94,7 +119,9 @@ public class SFX : MonoBehaviour
         {
             if (sounds[i].ClipId == ID)
             {
-                return audioSources[i].isPlaying;
+                if (audioSources[i] != null)
+
+                    return audioSources[i].isPlaying;
             }
 
         }
@@ -109,7 +136,9 @@ public class SFX : MonoBehaviour
         {
             if (sounds[i].ClipId == ID)
             {
-                audioSources[i].UnPause();
+                if (audioSources[i] != null)
+
+                    audioSources[i].UnPause();
                 break;
             }
 
@@ -126,7 +155,9 @@ public class SFX : MonoBehaviour
         {
             if (sounds[i].ClipId == ID)
             {
-                audioSources[i].Stop();
+                if (audioSources[i] != null)
+                    if (audioSources[i].isPlaying)
+                        audioSources[i].Stop();
                 break;
             }
 

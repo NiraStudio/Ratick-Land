@@ -11,6 +11,8 @@ public class testShoot : MonoBehaviour {
     public Skin[] skins;
     public string[] skissssns;
     GameObject GO;
+
+
     // Use this for initialization
     void Start () {
 
@@ -29,6 +31,8 @@ public class testShoot : MonoBehaviour {
             
 
         }
+       // GetComponent<Canvas>().worldCamera = Camera.main;
+
     }
     void spawnBullet()
     {

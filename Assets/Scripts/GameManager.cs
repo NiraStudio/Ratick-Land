@@ -27,6 +27,7 @@ public class GameManager : MainBehavior
     public SkinDataBase skinDB;
     public StringDataBase RewardCodes;
     public SFX sfx;
+    public BGM bgm;
     //Datas
     [SerializeField]
     MainData _mainData = new MainData();
@@ -95,14 +96,16 @@ public class GameManager : MainBehavior
         _currencyData = new CurrencyData();
         mainData.characterInfos.Add(new characterInfo(2, 5, 0));
         mainData.characterInfos.Add(new characterInfo(1, 1, 0));
-        _currencyData.Coins = 100;
         mainData.defultSlot.mainId = 1;
         SaveCurrencyData();
         SaveMainData();
+        PlayerPrefs.DeleteAll();
         PlayerPrefs.SetInt("FirstTime", 1);
         PlayerPrefs.SetInt("FirstBoss", 1);
         PlayerPrefs.SetInt("BossKilled", 0);
         PlayerPrefs.SetInt("Tutorial", 1);
+        PlayerPrefs.SetString("BGMMute", "false");
+        PlayerPrefs.SetString("SFXMute", "false");
 
     }
 
@@ -375,7 +378,7 @@ public class GameManager : MainBehavior
     #endregion
 
 
-
+    
 
 
 
@@ -419,5 +422,11 @@ public class characterInfo
         this.Id = Id;
         this.Level = level;
     }
+}
+public class GameAnalyticsInfo
+{
+    public List<DesignEventInfo> DesignInfos = new List<DesignEventInfo>();
+    public List<ProgressionEventInfo> ProgressionInfos = new List<ProgressionEventInfo>();
+    public List<ResourcesEventInfo> ResourcesInfos = new List<ResourcesEventInfo>();
 }
 

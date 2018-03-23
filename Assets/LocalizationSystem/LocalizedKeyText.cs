@@ -12,11 +12,17 @@ namespace Alpha.Localization
         string key;
         public RtlText Text;
         public bool DefultSize;
+        public bool UseCurrentParameters;
+        public int PersianSize, EnglishSize;
         public string Key
         {
             set
             {
                 key = value;
+            }
+            get
+            {
+                return key;
             }
         }
 
@@ -35,24 +41,42 @@ namespace Alpha.Localization
             Text.font = LM.Font;
         }
 
-       void FixedUpdate()
+        void FixedUpdate()
         {
             if (!Allow)
                 return;
 
 
-            Text.text = LM.GetLocalizationValue(key);
-            if(DefultSize)
-            switch (LM.LanguageCode)
+            Text.text = string.Concat(LM.GetLocalizationValue(key));
+            if (UseCurrentParameters)
             {
-                case Language.EN:
-                    Text.resizeTextMaxSize = 20;
-                    break;
-                case Language.FA:
-                    Text.resizeTextMaxSize = 25;
+                switch (LM.LanguageCode)
+                {
+                    case Language.EN:
+                        Text.resizeTextMaxSize = EnglishSize;
+                        break;
+                    case Language.FA:
+                        Text.resizeTextMaxSize = PersianSize;
 
-                    break;
+                        break;
+                }
             }
+            else if (DefultSize)
+            {
+                switch (LM.LanguageCode)
+                {
+                    case Language.EN:
+                        Text.resizeTextMaxSize = 20;
+                        break;
+                    case Language.FA:
+                        Text.resizeTextMaxSize = 25;
+
+                        break;
+                }
+            }
+        
+            Text.font = LM.Font;
+
         }
 
         void Reset()

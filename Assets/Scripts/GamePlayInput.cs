@@ -20,17 +20,21 @@ public class GamePlayInput : MonoBehaviour {
     public bool Move=true;
     Vector2 t;
     Touch[] touches;
-    Rigidbody2D leaderRG;
+    GameObject leader;
     SFX sfx;
     LevelController LC;
 	// Use this for initialization
 	void Start () {
         sfx = GetComponent<SFX>();
         LC = GetComponent<LevelController>();
+        leader = GameObject.FindWithTag("Leader");
+        JoyStickTurnOff();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        if (leader == null)
+            leader = GameObject.FindWithTag("Leader");
         if (LC.gameState!=GamePlayState.Playing)
             return;
 
@@ -72,20 +76,27 @@ public class GamePlayInput : MonoBehaviour {
         aimer.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         #endregion
     }
-    void JoyStickTurnOn(Vector2 pos)
+    public void JoyStickTurnOn(Vector2 pos)
     {
         JS.gameObject.SetActive(true);
         JS.transform.position = pos;
         Move = true;
         sfx.PlaySound("Walking");
-
+        aimer.transform.position = leader.transform.position;
+        for (int i = 0; i < aimer.transform.childCount; i++)
+        {
+            aimer.transform.GetChild(i).gameObject.SetActive(true);
+        }
     }
-    void JoyStickTurnOff()
+    public void JoyStickTurnOff()
     {
         JS.gameObject.SetActive(false);
         Move = false;
         sfx.StopSound("Walking");
-
+        for (int i = 0; i < aimer.transform.childCount; i++)
+        {
+            aimer.transform.GetChild(i).gameObject.SetActive(false);
+        }
     }
 
 }

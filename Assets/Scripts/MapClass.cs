@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class MapClass : MonoBehaviour {
     public List<GameObject> WavePoints = new List<GameObject>();
-    public List<GameObject> BlockPoints= new List<GameObject>();
     public List<GameObject> freeBossPoints = new List<GameObject>();
     public List<GameObject> CagePoints = new List<GameObject>();
     public GameObject startPoint;
     public GameObject[] blocks;
     public Sprite bg;
+    public PolygonCollider2D Bounds;
     void Start()
     {
         GameObject g = new GameObject();
@@ -32,14 +32,9 @@ public class MapClass : MonoBehaviour {
                     t.Add(item.transform.position);
                 }
                 break;
-            case PointsType.Block:
-                foreach (var item in CagePoints.ToArray())
-                {
-                    t.Add(item.transform.position);
-                }
-                break;
+
             case PointsType.Cage:
-                foreach (var item in blocks)
+                foreach (var item in CagePoints.ToArray())
                 {
                     t.Add(item.transform.position);
                 }
@@ -59,20 +54,22 @@ public class MapClass : MonoBehaviour {
     {
         foreach (var item in WavePoints.ToArray())
         {
+            WavePoints.Remove(item);
             Destroy(item);
         }
         foreach (var item in freeBossPoints.ToArray())
         {
+            freeBossPoints.Remove(item);
+
             Destroy(item);
         }
         foreach (var item in CagePoints.ToArray())
         {
+            CagePoints.Remove(item);
+
             Destroy(item);
         }
-        foreach (var item in BlockPoints.ToArray())
-        {
-            Destroy(item);
-        }
+        
         Destroy(startPoint);
 
     }

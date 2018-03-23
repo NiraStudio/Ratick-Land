@@ -119,7 +119,7 @@ public class CampaignMenuManager : MonoBehaviour {
         GM.ChangeCoin(-GM.CharacterUpgradeCost(CurrentCharacter));
         GM.AddCharacterCard(CurrentCharacter.id, -GM.CharacterCardUpgradeCost(CurrentCharacter.id));
         GM.IncreaseCharacterLevel(CurrentCharacter.id, 1);
-        GameAnalyticsManager.SendCustomEvent(CurrentCharacter.characterName);
+        GameAnalyticsManager.SendCustomEvent("Character Upgrade:"+CurrentCharacter.characterName);
     }
     public void ChangeCurrentCharacter(CharacterData data)
     {

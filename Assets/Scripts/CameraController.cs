@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class CameraController : MonoBehaviour {
     public static CameraController Instance;
@@ -13,12 +14,16 @@ public class CameraController : MonoBehaviour {
     public float zoomLimiter = 50f;
 
 
-    Camera cam;
+    CinemachineVirtualCamera cam;
     Vector3 velocity;
+    void Awake()
+    {
+        Instance = this;
+    }
     void Start()
     {
         Targets = new List<GameObject>();
-        cam=GetComponent<Camera>();
+        cam=GetComponent<CinemachineVirtualCamera>();
         offSet.z -= 50;
     }
     void LateUpdate()
@@ -38,7 +43,7 @@ public class CameraController : MonoBehaviour {
     void Zoom()
     {
         float newZoom = Mathf.Lerp(minZoom, maxZoom, GetGreatSize() / zoomLimiter);
-        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize,newZoom,Time.deltaTime) ;
+        cam.m_Lens.OrthographicSize = Mathf.Lerp(cam.m_Lens.OrthographicSize, newZoom,Time.deltaTime) ;
 
     }
 

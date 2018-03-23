@@ -27,7 +27,7 @@ namespace Alpha.Localization
         bool IsReady = false;
 
         [SerializeField]
-        Font ENFont, FAFont;
+        public Font ENFont, FAFont;
         public Font Font
         {
             get
@@ -102,7 +102,31 @@ namespace Alpha.Localization
                  Debug.LogError("Cannot Find Data");*/
             #endregion
         }
+        public static string GiveData(string Key,Language language)
+        {
+#if UNITY_EDITOR
+            LocalizationDatabase data = UnityEditor.AssetDatabase.LoadAssetAtPath(FULL_PATH, typeof(LocalizationDatabase)) as LocalizationDatabase;
 
+            if (data == null)
+            {
+                if (!UnityEditor.AssetDatabase.IsValidFolder(@"Assets/" + FOLDER_NAME))
+                    UnityEditor.AssetDatabase.CreateFolder(@"Assets", FOLDER_NAME);
+
+                data = new LocalizationDatabase();
+                UnityEditor.AssetDatabase.CreateAsset(data, FULL_PATH);
+                UnityEditor.AssetDatabase.SaveAssets();
+                UnityEditor.AssetDatabase.Refresh();
+            }
+
+            if (string.IsNullOrEmpty(Key))
+                return " ";
+
+            if (data.ContainKey(Key))
+                return data.GiveValue(Key, language);
+            else
+                return "Localization Text Not Find";
+#endif
+        }
 
         void Reset()
         {
@@ -146,11 +170,11 @@ namespace Alpha.Localization
             return "Localization Text Not Find";
     }
 
-        public static string LastChanger(string text)
+        public string LastChanger(string text)
         {
             string a="";
             char[] aa = text.ToCharArray();
-            if (LocalizationManager.Instance.LanguageCode == Language.FA)
+            if (LanguageCode == Language.FA)
             {
                 for (int i = 0; i < aa.Length; i++)
                 {

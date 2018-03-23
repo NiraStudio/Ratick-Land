@@ -14,7 +14,7 @@ public class LeaderCharacter : Character {
     public override void Die()
     {
         base.Die();
-        controller.FinishTheGame("Defeat");
+        LC.FinishTheGame("Defeat");
     }
     
 

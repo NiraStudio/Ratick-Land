@@ -17,6 +17,9 @@ public class InformationPanel : MonoBehaviour {
     public Animator PanelAnimator;
     public GameObject BackPanel;
     public AdScript AdPanelScript;
+
+    [Header("Finish Panel")]
+    public Sprite WinFinishPanelSprite, LoseFinishPanelSprite;
     // Use this for initialization
     IEnumerator Start()
     {
@@ -89,10 +92,13 @@ public class InformationPanel : MonoBehaviour {
                 {
                     case "Defeat":
                         c = Color.red;
+                        item.Panel.GetComponent<Image>().sprite = LoseFinishPanelSprite;
                         break;
 
                     case "Victory":
                         c = Color.green;
+                        item.Panel.GetComponent<Image>().sprite = WinFinishPanelSprite;
+
                         break;
 
                     default:

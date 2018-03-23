@@ -23,17 +23,20 @@ public class Wave : MonoBehaviour {
     public List<GameObject> SpawnedEnemies = new List<GameObject>();
     [Header("MeleeNormal = 0,MeleeFast = 1,RangeShort = 2,RangeLong = 3,Tank = 4,EliteMeleeNormal = 5 ")]
     [Header("EliteMeleeFast = 6,EliteRangeShort = 7, EliteRangeLong = 8, EliteTank = 9")]
+    public UnityEvent FirstArrange;
     public UnityEvent[] events=new UnityEvent[10];
     [Header("PowerRate Parameters")]
     public float FormulaBase;
     public float FormulaChanger;
 
-    int powerRate=70,enemyNumber;
+    public int powerRate=70,enemyNumber;
     LevelController LC;
     void Start()
     {
         LC = LevelController.instance;
-        for (int i = 0; i <= LC.BrokenCage; i++)
+        FirstArrange.Invoke();
+        int a = LC.BrokenCage < events.Length ? LC.BrokenCage : 10;
+        for (int i = 0; i < a; i++)
         {
 
             events[i].Invoke();
@@ -64,9 +67,14 @@ public class Wave : MonoBehaviour {
             }
         }
     }
+    public void IncreaseDmg(float Amount)
+    {
+
+    }
     public void Spawn()
     {
         int a = 0;
+
         do
         {
             Vector3 t = Random.insideUnitCircle * 0.2f;
@@ -91,7 +99,6 @@ public class Wave : MonoBehaviour {
         if (transform.childCount <= 0)
         {
             LC.RemoveWave(gameObject);
-            print("wave destroyed");
             Destroy(gameObject);
         }
     }

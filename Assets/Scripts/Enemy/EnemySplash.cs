@@ -12,6 +12,8 @@ public class EnemySplash : Enemy
         foreach (var item in characters)
         {
             item.SendMessage("GetHit", (float)damage);
+            Instantiate(DmgPopUp, detectedCharacter.transform.position, Quaternion.identity).GetComponent<DmgPopUpBehaivior>().RePaint(damage.ToString(), DmgPopUpBehaivior.AttackType.EnemyAttack, detectedCharacter.gameObject.transform.position);
+
         }
         time = 0;
         Attacking = false;

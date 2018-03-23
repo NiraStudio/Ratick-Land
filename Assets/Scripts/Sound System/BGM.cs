@@ -5,7 +5,7 @@ using UnityEngine;
 public class BGM : MonoBehaviour {
     public enum State
     {
-        Main,BossFight,Relax
+        Main,BossFight,Relax,MainMenu
     }
     public static BGM Instance;
 
@@ -21,10 +21,19 @@ public class BGM : MonoBehaviour {
 
     public AudioSource Audio;
 
+
+   public bool Mute,s;
 	// Use this for initialization
     #region Singleton
+
+    #endregion
+
     void Awake()
     {
+        Audio = gameObject.AddComponent<AudioSource>();
+
+        Mute = SettingManager.Instance.BGMMute;
+        s = Mute;
         if (!Manager)
             return;
 
@@ -33,16 +42,25 @@ public class BGM : MonoBehaviour {
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        
-
-
     }
-    #endregion
-
-    void Start()
+    void FixedUpdate()
     {
-        Audio = gameObject.AddComponent<AudioSource>();
-        Audio = GetComponent<AudioSource>();
+        Mute = SettingManager.Instance.BGMMute;
+        if (Mute != s)
+        {
+            if (Mute)
+            {
+                pauseSound();
+            }
+            else
+            {
+                ResumeSound();
+            }
+
+            s = Mute;
+
+        }
+
     }
 
 
@@ -70,6 +88,10 @@ public class BGM : MonoBehaviour {
         Sound a = soundByState(state);
         ChangeAudio(a);
         Audio.Play();
+        this.state = state;
+        
+        if (Mute)
+            Audio.Pause();
     }
     public void stopSound()
     {

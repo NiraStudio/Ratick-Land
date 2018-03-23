@@ -14,25 +14,37 @@ public class MainMenuManager : MainBehavior {
         Instance = this;
     }
     float coinTemp,lerp;
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
 
         GM = GameManager.instance;
-        if(!GM.sfx.IsPlaying("MainMenu"))
-        GM.sfx.PlaySound("MainMenu");
+        GM.bgm.PlaySound(BGM.State.MainMenu);
         if (PlayerPrefs.GetFloat("BossKilled") == 1)
         {
-            InformationPanel.Instance.OpenInfoPanel( "تو خرس رو کشتی \n  کد رو تا رو انتشار اصلی بازی نگه دار"+"\n"+GM.giveeRandomRewardCode(),"You killed the Bear \n Keep this code till the game release\n"+GM.giveeRandomRewardCode(),false, () =>
-            {
-                PlayerPrefs.SetInt("FirstBoss", 0);
-                PlayerPrefs.SetInt("BossKilled", 0);
-            }, "OK");
-            
+            InformationPanel.Instance.OpenInfoPanel("تو خرس رو کشتی \n  کد رو تا رو انتشار اصلی بازی نگه دار" + "\n" + GM.giveeRandomRewardCode(), "You killed the Bear \n Keep this code till the game release\n" + GM.giveeRandomRewardCode(), false, () =>
+                   {
+                       PlayerPrefs.SetInt("FirstBoss", 0);
+                       PlayerPrefs.SetInt("BossKilled", 0);
+                   }, "OK");
+
         }
-        if(PlayerPrefs.GetInt("Tutorial")==1)
-        TutorialManager.Instance.OpenStep("Tut_1");
+
+
+        if (PlayerPrefs.GetInt("Tutorial") == 1)
+            TutorialManager.Instance.OpenStep("Tut_1");
+        else if (PlayerPrefs.GetInt("Tutorial") == 2)
+            TutorialManager.Instance.OpenStep("Tut_11");
+
+
         OpenScreen();
-	}
+        if (PlayerPrefs.GetInt("Played") == 5)
+        {
+            SurveyManager.Instance.Open();
+            print(PlayerPrefs.GetInt("Played"));
+        }
+
+    }
 
     void Update()
     {

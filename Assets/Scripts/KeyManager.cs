@@ -12,12 +12,12 @@ public class KeyManager : MonoBehaviour {
         Instance = this;
     }
     #endregion
-
+    public GameObject PSObject;
     public int keyCount = 3, GotedKey;
     public int KeyPartGeted, KeyPartNeeded;
     // Use this for initialization
     void Start () {
-        RenewKeyPartNeeded();
+        RenewKeyPartAmount();
 	}
 	
 	// Update is called once per frame
@@ -25,10 +25,11 @@ public class KeyManager : MonoBehaviour {
         if (KeyPartGeted >= KeyPartNeeded)
         {
             ChangeKeyCount(1);
-            RenewKeyPartNeeded();
+            RenewKeyPartAmount();
+            PSObject.gameObject.SetActive(true);
         }
     }
-    public void RenewKeyPartNeeded()
+    public void RenewKeyPartAmount()
     {
         KeyPartGeted = KeyPartGeted - KeyPartNeeded;
         ChangeKeyPartNeeded();
@@ -36,7 +37,7 @@ public class KeyManager : MonoBehaviour {
     public void ChangeKeyPartNeeded()
     {
         KeyPartNeeded = 0;
-        KeyPartNeeded = 15 + (GotedKey * 15);
+        KeyPartNeeded = 5 + (GotedKey * 10);
     }
     public void ChangeKeyCount(int amount)
     {

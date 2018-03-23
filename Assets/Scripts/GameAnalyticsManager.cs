@@ -11,9 +11,11 @@ public class GameAnalyticsManager : MonoBehaviour {
 
     }
     #endregion
+
+    InternetChecker IC;
     // Use this for initialization
     void Start () {
-		
+        IC = GetComponent<InternetChecker>();
 	}
 	
 	// Update is called once per frame
@@ -27,6 +29,22 @@ public class GameAnalyticsManager : MonoBehaviour {
     public static void SendCustomEvent(string EventName)
     {
         GameAnalytics.NewDesignEvent(EventName);
-        
     }
 }
+public class DesignEventInfo
+{
+    public string Id;
+    public float Value;
+}
+public class ProgressionEventInfo
+{
+    public GAProgressionStatus Status;
+    public string Progress1,Progress2,Progress3;
+    public int score;
+}
+
+public class ResourcesEventInfo
+{
+
+}
+

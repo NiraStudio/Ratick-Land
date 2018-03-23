@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     [SerializeField]
     GameObject coinObject;
     GameObject aim;
-    LevelController levelController;
+    LevelController LC;
     protected Collider2D detectedCharacter;
     protected GameObject DmgPopUp;
     bool detect,move;
@@ -37,7 +37,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     public virtual void Start()
     {
         gameObject.layer = 0;
-        levelController = LevelController.instance;
+        LC = LevelController.instance;
         aim = GameObject.FindWithTag("Aim");
         rg = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -53,7 +53,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (levelController.gameState != GamePlayState.Playing)
+        if (LC.gameState != GamePlayState.Playing)
         {
             rg.velocity = Vector2.zero;
             return;
@@ -120,10 +120,9 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
         attackSpeed = data.attackSpeed;
         speed = data.speed;
         hitPoint = data.hitPoint;
-        damage = data.damage;
-        damage = data.damage * ((Time.time / 20)+1);
+        damage = data.damage*LC.EnemyDamageMultiPly;
         range = data.range;
-        coin = data.coin * levelController.WorldCoinMultiply;
+        coin = data.coin * LC.WorldCoinMultiply;
     }
     IEnumerator Move()
     {
@@ -175,7 +174,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
         {
             float f = (float)damage;
             detectedCharacter.SendMessage("GetHit", f);
-            Instantiate(DmgPopUp, detectedCharacter.transform.position, Quaternion.identity).GetComponent<DmgPopUpBehaivior>().RePaint(f.ToString(), DmgPopUpBehaivior.AttackType.EnemyAttack,detectedCharacter.gameObject.transform.position);
+            Instantiate(DmgPopUp, detectedCharacter.transform.position, Quaternion.identity).GetComponent<DmgPopUpBehaivior>().RePaint(((int)f).ToString(), DmgPopUpBehaivior.AttackType.EnemyAttack,detectedCharacter.gameObject.transform.position);
         }
         time = 0;
         Attacking = false;
@@ -185,10 +184,10 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     public void Die()
     {
         LevelUIManager.Instance.MakeGoldBrust(transform.position);
-        levelController.ChangeCoin(coin);
+        LC.ChangeCoin(coin);
         KeyManager.Instance.ChangeKeyPart(1);
         Lean.Pool.LeanPool.Despawn(gameObject);
-        GameAnalyticsManager.SendCustomEvent(data.enemyName);
+        GameAnalyticsManager.SendCustomEvent("Enemy:"+data.enemyName);
     }
     void OnDrawGizmos()
     {

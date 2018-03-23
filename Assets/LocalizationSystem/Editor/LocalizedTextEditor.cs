@@ -18,7 +18,7 @@ namespace Alpha.Localization
         static Vector2 AddWindowSize = new Vector2(500, 100);
 
         static Vector2 IconButtonSize = new Vector2(25, 25);
-        Vector2 DetailScroll, AttributesScroll, UpgradesScroll;
+        Vector2  Scroll,Scroll2;
         Vector2[] Poses = new Vector2[System.Enum.GetValues(typeof(Language)).Length];
         string SearchName;
 
@@ -63,13 +63,13 @@ namespace Alpha.Localization
         {
             if (string.IsNullOrEmpty(SearchName))
             {
-                DetailScroll = GUILayout.BeginScrollView(DetailScroll, "Box");
+                Scroll = GUILayout.BeginScrollView(Scroll, "Box");
 
 
                 GUILayout.BeginHorizontal();
                 for (int i = 0; i < System.Enum.GetValues(typeof(Language)).Length; i++)
                 {
-                    Poses[i] = GUILayout.BeginScrollView(Poses[i], "Box");
+                    Scroll2 = GUILayout.BeginScrollView(Scroll2, "Box");
                     EditorGUILayout.LabelField(((Language)i).ToString(), EditorStyles.boldLabel);
 
 
@@ -94,6 +94,7 @@ namespace Alpha.Localization
                         {
                             dataBase.RemoveItem(item.Key);
                         }
+                        dataBase.setDirty();
                         GUILayout.EndHorizontal();
                     }
                     GUILayout.EndVertical();
@@ -240,7 +241,7 @@ namespace Alpha.Localization
 
         LocalizationDatabase dataBase;
         static Vector2 IconButtonSize = new Vector2(25, 25);
-        string Key;
+        public string Key;
         string[] values = new string[System.Enum.GetValues(typeof(Language)).Length];
         void OnEnable()
         {

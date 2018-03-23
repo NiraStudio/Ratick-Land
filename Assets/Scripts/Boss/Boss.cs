@@ -8,12 +8,14 @@ public class Boss : MainBehavior,IHitable,IAttackable {
     public BossAction[] Actions;
     public BossData data;
     public IntRange attackCoolDown=new IntRange(0,0);
-    public GameObject LineHitter,target;
+    public GameObject LineHitter,target,Shape;
 
     protected ObscuredString bossName;
     protected ObscuredFloat damage;
     protected ObscuredInt hitPoint;
     protected ObscuredFloat range;
+    protected GameObject DmgPopUp;
+
 
     Transform aimer;
     LevelController LC;
@@ -36,8 +38,10 @@ public class Boss : MainBehavior,IHitable,IAttackable {
         waitTime = attackCoolDown.Random;
         LC = LevelController.instance;
         aimer = GameObject.FindWithTag("Leader").transform;
+        DmgPopUp = Resources.Load("DmgPopUp", typeof(GameObject)) as GameObject;
+
     }
-	
+
 
     void RenewData()
     {
@@ -122,18 +126,20 @@ public class Boss : MainBehavior,IHitable,IAttackable {
     void Flip()
     {
 
-        Vector3 aa = transform.localScale;
+        Vector3 aa = Shape.transform.localScale;
         aa.x *= -1;
-        transform.localScale = aa;
+        Shape.transform.localScale = aa;
         right = !right;
     }
 
     public virtual void Splash()
     {
         Collider2D[] temp = Physics2D.OverlapCircleAll(transform.position, range, MainBehavior.CharacterLayer);
+        
         foreach (var item in temp)
         {
             item.SendMessage("GetHit",(float) damage);
+            Instantiate(DmgPopUp, item.transform.position, Quaternion.identity).GetComponent<DmgPopUpBehaivior>().RePaint(damage.ToString(), DmgPopUpBehaivior.AttackType.EnemyAttack, item.transform.position);
         }
         Counter = true;
         waitTime = attackCoolDown.Random;
@@ -141,7 +147,7 @@ public class Boss : MainBehavior,IHitable,IAttackable {
     }
     public  void ChooseRandomDirection()
     {
-        Vector2 dir = target.transform.position - LineHitter.transform.position;
+        Vector2 dir = aimer.transform.position - LineHitter.transform.position;
 
 
          angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
@@ -174,6 +180,7 @@ public class Boss : MainBehavior,IHitable,IAttackable {
             {
                 dir.Normalize();
                 item.SendMessage("GetHit", (float)damage);
+                Instantiate(DmgPopUp, item.transform.position, Quaternion.identity).GetComponent<DmgPopUpBehaivior>().RePaint(damage.ToString(), DmgPopUpBehaivior.AttackType.EnemyAttack, item.transform.position);
 
                 item.GetComponent<Rigidbody2D>().AddForce(dir *100);
             }

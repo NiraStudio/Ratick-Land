@@ -14,7 +14,6 @@ public class RangeCharacter : Character {
             Instantiate(Bullet, ShootPos.transform.position, Quaternion.identity).GetComponent<AimedProjectile>().Spawn(detectedEnemy.gameObject, f);
 
         }
-        waitTime = 0;
         Attacking = false;
     }
 }

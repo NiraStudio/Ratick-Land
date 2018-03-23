@@ -46,7 +46,7 @@ public class LocalizedDynamicText : MonoBehaviour {
     public void ChangeText(string persian,string english,bool checkable,bool ChangeNumbers)
     {
         if (ChangeNumbers)
-            PersianText = LocalizationManager.LastChanger(persian);
+            PersianText = LocalizationManager.Instance.LastChanger(persian);
         else
             PersianText = change(persian);
         
@@ -58,7 +58,7 @@ public class LocalizedDynamicText : MonoBehaviour {
     {
         set
         {
-            PersianText = EnglishText = LocalizationManager.LastChanger(value);
+            PersianText = EnglishText = LocalizationManager.Instance.LastChanger(value);
         }
     }
     void Reset()

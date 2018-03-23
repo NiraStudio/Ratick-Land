@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PriestCharacter : Character {
+    public GameObject HealPS;
     GameObject leader;
     public override void Start()
     {
@@ -15,8 +16,8 @@ public class PriestCharacter : Character {
         float f = damage.Random;
         leader.SendMessage("GetHeal", f);
         Instantiate(DmgPopUp, null).GetComponent<DmgPopUpBehaivior>().RePaint(((int)f).ToString(),DmgPopUpBehaivior.AttackType.PlayerHeal,leader.transform.position);
-
-        waitTime = 0;
+        //Instantiate(HealPS, leader.transform);
         Attacking = false;
+        waitTime = 0;
     }
 }

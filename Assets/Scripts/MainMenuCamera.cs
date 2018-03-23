@@ -48,7 +48,7 @@ public class MainMenuCamera : MonoBehaviour
         ChangeByCurrentState();
     }
 
-    void ChangeByCurrentState()
+    public void ChangeByCurrentState()
     {
         foreach (var item in poses)
         {

@@ -45,6 +45,10 @@ public class TutorialManager : MonoBehaviour {
             }
         }
     }
+    public void ChangeTutorialState(int state)
+    {
+        PlayerPrefs.SetInt("Tutorial", state);
+    }
     public void GiveCharacters()
     {
         GM.IncreaseCharacterLevel(2, 25);
@@ -64,6 +68,11 @@ public class TutorialManager : MonoBehaviour {
     public void GoToArrangeScene()
     {
         MainMenuManager.Instance.Play();
+    }
+    public void ChangeMainCameraState(string state)
+    {
+        Camera.main.GetComponent<MainMenuCamera>().CurrentState =(MainMenuCamera.CameraPos) System.Enum.Parse(typeof(MainMenuCamera.CameraPos), state);
+        Camera.main.GetComponent<MainMenuCamera>().ChangeByCurrentState();
     }
     public void Test()
     {
