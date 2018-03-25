@@ -64,8 +64,6 @@ public class Chest : MonoBehaviour {
         }
         #endregion
 
-
-
         //open chestViewer
         if (CampaignMenuManager.Instance != null)
             CampaignMenuManager.Instance.RenewPlayer();

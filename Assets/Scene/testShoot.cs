@@ -62,8 +62,5 @@ public class testShoot : MonoBehaviour {
         print(answer);
         return answer;
     }
-    public void Tests()
-    {
-        InformationPanel.Instance.OpenADRewardPanel();
-    }
+    
 }

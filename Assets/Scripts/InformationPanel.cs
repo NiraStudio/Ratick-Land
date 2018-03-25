@@ -17,9 +17,8 @@ public class InformationPanel : MonoBehaviour {
     public Animator PanelAnimator;
     public GameObject BackPanel;
     public AdScript AdPanelScript;
+    public Color SuccusColor, AlertColor, NormalColor;
 
-    [Header("Finish Panel")]
-    public Sprite WinFinishPanelSprite, LoseFinishPanelSprite;
     // Use this for initialization
     IEnumerator Start()
     {
@@ -27,7 +26,7 @@ public class InformationPanel : MonoBehaviour {
         PanelAnimator.gameObject.SetActive(false);
         BackPanel.SetActive(false);
     }
-    public void OpenInfoPanel(string Persian,string English,bool changeNumbers, UnityAction OkAction, string OkButtonText)
+    public void OpenInfoPanel(string Persian,string English, PanelColor color, bool changeNumbers, UnityAction OkAction)
     {
         DeactiveAll();
         foreach (var item in Panels)
@@ -35,12 +34,26 @@ public class InformationPanel : MonoBehaviour {
             if (item.Type == InformationType.Info)
             {
                 item.Panel.SetActive(true);
+                switch (color)
+                {
+                    case PanelColor.Normal:
+                        item.Panel.GetComponent<Image>().color = NormalColor;
+                        break;
+                    case PanelColor.Alert:
+                        item.Panel.GetComponent<Image>().color = AlertColor;
+
+                        break;
+                    case PanelColor.Succuss:
+                        item.Panel.GetComponent<Image>().color = SuccusColor;
+
+                        break;
+
+                }
                 item.text.ChangeText(Persian, English,false, changeNumbers);
                 item.buttons[0].onClick.RemoveAllListeners();
                 if(OkAction!=null)
                 item.buttons[0].onClick.AddListener(OkAction);
                 item.buttons[0].onClick.AddListener(AnimationClose);
-                item.buttons[0].transform.GetChild(0).GetComponent<Text>().text = OkButtonText;
             }
         }
         PanelAnimator.gameObject.SetActive(true);
@@ -51,7 +64,7 @@ public class InformationPanel : MonoBehaviour {
     }
 
    
-    public void OpenRewardPanel(RewardInfo Info, UnityAction OkAction,string OkButtonText)
+    public void OpenRewardPanel(PanelColor color,RewardInfo Info, UnityAction OkAction,string OkButtonText)
     {
         DeactiveAll();
         foreach (var item in Panels)
@@ -59,6 +72,21 @@ public class InformationPanel : MonoBehaviour {
             if (item.Type == InformationType.Reward)
             {
                 item.Panel.SetActive(true);
+                switch (color)
+                {
+                    case PanelColor.Normal:
+                        item.Panel.GetComponent<Image>().color = NormalColor;
+                        break;
+                    case PanelColor.Alert:
+                        item.Panel.GetComponent<Image>().color = AlertColor;
+
+                        break;
+                    case PanelColor.Succuss:
+                        item.Panel.GetComponent<Image>().color = SuccusColor;
+
+                        break;
+                   
+                }
                 item.Panel.transform.GetChild(0).GetComponent<RewardCard>().Repaint(Info);
                 item.buttons[0].onClick.RemoveAllListeners();
                 if (OkAction != null)
@@ -73,7 +101,7 @@ public class InformationPanel : MonoBehaviour {
 
     }
 
-    public void OpenFinshPanel(string StateKey,int CointAmount ,UnityAction OkAction)
+    public void OpenFinshPanel(string StateKey,PanelColor color,int CointAmount ,UnityAction OkAction)
     {
         DeactiveAll();
         LocalizedDynamicText t=new LocalizedDynamicText();
@@ -86,26 +114,24 @@ public class InformationPanel : MonoBehaviour {
                 if (OkAction != null)
                     item.buttons[0].onClick.AddListener(OkAction);
 
-                Color c = new Color();
-                
-                switch (StateKey)
+
+                switch (color)
                 {
-                    case "Defeat":
-                        c = Color.red;
-                        item.Panel.GetComponent<Image>().sprite = LoseFinishPanelSprite;
+                    case PanelColor.Normal:
+                        item.Panel.GetComponent<Image>().color = NormalColor;
                         break;
-
-                    case "Victory":
-                        c = Color.green;
-                        item.Panel.GetComponent<Image>().sprite = WinFinishPanelSprite;
+                    case PanelColor.Alert:
+                        item.Panel.GetComponent<Image>().color = AlertColor;
 
                         break;
+                    case PanelColor.Succuss:
+                        item.Panel.GetComponent<Image>().color = SuccusColor;
 
-                    default:
                         break;
+
                 }
 
-                item.Panel.transform.GetChild(0).GetComponent<Image>().color = item.Panel.transform.GetChild(1).GetComponent<Image>().color = c;
+                item.Panel.transform.GetChild(0).GetComponent<Image>().color = item.Panel.transform.GetChild(1).GetComponent<Image>().color = Color.yellow;
                 item.Panel.transform.GetChild(2).GetChild(0).GetComponent<LocalizedKeyText>().Key = StateKey;
                 t = item.text;
                 t.Number = "0";
@@ -143,7 +169,7 @@ public class InformationPanel : MonoBehaviour {
             text.Number = ((int)coinTemp).ToString();
         }
     }
-    public void OpenADRewardPanel()
+    public void OpenADRewardPanel(string PrText,string EnText,PanelColor color)
     {
         DeactiveAll();
         foreach (var item in Panels)
@@ -151,6 +177,22 @@ public class InformationPanel : MonoBehaviour {
             if (item.Type == InformationType.AdReward)
             {
                 item.Panel.SetActive(true);
+                switch (color)
+                {
+                    case PanelColor.Normal:
+                        item.Panel.GetComponent<Image>().color = NormalColor;
+                        break;
+                    case PanelColor.Alert:
+                        item.Panel.GetComponent<Image>().color = AlertColor;
+
+                        break;
+                    case PanelColor.Succuss:
+                        item.Panel.GetComponent<Image>().color = SuccusColor;
+
+                        break;
+
+                }
+                item.text.ChangeText(PrText, EnText, false, false);
                 //item.buttons[0].onClick.AddListener(Close);
             }
         }
@@ -191,4 +233,8 @@ public class InformationPanel : MonoBehaviour {
 public enum InformationType
 {
     Reward,Info,AdReward,FinishPanel
+}
+public enum PanelColor
+{
+    Normal,Alert,Succuss
 }

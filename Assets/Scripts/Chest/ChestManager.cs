@@ -18,22 +18,26 @@ public class ChestManager : MonoBehaviour {
         BTN = GetComponent<Button>();
         Close();
 	}
-    
-	
-	// Update is called once per frame
-	public void OpenChest (string Name)
+
+
+    // Update is called once per frame
+    public void OpenChest(string Name)
     {
         gameObject.SetActive(true);
         foreach (var item in chests)
         {
+
             if (item.Type == Name)
             {
                 item.chest.MakeChest();
                 item.chest.gameObject.SetActive(true);
                 BTN.onClick.RemoveAllListeners();
                 BTN.onClick.AddListener(item.chest.Animation.buttonDown);
-                GameAnalyticsManager.SendCustomEvent(Name);
+                GameAnalyticsManager.SendCustomEvent("Chests:" + Name);
             }
+            else
+                item.chest.gameObject.SetActive(false);
+
         }
     }
     public void Close()

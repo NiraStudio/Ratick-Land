@@ -126,6 +126,7 @@ namespace Alpha.Localization
             else
                 return "Localization Text Not Find";
 #endif
+            return "";
         }
 
         void Reset()

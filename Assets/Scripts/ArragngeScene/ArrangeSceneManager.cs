@@ -2,29 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Alpha.Localization;
 
-public class ArrangeSceneManager : MainBehavior {
+public class ArrangeSceneManager : MainBehavior
+{
     public static ArrangeSceneManager Instance;
     public CharacterDataBase characterDatabase;
-    public GameObject choosePanel,ChoosePanelParent,ChooseButton,DeleteButton,CardPanel;
+    public GameObject choosePanel, ChoosePanelParent, ChooseButton, DeleteButton, CardPanel;
     public ArrangeIcon[] Heros;
     public ArrangeIcon Main, Support, Minion;
-    public Text CardDoubleAttackText, CardDoubleCoinText;
-    public Image CardBtnImage;
+    [Header("Card Data")]
+    public LocalizedDynamicText PotionDoubleAttackText;
+    public LocalizedDynamicText PotionDoubleCoinText;
+    public Image PotionBtnImage,DoubleCoinPotionImg,DoubleDmgPotionImg,ChoosePanelImage;
     public CharacterData[] data;
-
+    public LocalizedKeyText ChoosePanelText;
     List<CharacterData> temp = new List<CharacterData>();
     SlotContainer sc = new SlotContainer();
     GameManager GM;
     ArrangeIcon currentIcon;
 
-    int CardDoubleAttack, CardDoubleCoin;
+    int PotionDoubleAttack, PotionDoubleCoin;
     void Awake()
     {
         Instance = this;
         GM = GameManager.instance;
     }
-	// Use this for initialization
+    // Use this for initialization
     void Start()
     {
         if (GM.SlotData != null)
@@ -45,23 +49,27 @@ public class ArrangeSceneManager : MainBehavior {
 
     void RepaintArranges(SlotContainer SC)
     {
-        
+
 
         for (int i = 0; i < SC.Heros.Count; i++)
         {
             if (SC.Heros[i] > 0)
+                if(GM.DoesPlayerHasThisCharacter(SC.Heros[i]))
                 Heros[i].Repaint(characterDatabase.GiveByID(SC.Heros[i]));
         }
         if (SC.mainId > 0)
         {
-            Main.Repaint(characterDatabase.GiveByID(SC.mainId));
+            if (GM.DoesPlayerHasThisCharacter(SC.mainId))
+                Main.Repaint(characterDatabase.GiveByID(SC.mainId));
         }
 
         if (SC.minionId > 0)
-            Minion.Repaint(characterDatabase.GiveByID(SC.minionId));
+            if (GM.DoesPlayerHasThisCharacter(SC.minionId))
+                Minion.Repaint(characterDatabase.GiveByID(SC.minionId));
 
         if (SC.supportId > 0)
-            Support.Repaint(characterDatabase.GiveByID(SC.supportId));
+            if (GM.DoesPlayerHasThisCharacter(SC.supportId))
+                Support.Repaint(characterDatabase.GiveByID(SC.supportId));
 
 
     }
@@ -81,6 +89,7 @@ public class ArrangeSceneManager : MainBehavior {
         Heros[heroIconId].Repaint(characterDatabase.GiveByID(id));
 
     }
+
     public void OpenCharacterChoosePanel(ArrangeIcon btn)
     {
         currentIcon = btn;
@@ -93,7 +102,6 @@ public class ArrangeSceneManager : MainBehavior {
 
         MakeChoosePanel(btn.type);
 
-        print("Open");
     }
     public void CloseCharacterChoosePanel(CharacterData data)
     {
@@ -111,50 +119,51 @@ public class ArrangeSceneManager : MainBehavior {
     public void OpenCardPanel()
     {
         CardPanel.SetActive(true);
-        CardDoubleAttack = CardDoubleCoin = 0;
+        PotionDoubleAttack = PotionDoubleCoin = 0;
 
 
-        foreach (var item in GM.mainData.cardHolder.cards.ToArray())
+        foreach (var item in GM.mainData.porionHolder.cards.ToArray())
         {
             switch (item.cardType)
             {
-                case Card.Type.empty:
+                case Potion.Type.empty:
                     break;
-                case Card.Type.DoubleCoin:
-                    CardDoubleCoin++;
+                case Potion.Type.DoubleCoin:
+                    PotionDoubleCoin++;
                     break;
-                case Card.Type.DoubleATK:
-                    CardDoubleAttack++;
+                case Potion.Type.DoubleATK:
+                    PotionDoubleAttack++;
                     break;
 
             }
         }
 
-        CardDoubleAttackText.text = "X" + CardDoubleAttack;
-        CardDoubleCoinText.text = "X" + CardDoubleCoin;
+
+        PotionDoubleAttackText.Number = "X" + PotionDoubleAttack;
+        PotionDoubleCoinText.Number = "X" + PotionDoubleCoin;
     }
-    public void CloseCardPanel(Card card)
+    public void CloseCardPanel(Potion potion)
     {
-        
-        switch (card.cardType)
+
+        switch (potion.cardType)
         {
-            case Card.Type.empty:
+            case Potion.Type.empty:
                 break;
-            case Card.Type.DoubleCoin:
-                if (CardDoubleCoin > 0)
+            case Potion.Type.DoubleCoin:
+                if (PotionDoubleCoin > 0)
                 {
 
-                CardBtnImage.color = Color.yellow;
-                    sc.card = card;
+                    PotionBtnImage.sprite =DoubleCoinPotionImg.sprite;
+                    sc.porion = potion;
                 }
                 break;
-            case Card.Type.DoubleATK:
-                if (CardDoubleAttack > 0)
+            case Potion.Type.DoubleATK:
+                if (PotionDoubleAttack > 0)
                 {
 
-                    CardBtnImage.color = Color.red;
+                    PotionBtnImage.sprite = DoubleDmgPotionImg.sprite;
 
-                    sc.card = card;
+                    sc.porion = potion;
                 }
 
                 break;
@@ -165,8 +174,8 @@ public class ArrangeSceneManager : MainBehavior {
     public void CloseCardPanel()
     {
 
-        sc.card = null;
-        CardBtnImage.sprite = null;
+        sc.porion = null;
+        PotionBtnImage.sprite = null;
         CardPanel.SetActive(false);
 
     }
@@ -190,12 +199,24 @@ public class ArrangeSceneManager : MainBehavior {
             if (a.type == t)
                 temp.Add(a);
         }
-        foreach (var item in temp.ToArray())
+        if (temp.Count > 0)
         {
-            if(CheckForSelect(item.id)==false)
-            Instantiate(ChooseButton, ChoosePanelParent.transform).SendMessage("Repaint", item);
+            foreach (var item in temp.ToArray())
+            {
+                if (CheckForSelect(item.id) == false)
+                {
+                    GameObject g = Instantiate(ChooseButton, ChoosePanelParent.transform);
+                    g.SendMessage("Repaint", item);
+                    g.SendMessage("Enable");
+
+                }
+            }
         }
-        
+        else
+        {
+
+        }
+
     }
     public void GoToPlayScene()
     {
@@ -225,16 +246,16 @@ public class ArrangeSceneManager : MainBehavior {
     }
     bool CheckForSelect(int ID)
     {
-        bool answer=false;
+        bool answer = false;
         foreach (var item in Heros)
         {
-            if(ID==item.ID)
+            if (ID == item.ID)
             {
                 answer = true;
                 return answer;
             }
         }
-        if(ID==Minion.ID)
+        if (ID == Minion.ID)
         {
             answer = true;
             return answer;
@@ -268,5 +289,5 @@ public class ArrangeSceneManager : MainBehavior {
         */
         return true;
     }
-    
+
 }

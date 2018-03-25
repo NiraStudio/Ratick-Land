@@ -85,7 +85,7 @@ public class LevelController : MainBehavior
 
 
         //Use Card
-        UseCard(GM.SlotData.card);
+        UseCard(GM.SlotData.porion);
 
         //Starting the game
         OpenScreen();
@@ -219,13 +219,13 @@ public class LevelController : MainBehavior
         Instantiate(Boss, BossSpots[Random.Range(0, BossSpots.Count)], Quaternion.identity);
     }
 
-    void UseCard(Card card)
+    void UseCard(Potion card)
     {
         if (card == null)
             return;
         card.Action();
-        GM.mainData.cardHolder.Remove(card.cardType);
-        GM.SlotData.card = null;
+        GM.mainData.porionHolder.Remove(card.cardType);
+        GM.SlotData.porion = null;
         GM.SaveMainData();
         GameAnalyticsManager.SendCustomEvent(card.cardType.ToString());
     }
@@ -278,7 +278,7 @@ public class LevelController : MainBehavior
             }
             if (PlayerPrefs.GetInt("Played") < 5)
                 PlayerPrefs.SetInt("Played", PlayerPrefs.GetInt("Played") + 1);
-            InformationPanel.Instance.OpenFinshPanel(State, coinAmount, () =>
+            InformationPanel.Instance.OpenFinshPanel(State,State=="Victory"?PanelColor.Succuss:PanelColor.Alert, coinAmount, () =>
               {
                   GoToScene("MainMenu");
               });

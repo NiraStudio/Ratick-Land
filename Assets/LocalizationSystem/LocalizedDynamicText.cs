@@ -7,9 +7,9 @@ using UPersian.Components;
 
 public class LocalizedDynamicText : MonoBehaviour {
 
-
     [SerializeField]
-    public bool Checkable;
+    public bool Checkable,NumberText;
+
     public RtlText Text;
     string PersianText, EnglishText;
 
@@ -40,8 +40,10 @@ public class LocalizedDynamicText : MonoBehaviour {
                 break;
             
         }
-
+        if (NumberText)
+            Text.text = NumberText.ToString();
         Text.font = LM.Font;
+
     }
     public void ChangeText(string persian,string english,bool checkable,bool ChangeNumbers)
     {
@@ -52,7 +54,7 @@ public class LocalizedDynamicText : MonoBehaviour {
         
         EnglishText = english;
         Checkable = checkable;
-        print("text changed "+english);
+
     }
     public string Number
     {

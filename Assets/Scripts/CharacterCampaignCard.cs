@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Alpha.Localization;
 
 public class CharacterCampaignCard : MonoBehaviour {
     public Image CharacterImg;
     public GameObject Alart;
     public CharacterData data;
-
+    public LocalizedKeyText CharacterName;
     GameManager GM;
     void Start()
     {
@@ -20,14 +21,17 @@ public class CharacterCampaignCard : MonoBehaviour {
         GM = GameManager.instance;
         this.data = data;
         CharacterImg.sprite = data.icon;
+        CharacterName.Key = data.characterName;
         if (GM.CharacterCard(data.id) >= GM.CharacterCardUpgradeCost(data.id)&&GM.coinAmount>=GM.CharacterUpgradeCost(data.id))
             Alart.SetActive(true);
         else
             Alart.SetActive(false);
     }
-    public void Repaint()
+    public void RepaintCheck()
     {
         CharacterImg.sprite = data.icon;
+        CharacterName.Key = data.characterName;
+
         if (GM.CharacterCard(data.id) >= GM.CharacterCardUpgradeCost(data.id) && GM.coinAmount >= GM.CharacterUpgradeCost(data.id))
             Alart.SetActive(true);
         else

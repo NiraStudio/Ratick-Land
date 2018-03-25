@@ -80,7 +80,7 @@ public class BGM : MonoBehaviour {
                 t = Sounds[i].Clip;
             }
         }
-        print(t.ClipId);
+
         return t;
     }
     public void PlaySound(State state)

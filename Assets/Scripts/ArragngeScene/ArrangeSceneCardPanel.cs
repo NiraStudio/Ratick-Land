@@ -25,16 +25,16 @@ public class ArrangeSceneCardPanel : MonoBehaviour {
         CardDoubleAttack = CardDoubleCoin = 0;
 
 
-        foreach (var item in GM.mainData.cardHolder.cards.ToArray())
+        foreach (var item in GM.mainData.porionHolder.cards.ToArray())
         {
             switch (item.cardType)
             {
-                case Card.Type.empty:
+                case Potion.Type.empty:
                     break;
-                case Card.Type.DoubleCoin:
+                case Potion.Type.DoubleCoin:
                     CardDoubleCoin++;
                     break;
-                case Card.Type.DoubleATK:
+                case Potion.Type.DoubleATK:
                     CardDoubleAttack++;
                     break;
 

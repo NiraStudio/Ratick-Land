@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Alpha.Localization;
 
 public class CampaignDetailPanelBehaivior : MonoBehaviour {
-    public LocalizedDynamicText AttackDamage, AttackSpeed, HitPoint, levelText; public LocalizedKeyText CharacterName;
+    public LocalizedDynamicText AttackDamage, HitPoint, levelText; public LocalizedKeyText CharacterName;
     public Slider SpeedBar;
     DetailState state,skinState;
     GameManager GM;
@@ -15,11 +15,10 @@ public class CampaignDetailPanelBehaivior : MonoBehaviour {
         GM = GameManager.instance;
     }
 	// Use this for initialization
-	public void RePaint(CharacterData data,Skin skin)
+	public void RePaint(CharacterData data)
     {
         CharacterName.Key = data.characterName;
         state = GM.CharacterState(data);
-       // skinState = skin.State();
         levelText.ChangeText("مرحله " + GM.CharacterLevel(data.id), "Level " + GM.CharacterLevel(data.id), false, true);
         AttackDamage.Number = state.AttackDamage.ToString();
         float a = 3 - state.AttackSpeed;

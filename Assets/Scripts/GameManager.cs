@@ -84,9 +84,9 @@ public class GameManager : MainBehavior
         SaveCurrencyData();
     }
 
-    public void AddCard(Card card)
+    public void AddPotion(Potion card)
     {
-        _mainData.cardHolder.cards.Add(card);
+        _mainData.porionHolder.cards.Add(card);
         SaveMainData();
     }
 
@@ -111,7 +111,7 @@ public class GameManager : MainBehavior
 
     public void MakeCardFree()
     {
-        SlotData.card = null;
+        SlotData.porion = null;
         SaveMainData();
     }
     public IEnumerator PreCheck()
@@ -397,7 +397,7 @@ public class MainData
 {
     public List<characterInfo> characterInfos = new List<characterInfo>();
 
-    public CardHolder cardHolder = new CardHolder();
+    public PotionHolder porionHolder = new PotionHolder();
     public SlotContainer defultSlot = new SlotContainer();
 }
 

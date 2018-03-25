@@ -35,22 +35,40 @@ public class CampaignMenuManager : MonoBehaviour {
         RenewPlayer();
         UpgradeButton.onClick.AddListener(UpgradeCharacter);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		if(CurrentCharacter!=null)
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (CurrentCharacter != null)
         {
-            UpgradeButton.transform.GetChild(0).GetComponent<LocalizedDynamicText>().Number =GM.CharacterUpgradeCost(CurrentCharacter).ToString();
-            if (GM.CharacterCard(CurrentCharacter.id) < GM.CharacterCardUpgradeCost(CurrentCharacter.id) || GM.coinAmount< GM.CharacterUpgradeCost(CurrentCharacter))
+
+            if (GM.CharacterCard(CurrentCharacter.id) < GM.CharacterCardUpgradeCost(CurrentCharacter.id) || GM.coinAmount < GM.CharacterUpgradeCost(CurrentCharacter))
+            {
+                string a = "";
+                if (GM.CharacterCard(CurrentCharacter.id) < GM.CharacterCardUpgradeCost(CurrentCharacter.id))
+                    a = GM.CharacterCard(CurrentCharacter.id).ToString() + "/" + GM.CharacterCardUpgradeCost(CurrentCharacter.id).ToString();
+
+                else if (GM.coinAmount < GM.CharacterUpgradeCost(CurrentCharacter))
+                    a = GM.CharacterUpgradeCost(CurrentCharacter.id).ToString();
+
+                UpgradeButton.transform.GetChild(2).GetComponent<LocalizedDynamicText>().Number = a;
+                UpgradeButton.transform.GetChild(1).gameObject.SetActive(false);
                 UpgradeButton.interactable = false;
+            }
             else
+            {
+
+                UpgradeButton.transform.GetChild(2).GetComponent<LocalizedDynamicText>().Number = GM.CharacterUpgradeCost(CurrentCharacter.id).ToString();
+                UpgradeButton.transform.GetChild(1).gameObject.SetActive(true);
+
                 UpgradeButton.interactable = true;
+            }
         }
         else
         {
             UpgradeButton.gameObject.SetActive(false);
         }
-	}
+    }
 
     public void RenewPlayer()
     {
@@ -120,6 +138,11 @@ public class CampaignMenuManager : MonoBehaviour {
         GM.AddCharacterCard(CurrentCharacter.id, -GM.CharacterCardUpgradeCost(CurrentCharacter.id));
         GM.IncreaseCharacterLevel(CurrentCharacter.id, 1);
         GameAnalyticsManager.SendCustomEvent("Character Upgrade:"+CurrentCharacter.characterName);
+        detailHolder.RePaint(CurrentCharacter);
+        for (int i = 0; i < CharacterScroll.Content.transform.childCount; i++)
+        {
+            CharacterScroll.Content.transform.GetChild(i).SendMessage("RepaintCheck");
+        }
     }
     public void ChangeCurrentCharacter(CharacterData data)
     {
@@ -136,7 +159,7 @@ public class CampaignMenuManager : MonoBehaviour {
         g.transform.SetParent(characterInstansiatePos.transform);
         g.GetComponent<Character>().enabled = false;
         g.transform.localScale = aa;
-        detailHolder.RePaint(data,ss);
+        detailHolder.RePaint(data);
 
     }
 }

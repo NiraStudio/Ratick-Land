@@ -5,9 +5,11 @@ using UnityEngine;
 public class ChestAnimation : MonoBehaviour {
     public GameObject CardHolder;
     public GameObject CardUI;
+    public UnityEngine.UI.Image Shape;
     int a ;
     int index=0;
     public Animator CardHolderAnim,chestAnim;
+    public Sprite CloseSprite, OpenSprite;
     bool open,allow,Adcard;
 	// Use this for initialization
 	void Start () {
@@ -44,7 +46,7 @@ public class ChestAnimation : MonoBehaviour {
                     allow = false;
                     if (Adcard&&InternetChecker.Instance.internetConnectBool&&InformationPanel.Instance.AdPanelScript.HaveAd)
                     {
-                        InformationPanel.Instance.OpenADRewardPanel();
+                        InformationPanel.Instance.OpenADRewardPanel("میخوایی یه جایزه دیگه بگیری؟","Do you want a another Reward?",PanelColor.Succuss);
                     }
                     gameObject.SetActive(false);
                     ChestManager.Instance.Close();
@@ -54,7 +56,7 @@ public class ChestAnimation : MonoBehaviour {
         else
         {
             chestAnim.SetTrigger("Open");
-
+            Shape.sprite = CloseSprite;
             CardHolder.gameObject.SetActive(true);
             open = true;
         }
@@ -86,11 +88,17 @@ public class ChestAnimation : MonoBehaviour {
         index = 0;
         a = CardHolder.transform.childCount;
         gameObject.SetActive(true);
+        Shape.sprite = CloseSprite;
+
     }
     public void Allower()
     {
         allow = true;
         print("sss");
+    }
+    public void ChangeSprite()
+    {
+        Shape.sprite = OpenSprite;
     }
 
 }

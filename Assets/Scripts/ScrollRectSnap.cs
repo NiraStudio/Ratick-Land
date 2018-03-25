@@ -93,6 +93,16 @@ public class ScrollRectSnap : MonoBehaviour, IEndDragHandler, IBeginDragHandler
         ChangeEvent.Invoke();
 
     }
+    public void ChangeElementNumber(int number)
+    {
+        if (MinElementNumber+number >= childTransforms.Length || MinElementNumber+number < 0)
+            return;
+
+
+        MinElementNumber += number;
+        ChangeEvent.Invoke();
+
+    }
 
     IEnumerator FirstArrange(int Focus)
     {
@@ -166,7 +176,13 @@ public class ScrollRectSnap : MonoBehaviour, IEndDragHandler, IBeginDragHandler
             }
         }
     }
-
+    public void RepaintAll()
+    {
+        for (int i = 0; i < Content.transform.childCount; i++)
+        {
+            Content.transform.GetChild(i).SendMessage("Repaint");
+        }
+    }
     public void OnEndDrag(PointerEventData eventData)
     {
         dragging = false;

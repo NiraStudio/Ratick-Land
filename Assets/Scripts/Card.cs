@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Card {
+public class Potion {
     public enum Type
     {
         empty,DoubleCoin,DoubleATK
@@ -12,12 +12,12 @@ public class Card {
     public int cardAmount;
 
 
-    public Card(Type CardType,int cardAmount)
+    public Potion(Type CardType,int cardAmount)
     {
         this.cardType = CardType;
         this.cardAmount = cardAmount;
     }
-    public Card(int cardAmount)
+    public Potion(int cardAmount)
     {
         this.cardAmount = cardAmount;
         this.cardType = (Type) Random.Range(1, 3);
@@ -44,10 +44,10 @@ public class Card {
 	
 }
 [System.Serializable]
-public class CardHolder
+public class PotionHolder
 {
-    public List<Card> cards = new List<Card>();
-    public void Remove(Card.Type type)
+    public List<Potion> cards = new List<Potion>();
+    public void Remove(Potion.Type type)
     {
         foreach (var item in cards.ToArray())
         {

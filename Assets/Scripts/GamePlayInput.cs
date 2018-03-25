@@ -82,7 +82,7 @@ public class GamePlayInput : MonoBehaviour {
         JS.transform.position = pos;
         Move = true;
         sfx.PlaySound("Walking");
-        aimer.transform.position = leader.transform.position;
+        aimer.transform.position = Camera.main.transform.position;
         for (int i = 0; i < aimer.transform.childCount; i++)
         {
             aimer.transform.GetChild(i).gameObject.SetActive(true);

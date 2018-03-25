@@ -43,7 +43,7 @@ public class SurveyManager : MonoBehaviour {
     {
         RewardInfo r = RewardManager.Instance.MakeReward(RewardType.Coin, 1000);
         RewardManager.Instance.AddReward(r);
-        InformationPanel.Instance.OpenRewardPanel(r, null, "");
+        InformationPanel.Instance.OpenRewardPanel(PanelColor.Succuss,r, null, "");
 
     }
     public void SendData()

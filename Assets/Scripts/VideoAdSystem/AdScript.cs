@@ -94,7 +94,7 @@ public class AdScript :MainBehavior
             {
                 r = GiveRandom();
                 RM.AddReward(r);
-                InformationPanel.Instance.OpenRewardPanel(r, null, "Awesome");
+                InformationPanel.Instance.OpenRewardPanel(PanelColor.Succuss,r, null, "Awesome");
             }
             Extra.Invoke();
             ad = null;

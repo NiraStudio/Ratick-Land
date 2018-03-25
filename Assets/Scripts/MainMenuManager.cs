@@ -22,11 +22,11 @@ public class MainMenuManager : MainBehavior {
         GM.bgm.PlaySound(BGM.State.MainMenu);
         if (PlayerPrefs.GetFloat("BossKilled") == 1)
         {
-            InformationPanel.Instance.OpenInfoPanel("تو خرس رو کشتی \n  کد رو تا رو انتشار اصلی بازی نگه دار" + "\n" + GM.giveeRandomRewardCode(), "You killed the Bear \n Keep this code till the game release\n" + GM.giveeRandomRewardCode(), false, () =>
+            InformationPanel.Instance.OpenInfoPanel("تو خرس رو کشتی \n  کد رو تا رو انتشار اصلی بازی نگه دار" + "\n" + GM.giveeRandomRewardCode(), "You killed the Bear \n Keep this code till the game release\n" + GM.giveeRandomRewardCode(), PanelColor.Succuss,false, () =>
                    {
                        PlayerPrefs.SetInt("FirstBoss", 0);
                        PlayerPrefs.SetInt("BossKilled", 0);
-                   }, "OK");
+                   });
 
         }
 
@@ -43,6 +43,7 @@ public class MainMenuManager : MainBehavior {
             SurveyManager.Instance.Open();
             print(PlayerPrefs.GetInt("Played"));
         }
+        
 
     }
 
@@ -65,7 +66,7 @@ public class MainMenuManager : MainBehavior {
         //swordAnimation
         PreGamePlay.Invoke();
         yield return new WaitForSeconds(2);
-        GoToScene("SlotContainer");
+        GoToScene("ArmyScene");
     }
 	// Update is called once per frame
 	

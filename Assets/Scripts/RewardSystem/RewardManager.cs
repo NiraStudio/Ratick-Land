@@ -57,17 +57,17 @@ public class RewardManager : MonoBehaviour {
 
 
             case RewardType.Card:
-                Card a = new Card((Card.Type)Random.Range(1, 3), amount);
+                Potion a = new Potion((Potion.Type)Random.Range(1, 3), amount);
                 switch (a.cardType)
                 {
-                    case Card.Type.empty:
+                    case Potion.Type.empty:
                         break;
-                    case Card.Type.DoubleCoin:
+                    case Potion.Type.DoubleCoin:
                         t.Icon = DoubleCoinCard;
                         t.RewardName = DoubleCoinName;
 
                         break;
-                    case Card.Type.DoubleATK:
+                    case Potion.Type.DoubleATK:
                         t.Icon = DoubleAttackCard;
                         t.RewardName = DoubleAttackName;
                         break;
@@ -98,7 +98,7 @@ public class RewardManager : MonoBehaviour {
                 GameManager.instance.AddCharacterCard(info.characterId, info.amount);
                 break;
             case RewardType.Card:
-                GameManager.instance.AddCard(new Card(info.cardType, info.amount));
+                GameManager.instance.AddPotion(new Potion(info.cardType, info.amount));
                 break;
             default:
                 break;
@@ -117,7 +117,7 @@ public class RewardInfo
     public string RewardName;
     public Sprite Icon;
     public RewardType type;
-    public Card.Type cardType;
+    public Potion.Type cardType;
     public int amount;
     public int characterId;
 }

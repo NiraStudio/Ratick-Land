@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ArrangeSceneCardBtn : MonoBehaviour {
-    public Card.Type type;
+    public Potion.Type type;
     public ArrangeSceneManager manager;
 
     void Start()
@@ -12,6 +12,6 @@ public class ArrangeSceneCardBtn : MonoBehaviour {
     }
     public void Onclick()
     {
-        manager.CloseCardPanel(new Card(type, 1));
+        manager.CloseCardPanel(new Potion(type, 1));
     }
 }
