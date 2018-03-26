@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Alpha.Localization;
 
 public class AchievementManager : MonoBehaviour {
 
@@ -8,7 +9,7 @@ public class AchievementManager : MonoBehaviour {
     public static AchievementManager Instance;
     void Awake()
     {
-        if (Instance != null)
+        if (Instance == null)
             Instance = this;
         else
             Destroy(this);
@@ -16,19 +17,32 @@ public class AchievementManager : MonoBehaviour {
     #endregion
 
     public AchievementDataBase achievementDataBase;
-
+    public GameObject AchivementUI;
+    public GameObject AchivementContent,AchivementPanel;
+    public Animator AchivementAttention;
 
     void Start()
     {
-        
+        MakePanel();
+        AchivementPanel.SetActive(false); 
     }
 
-    void Update()
+
+    public void MakePanel()
     {
 
+        for (int i = 0; i < achievementDataBase.dataBase.Count; i++)
+        {
+            Instantiate(AchivementUI, AchivementContent.transform).SendMessage("Repaint", achievementDataBase.GiveByIndex(i));
+        }
     }
-
-
+    public void Repaint()
+    {
+        for (int i = 0; i < achievementDataBase.dataBase.Count; i++)
+        {
+            AchivementContent.transform.GetChild(i).SendMessage("RePaint");
+        }
+    }
     public void Restart()
     {
         foreach(Achievement achiv in achievementDataBase.dataBase)
@@ -65,13 +79,24 @@ public class AchievementManager : MonoBehaviour {
         }
     }
 
-    public void Add(string ID,int amount)
+    public void Add(string Tag,int amount)
     {
         foreach (var item in achievementDataBase.dataBase)
         {
-            if (item.id == ID)
+            if (item.tag == Tag)
                 item.Add(amount);
         }
+    }
+    public void OpenAttention(Achievement data)
+    {
+        AchivementAttention.SetTrigger("Open");
+        AchivementAttention.transform.GetChild(0).GetComponent<LocalizedDynamicText>().ChangeText(data.FatTitle, data.EnTitle, false, false);
+        Repaint();
+    }
+    public void PanelState(bool State)
+    {
+        AchivementPanel.SetActive(State);
+        Repaint();
     }
 
 }

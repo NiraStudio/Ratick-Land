@@ -117,7 +117,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     void RenewData()
     {
         speedMultiPly = data.speed;
-        attackSpeed = data.attackSpeed;
+        attackSpeed = data.attackSpeed*LC.WorldAttackMultiPly;
         speed = data.speed;
         hitPoint = data.hitPoint;
         damage = data.damage*LC.EnemyDamageMultiPly;
@@ -183,7 +183,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
 
     public void Die()
     {
-        LevelUIManager.Instance.MakeGoldBrust(transform.position);
+        LevelUIManager.Instance.MakeGoldBrust(transform.position,coin);
         LC.ChangeCoin(coin);
         KeyManager.Instance.ChangeKeyPart(1);
         Lean.Pool.LeanPool.Despawn(gameObject);

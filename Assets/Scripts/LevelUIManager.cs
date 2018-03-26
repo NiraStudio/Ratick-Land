@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Alpha.Localization;
 
 public class LevelUIManager : MonoBehaviour {
 
     public static LevelUIManager Instance;
 
     public Slider mainHpSlider,KeySlider;
-    public Text CoinText,MainHpText,KeyAmount;
+    public LocalizedDynamicText CoinText,MainHpText,KeyAmount;
     public GameObject GoldBrust,GoldBrustTarget;
     LevelController LC;
     KeyManager KM;
@@ -41,7 +42,7 @@ public class LevelUIManager : MonoBehaviour {
         else
             lerp = 0;
 
-        CoinText.text = ((int)coinTemp).ToString();
+        CoinText.Number ="X"+ ((int)coinTemp).ToString();
         #endregion
 
 
@@ -50,21 +51,21 @@ public class LevelUIManager : MonoBehaviour {
         {
             mainHpSlider.maxValue = maxMainHp;
             mainHpSlider.value = main.HP;
-            MainHpText.text = main.HP + "/" + maxMainHp;
+            MainHpText.Number = main.HP + "/" + maxMainHp;
         }
         #endregion
 
         #region Key
 
-        KeyAmount.text = "X " + KM.keyCount + " Keys";
+        KeyAmount.Number = "X " + KM.keyCount ;
         KeySlider.maxValue = KM.KeyPartNeeded;
         KeySlider.value = KM.KeyPartGeted;
 
         #endregion
     }
-    public void MakeGoldBrust(Vector2 Pos)
+    public void MakeGoldBrust(Vector2 Pos,int amount)
     {
-        Instantiate(GoldBrust, Pos, Quaternion.identity).GetComponent<CollectableBrust>().make(GoldBrustTarget.transform,10);
+        Instantiate(GoldBrust, Pos, Quaternion.identity).GetComponent<CollectableBrust>().make(GoldBrustTarget.transform, amount);
     }
 
     public void GetMain(Character main)

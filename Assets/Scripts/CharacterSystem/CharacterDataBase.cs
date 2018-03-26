@@ -11,7 +11,7 @@ public class CharacterDataBase : ScriptableObject {
     }
     public CharacterData GiveByID(int id)
     {
-        CharacterData data = new CharacterData();
+        CharacterData data = CreateInstance(typeof(CharacterData)) as CharacterData;
         bool found=false;
         foreach (var item in DataBase.ToArray())
         {
@@ -44,7 +44,7 @@ public class CharacterDataBase : ScriptableObject {
     }
     public CharacterData GiveByRandom()
     {
-        CharacterData d = new CharacterData();
+        CharacterData d = CreateInstance(typeof(CharacterData)) as CharacterData;
         do
         {
             d = DataBase[Random.Range(0, DataBase.Count)];

@@ -41,7 +41,7 @@ public class CharacterSystemEditorCreate : EditorWindow {
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }
-        temp = new CharacterData();
+        temp= (CharacterData)CreateInstance<ScriptableObject>();
         EditorUtility.SetDirty(temp);
     }
 
@@ -107,7 +107,7 @@ public class CharacterSystemEditorCreate : EditorWindow {
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             dataBase.AddCharacter(a);
-            temp = new CharacterData();
+            temp = (CharacterData)CreateInstance<ScriptableObject>();
             EditorUtility.SetDirty(temp);
         }
 

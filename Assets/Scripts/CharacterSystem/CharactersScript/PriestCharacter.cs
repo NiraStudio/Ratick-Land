@@ -16,6 +16,7 @@ public class PriestCharacter : Character {
         float f = damage.Random;
         leader.SendMessage("GetHeal", f);
         Instantiate(DmgPopUp, null).GetComponent<DmgPopUpBehaivior>().RePaint(((int)f).ToString(),DmgPopUpBehaivior.AttackType.PlayerHeal,leader.transform.position);
+        GetComponent<SFX>().PlaySound("Heal");
         //Instantiate(HealPS, leader.transform);
         Attacking = false;
         waitTime = 0;

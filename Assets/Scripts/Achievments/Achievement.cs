@@ -5,16 +5,18 @@ using UnityEngine;
 [System.Serializable]
 public class Achievement 
 {
-    public string name;
+    public string FatTitle,EnTitle;
     public string id;
+    public string tag;
     public Sprite Icon;
     public AchievementType achievementType;
-    public bool achivmentDone;
     public bool resetable;
-    public ChestReward reward=new ChestReward();
-    public int goal;
-    public int current;
-    public string description;
+    public RewardType rewardType;
+    public int rewardAmount;
+    public int goalObject;
+    public int currentObject;
+    public string FaDes,EnDes;
+    public bool achivmentDone;
     public bool RewardGained;
 
     public void Add(int amount)
@@ -22,27 +24,29 @@ public class Achievement
         if (achivmentDone)
             return;
 
-        current += amount;
+        currentObject += amount;
+        Check();
     }
     public void Check()
     {
         
-        if (current >= goal)
+        if (currentObject >= goalObject)
         {
             achivmentDone = true;
-            GainReward();
+            AchievementManager.Instance.OpenAttention(this);
         }
     }
     public void GainReward()
     {
         if (RewardGained)
             return;
-        reward.GainReward();
+        RewardInfo r = RewardManager.Instance.MakeReward(rewardType, rewardAmount);
+        RewardManager.Instance.AddReward(r);
         RewardGained = true;
     }
     public void Reset()
     {
-        current = 0;
+        currentObject = 0;
     }
     public void Compelete()
     {
@@ -52,5 +56,5 @@ public class Achievement
 }
 public enum AchievementType
 {
-    killing, collecting, play, earnCoin, watchAdds,Specific
+    killing, collecting, play, earnCoin, watchAdds,KillBoss,Specific
 }

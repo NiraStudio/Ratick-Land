@@ -46,13 +46,20 @@ public class CampaignMenuManager : MonoBehaviour {
             {
                 string a = "";
                 if (GM.CharacterCard(CurrentCharacter.id) < GM.CharacterCardUpgradeCost(CurrentCharacter.id))
+                {
                     a = GM.CharacterCard(CurrentCharacter.id).ToString() + "/" + GM.CharacterCardUpgradeCost(CurrentCharacter.id).ToString();
+                    UpgradeButton.transform.GetChild(1).gameObject.SetActive(false);
+
+                }
 
                 else if (GM.coinAmount < GM.CharacterUpgradeCost(CurrentCharacter))
+                {
                     a = GM.CharacterUpgradeCost(CurrentCharacter.id).ToString();
+                    UpgradeButton.transform.GetChild(1).gameObject.SetActive(true);
+
+                }
 
                 UpgradeButton.transform.GetChild(2).GetComponent<LocalizedDynamicText>().Number = a;
-                UpgradeButton.transform.GetChild(1).gameObject.SetActive(false);
                 UpgradeButton.interactable = false;
             }
             else
@@ -138,6 +145,7 @@ public class CampaignMenuManager : MonoBehaviour {
         GM.AddCharacterCard(CurrentCharacter.id, -GM.CharacterCardUpgradeCost(CurrentCharacter.id));
         GM.IncreaseCharacterLevel(CurrentCharacter.id, 1);
         GameAnalyticsManager.SendCustomEvent("Character Upgrade:"+CurrentCharacter.characterName);
+        SFX.Instance.PlaySound("LevelUp");
         detailHolder.RePaint(CurrentCharacter);
         for (int i = 0; i < CharacterScroll.Content.transform.childCount; i++)
         {

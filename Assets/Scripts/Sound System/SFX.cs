@@ -6,7 +6,7 @@ public class SFX : MonoBehaviour
 {
     public static SFX Instance;
     public bool Manager;
-
+    public string PlayOnStart;
     bool Mute;
     public Sound[] sounds;
     public bool IsReady
@@ -37,6 +37,7 @@ public class SFX : MonoBehaviour
             t.minDistance = 0; t.maxDistance = sounds[i].Sound3DRange;
             t.rolloffMode = AudioRolloffMode.Linear;
             audioSources[i] = t;
+            
         }
         ready = true;
 
@@ -56,6 +57,7 @@ public class SFX : MonoBehaviour
     {
         Mute = SettingManager.Instance.SFXMute;
         s = Mute;
+        PlaySound(PlayOnStart);
     }
     void FixedUpdate()
     {
@@ -82,7 +84,7 @@ public class SFX : MonoBehaviour
 
         for (int i = 0; i < sounds.Length; i++)
         {
-            if (sounds[i].ClipId == ID)
+            if (sounds[i].ClipId == ID&&!Mute)
             {
                 if (audioSources[i] != null)
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MainMenuCamera : MonoBehaviour
 {
-    public Transform target;
+    public Transform target,sword;
     public CameraPos CurrentState;
     public Pos[] poses;
     [Range(0, 500)]
@@ -27,10 +27,18 @@ public class MainMenuCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        Vector3 a = target.position;
-        a.z = transform.position.z;
-        transform.position = Vector3.Lerp(transform.position, a, (smoothness / 100) * Time.deltaTime);
+        if (Allow)
+        {
+            Vector3 a = target.position;
+            a.z = transform.position.z;
+            transform.position = Vector3.Lerp(transform.position, a, (smoothness / 100) * Time.deltaTime);
+        }
+        else
+        {
+            Vector3 a = sword.position;
+            a.z = transform.position.z;
+            transform.position = Vector3.Lerp(transform.position, a, (smoothness /20) * Time.deltaTime);
+        }
     }
     public void ChangeView(int state)
     {

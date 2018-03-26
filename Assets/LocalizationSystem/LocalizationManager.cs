@@ -163,7 +163,7 @@ namespace Alpha.Localization
     public string GetLocalizationValue(string Key)
     {
             if (string.IsNullOrEmpty(Key))
-                return " ";
+                return "";
 
         if (data.ContainKey(Key))
             return LastChanger( data.GiveValue(Key,LanguageCode));

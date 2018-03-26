@@ -14,8 +14,12 @@ public class test : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if (Input.GetKeyDown(KeyCode.Space))
-            InformationPanel.Instance.OpenFinshPanel("Victory", PanelColor.Succuss,500, null);
-	}
+            InformationPanel.Instance.OpenInfoPanel("تو خرس رو کشتی \n  کد رو تا رو انتشار اصلی بازی نگه دار" + "\n" + GameManager.instance.giveeRandomRewardCode(), "You killed the Bear \n Keep this code till the game release\n" + GameManager.instance.giveeRandomRewardCode(), PanelColor.Succuss, false, () =>
+            {
+                PlayerPrefs.SetInt("FirstBoss", 0);
+                PlayerPrefs.SetInt("BossKilled", 0);
+            });
+    }
     public Vector2 GiveRandomMoveDiretion()
     {
 

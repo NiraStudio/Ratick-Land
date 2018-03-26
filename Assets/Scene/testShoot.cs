@@ -63,4 +63,8 @@ public class testShoot : MonoBehaviour {
         return answer;
     }
     
+    public void YEsyey()
+    {
+        print("akdjkal;skda");
+    }
 }

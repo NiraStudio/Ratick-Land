@@ -8,7 +8,7 @@ public class SwipeDetector : MonoBehaviour
     public float MinXDistance=0.3f;
     public float MinYDistance=0.3f;
     public UnityEvent Up, Down, Left, Right;
-
+    public bool AllowObjectTouch;
     Vector2 BeginPos,currentPos;
     bool touch;
     public void FixedUpdate()
@@ -16,7 +16,7 @@ public class SwipeDetector : MonoBehaviour
         if (Input.touches.Length > 0 )
         {
             Touch t = Input.GetTouch(0);
-            if(!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(t.fingerId))
+            if(!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(t.fingerId)||AllowObjectTouch)
             switch (t.phase)
             {
                 case TouchPhase.Began:

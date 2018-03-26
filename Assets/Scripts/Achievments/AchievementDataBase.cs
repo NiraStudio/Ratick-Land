@@ -16,22 +16,7 @@ public class AchievementDataBase : ScriptableObject
         setDirty();
         
     }
-    public void DeleteAchievmentByName(string name)
-    {
-        dataBase.Remove(GiveByName(name));
-        setDirty();
-    }
-    public Achievement GiveByName(string name)
-    {
-        foreach(Achievement achievment in dataBase)
-        {
-            if (achievment.name == name)
-            {
-                return achievment;
-            }
-        }
-        return null;
-    }
+    
     public Achievement GiveByIndex(int index)
     {
         return dataBase[index];

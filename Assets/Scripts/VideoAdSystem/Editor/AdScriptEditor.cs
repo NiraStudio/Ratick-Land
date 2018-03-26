@@ -7,7 +7,12 @@ using UnityEditor;
 [CustomEditor(typeof(AdScript))]
 
 public class AdScriptEditor : Editor {
+    SerializedObject serializedObject;
 
+    void OnEnable()
+    {
+        serializedObject= new SerializedObject((AdScript)target);
+    }
     public override void OnInspectorGUI()
     {
         AdScript t = (AdScript)target;
@@ -50,7 +55,7 @@ public class AdScriptEditor : Editor {
 
         GUILayout.Label("Extra Method");
 
-        SerializedObject serializedObject = new SerializedObject(t);
+        
         SerializedProperty serializedProperty = serializedObject.FindProperty("Extra");
 
         EditorGUILayout.PropertyField(serializedProperty, true);

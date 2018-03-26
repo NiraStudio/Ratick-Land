@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Alpha.Localization;
 
 public class ArrangeIcon : MonoBehaviour {
 
     public int ID,Level;
     public CharacterData.Type type;
-    public Text characterName,LevelText;
+    public LocalizedKeyText characterName;
+        public LocalizedDynamicText LevelText;
     public ParticleSystem PS;
     public GameObject RespawnPoint;
     CharacterData data;
@@ -15,6 +17,7 @@ public class ArrangeIcon : MonoBehaviour {
     void Start()
     {
         manager = ArrangeSceneManager.Instance;
+        if(GetComponent<Button>())
         GetComponent<Button>().onClick.AddListener(Choosed);
         //img = GetComponent<Image>();
         //Clean();
@@ -37,9 +40,9 @@ public class ArrangeIcon : MonoBehaviour {
         g.GetComponent<Character>().enabled = false;
         g.transform.localScale = aa;
         ID = data.id;
-        characterName.text = data.characterName;
+        characterName.Key = data.characterName;
         Level= GameManager.instance.CharacterLevel(ID); ;
-        LevelText.text = "Level :"+ GameManager.instance.CharacterLevel(ID);
+        LevelText.ChangeText("مرحله " + GameManager.instance.CharacterLevel(ID), "Level "+ GameManager.instance.CharacterLevel(ID),false,false);
         PS.gameObject.SetActive(true);
 
     }
@@ -57,9 +60,10 @@ public class ArrangeIcon : MonoBehaviour {
         g.GetComponent<Character>().enabled = false;
         g.transform.localScale = aa;
         ID = data.id;
-        characterName.text = data.characterName;
+        characterName.Key = data.characterName;
         this.Level = level;
-        LevelText.text = "Level :" + level;
+        LevelText.ChangeText("مرحله " + level, "Level " + level, false, false);
+
     }
     public void Clean()
     {
@@ -69,8 +73,8 @@ public class ArrangeIcon : MonoBehaviour {
         }
         data = null;
         ID = -1;
-        characterName.text = "";
-        LevelText.text = "";
+        characterName.Key = "";
+        LevelText.ChangeText ( "","",false,false);
     }
 
 }

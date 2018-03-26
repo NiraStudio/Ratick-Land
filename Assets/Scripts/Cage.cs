@@ -18,7 +18,6 @@ public class Cage : MonoBehaviour, IHitable
     // Use this for initialization
     void Start()
     {
-        addCharacters();
         int a = Random.Range(0, 4);
         for (int i = 0; i < Poses.Length; i++)
         {
@@ -39,12 +38,12 @@ public class Cage : MonoBehaviour, IHitable
         int r = Random.Range(3, 6);
         for (int i = 0; i < r; i++)
         {
-            Vector2 a = Random.insideUnitCircle * 0.3f;
+            Vector2 a = Vector2.zero ;
             a.y = Random.Range(0.01f, 0.1f);
             a = (Vector2)transform.position + a;
             GameObject g = Instantiate(data.GiveByID(2).prefab, a, Quaternion.identity);
             g.transform.SetParent(gameObject.transform);
-            g.GetComponent<Character>().Release(false);
+            g.GetComponent<Character>().Release(true);
             prisoners.Add(g);
         }
     }
@@ -62,6 +61,7 @@ public class Cage : MonoBehaviour, IHitable
 
     public void Die()
     {
+        addCharacters();
         foreach (var item in prisoners)
         {
             item.GetComponent<Character>().Release(true);

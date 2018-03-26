@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212605600874336840}
   - component: {fileID: 70450963955655426}
   - component: {fileID: 114770960547254312}
+  - component: {fileID: 114442108414940890}
   m_Layer: 0
   m_Name: JungleMapObjects_15
   m_TagString: Untagged
@@ -57,6 +58,19 @@ CapsuleCollider2D:
   m_Offset: {x: 0.0077856868, y: 0.065974176}
   m_Size: {x: 1.4109937, y: 0.52966344}
   m_Direction: 1
+--- !u!114 &114442108414940890
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1006020395615644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd4b365d9d6e512489cb9517ec357677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Distance: 0
+  sp: {fileID: 0}
 --- !u!114 &114770960547254312
 MonoBehaviour:
   m_ObjectHideFlags: 1

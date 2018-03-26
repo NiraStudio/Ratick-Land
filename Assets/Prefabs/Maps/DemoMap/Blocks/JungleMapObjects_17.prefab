@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212963965481932380}
   - component: {fileID: 70399611670479754}
   - component: {fileID: 114010714445695574}
+  - component: {fileID: 114097565507102380}
   m_Layer: 0
   m_Name: JungleMapObjects_17
   m_TagString: Untagged
@@ -36,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1868147591069696}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 26.394697, y: -17.453106, z: 0}
+  m_LocalPosition: {x: 21.427792, y: -2.0078964, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -70,6 +71,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Static: 1
   Center: {fileID: 0}
+--- !u!114 &114097565507102380
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1868147591069696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd4b365d9d6e512489cb9517ec357677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Distance: 0.92
+  sp: {fileID: 0}
 --- !u!212 &212963965481932380
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -35,7 +35,7 @@ public class CharacterData:ScriptableObject
         this.description = description;
     }
     public CharacterData() {
-
+        
 
     }
 

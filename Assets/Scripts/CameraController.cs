@@ -60,9 +60,9 @@ public class CameraController : MonoBehaviour {
     {
         if (Targets.Count == 1)
             return Targets[0].transform.position;
-
-
-        var bound = new Bounds(Targets[0].transform.position, Vector3.zero);
+        var bound = new Bounds() ;
+        if (Targets[0] != null)
+           bound  = new Bounds(Targets[0].transform.position, Vector3.zero);
 
         foreach (var item in Targets)
         {
@@ -81,6 +81,7 @@ public class CameraController : MonoBehaviour {
 
         foreach (var item in Targets)
         {
+            if (item != null)
             bound.Encapsulate(item.transform.position);
         }
         return bound.size.x;

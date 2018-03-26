@@ -67,10 +67,7 @@ public class Wave : MonoBehaviour {
             }
         }
     }
-    public void IncreaseDmg(float Amount)
-    {
-
-    }
+    
     public void Spawn()
     {
         int a = 0;

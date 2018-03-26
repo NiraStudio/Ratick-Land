@@ -22,7 +22,7 @@ public class Boss : MainBehavior,IHitable,IAttackable {
     Collider2D[] temp;
     Animator anim;
     Vector2 ChoosedDirection;
-
+    Collider2D ttt;
     [SerializeField]
     bool right;
     bool Counter=true;
@@ -58,9 +58,11 @@ public class Boss : MainBehavior,IHitable,IAttackable {
               return;
           if (!Counter)
               return;
-              
 
-        if (Vector2.Distance(transform.position, aimer.position) < range)
+
+        ttt = Physics2D.OverlapCircle(transform.position, range, CharacterLayer); 
+
+        if (ttt)
         {
             if(!InArea)
             {
@@ -68,7 +70,7 @@ public class Boss : MainBehavior,IHitable,IAttackable {
                 InArea = true;
             }
         }
-        else if (Vector2.Distance(transform.position, aimer.position) > range)
+        else if (!ttt)
         {
             if (InArea)
             {

@@ -510,6 +510,7 @@ GameObject:
   - component: {fileID: 114704199160946124}
   - component: {fileID: 58794266508532996}
   - component: {fileID: 114686123771510724}
+  - component: {fileID: 114476729673117888}
   m_Layer: 10
   m_Name: priest
   m_TagString: Untagged
@@ -824,7 +825,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1822895421240230}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.023, y: -2.994, z: -0.7}
+  m_LocalPosition: {x: 18.711, y: 0.02, z: -0.7}
   m_LocalScale: {x: 0.6468621, y: 0.64686203, z: 0.64686203}
   m_Children:
   - {fileID: 4618417020727612}
@@ -1262,7 +1263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_Length: 1.1151161
+  m_Length: 1.1151077
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4411083198722528}
   m_AttachedIK: {fileID: 0}
@@ -1278,7 +1279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_Length: 1.2639352
+  m_Length: 1.2639345
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4053144883239026}
   m_AttachedIK: {fileID: 0}
@@ -1310,7 +1311,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 0.19999981, g: 0, b: 1, a: 1}
-  m_Length: 1.3600031
+  m_Length: 1.3599998
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4154569836224700}
   m_AttachedIK: {fileID: 0}
@@ -1369,7 +1370,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 1.2341567
+  m_Length: 1.2341626
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4831283689439190}
   m_AttachedIK: {fileID: 0}
@@ -1454,7 +1455,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 0.8680435
+  m_Length: 0.86804205
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4162223280440590}
   m_AttachedIK: {fileID: 0}
@@ -1523,7 +1524,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_Length: 2.039954
+  m_Length: 2.0399547
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4365650276249754}
   m_AttachedIK: {fileID: 0}
@@ -1543,6 +1544,28 @@ MonoBehaviour:
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 0}
   m_AttachedIK: {fileID: 0}
+--- !u!114 &114476729673117888
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1822895421240230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcc213b486415254bad36c30bcbefd9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Manager: 0
+  PlayOnStart: 
+  sounds:
+  - ClipId: Heal
+    Clip: {fileID: 8300000, guid: 9611a73690e0cd5478218d64d542e8d4, type: 3}
+    loop: 0
+    PlayOnAwake: 0
+    Volume: 60
+    Pitch: 1
+    Sound3D: 0
+    Sound3DRange: 0
 --- !u!114 &114480050555472306
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1555,7 +1578,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 0.19999981, g: 0, b: 1, a: 1}
-  m_Length: 1.3158829
+  m_Length: 1.3158801
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4208034076953504}
   m_AttachedIK: {fileID: 0}
@@ -1593,7 +1616,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 1.2230529
+  m_Length: 1.2230412
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4312821568182246}
   m_AttachedIK: {fileID: 0}
@@ -1625,7 +1648,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_Length: 2.2779508
+  m_Length: 2.2779496
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4333559917653172}
   m_AttachedIK: {fileID: 0}
@@ -1727,7 +1750,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_Length: 1.0328244
+  m_Length: 1.0328121
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4267846853002402}
   m_AttachedIK: {fileID: 0}
@@ -1758,7 +1781,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 0.11724138, g: 0, b: 1, a: 1}
-  m_Length: 2.3450165
+  m_Length: 2.3450172
   m_Child: {fileID: 0}
   m_ChildTransform: {fileID: 4173722482834080}
   m_AttachedIK: {fileID: 0}

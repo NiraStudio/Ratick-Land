@@ -7,6 +7,7 @@ public class MainMenuManager : MainBehavior {
     public static MainMenuManager Instance;
 
     public MainMenuCamera MMC;
+    public Animator sword;
     public UnityEngine.Events.UnityEvent PreGamePlay;
     GameManager GM;
     void Awake()
@@ -46,7 +47,10 @@ public class MainMenuManager : MainBehavior {
         
 
     }
-
+    public void OpenAchivementPanel()
+    {
+        AchievementManager.Instance.PanelState(true);
+    }
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -56,18 +60,16 @@ public class MainMenuManager : MainBehavior {
     {
         if(MMC.CurrentState==MainMenuCamera.CameraPos.Main)
         {
-            StartCoroutine(GoToPlay());
+            sword.SetTrigger("Open");
+            PreGamePlay.Invoke();
+            MMC.Allow = false;
         }
     }
-    IEnumerator GoToPlay()
+    
+    public void GoToArmyScene()
     {
-        MMC.Allow = false;
-        MMC.SendToSky();
-        //swordAnimation
-        PreGamePlay.Invoke();
-        yield return new WaitForSeconds(2);
         GoToScene("ArmyScene");
     }
-	// Update is called once per frame
-	
+    // Update is called once per frame
+
 }

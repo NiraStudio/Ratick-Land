@@ -97,7 +97,7 @@ public class ScrollRectSnap : MonoBehaviour, IEndDragHandler, IBeginDragHandler
     {
         if (MinElementNumber+number >= childTransforms.Length || MinElementNumber+number < 0)
             return;
-
+        SFX.Instance.PlaySound("Button");
 
         MinElementNumber += number;
         ChangeEvent.Invoke();

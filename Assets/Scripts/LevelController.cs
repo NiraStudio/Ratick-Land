@@ -132,13 +132,15 @@ public class LevelController : MainBehavior
     public void MakeCage()
     {
         Vector2 a;
-        a = giveMapPos(CagePoints);
+        a = giveMapPos(10,CagePoints);
         GameObject g = Instantiate(cage,map.gameObject.transform);
         g.transform.localPosition = a;
         g.transform.SetParent(null);
 
         CageFinder.Instance.ChangeTarget(g);
         _CageBroken++;
+        if(_CageBroken<=10)
+        EnemyDamageMultiPly = 1 + (_CageBroken * 0.15f);
     }
 
     
@@ -275,6 +277,10 @@ public class LevelController : MainBehavior
                 GM.SlotData = new SlotContainer();
                 GM.SlotData.mainId = 1;
                 GM.SaveMainData();
+            }
+            else
+            {
+                AchievementManager.Instance.Add(AchievementType.play, 1);
             }
             if (PlayerPrefs.GetInt("Played") < 5)
                 PlayerPrefs.SetInt("Played", PlayerPrefs.GetInt("Played") + 1);

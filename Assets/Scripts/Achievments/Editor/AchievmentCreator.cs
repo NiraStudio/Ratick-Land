@@ -9,8 +9,8 @@ public class AchievmentCreator : EditorWindow
     public const string FileName = @"AchievmentDataBase.asset";
     public const string FolderName = @"DataBase";
     public const string FullPathName = @"Assets/" + FolderName + "/" + FileName;
-    static Vector2 size = new Vector2(1000, 300);
-    public Vector2 IconButtonSize = new Vector2(300, 300);
+    static Vector2 size = new Vector2(700, 250);
+    public Vector2 IconButtonSize = new Vector2(100, 100);
     public Vector2 CreateButtonSize = new Vector2(300, 50);
     AchievementDataBase achievementDatabase;
     Achievement temp;
@@ -43,8 +43,7 @@ public class AchievmentCreator : EditorWindow
     void OnGUI()
     {
 
-        GUILayout.BeginHorizontal();
-        Icon();
+
         GUILayout.BeginVertical();
         UpVertical();
         DownVertical();
@@ -57,7 +56,6 @@ public class AchievmentCreator : EditorWindow
             t = null;
         }
         GUILayout.EndVertical();
-        GUILayout.EndHorizontal();
 
     }
     void MakePanel()
@@ -87,36 +85,73 @@ public class AchievmentCreator : EditorWindow
     }
     void UpVertical()
     {
+        GUILayout.BeginHorizontal("Box");
+
+        Icon();
+
+
         GUILayout.BeginVertical();
-        GUILayout.Label("name");
-        temp.name = GUILayout.TextField(temp.name);
-        GUILayout.Label("goal");
-        temp.goal = EditorGUILayout.IntField(temp.goal);
+
+
+
+
+
+        //Title
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Persian Title");
+        temp.FatTitle = GUILayout.TextField(temp.FatTitle);
+        GUILayout.Label("English Title");
+        temp.EnTitle = GUILayout.TextField(temp.EnTitle);
+        GUILayout.EndHorizontal();
+
+
+        //Type And Goal
+        GUILayout.BeginHorizontal();
         GUILayout.Label("Type");
-        temp.achievementType  = (AchievementType)EditorGUILayout.EnumPopup(temp.achievementType );
+        temp.achievementType = (AchievementType)EditorGUILayout.EnumPopup(temp.achievementType);
 
-        GUILayout.EndVertical();
+        if (temp.achievementType == AchievementType.Specific)
+        {
+            GUILayout.Label("Tag");
+            temp.tag = GUILayout.TextField(temp.tag);
+        }
+        GUILayout.Label("goal");
+        temp.goalObject = EditorGUILayout.IntField(temp.goalObject);
+        GUILayout.EndHorizontal();
 
-        GUILayout.BeginVertical();
 
+
+        //Reward and Resetable
+        GUILayout.BeginHorizontal();
         GUILayout.Label("reward type");
-        temp.reward.type = (ChestReward.Type)EditorGUILayout.EnumPopup(temp.reward.type);
+        temp.rewardType = (RewardType)EditorGUILayout.EnumPopup(temp.rewardType);
         GUILayout.Label("reward amount");
-        temp.reward.amount = EditorGUILayout.IntField(temp.reward.amount);
+        temp.rewardAmount = EditorGUILayout.IntField(temp.rewardAmount);
         GUILayout.Label("resetable");
         temp.resetable = EditorGUILayout.Toggle(temp.resetable);
+        GUILayout.EndHorizontal();
+
 
         GUILayout.EndVertical();
+
+
+
+        GUILayout.EndHorizontal();
+
+
+        
 
     }
     void DownVertical()
     {
-        GUILayout.BeginHorizontal();
+        GUILayout.BeginVertical("Box");
 
-        GUILayout.Label("Description");
-        temp.description = GUILayout.TextArea(temp.description);
+        GUILayout.Label("Persian Description");
+        temp.FaDes = GUILayout.TextArea(temp.FaDes);
+        GUILayout.Label("English Description");
+        temp.EnDes = GUILayout.TextArea(temp.EnDes);
 
-        GUILayout.EndHorizontal();
+        GUILayout.EndVertical();
     }
     public string GiveID()
     {
