@@ -56,7 +56,7 @@ public class RewardManager : MonoBehaviour {
                 break;
 
 
-            case RewardType.Card:
+            case RewardType.Potion:
                 Potion a = new Potion((Potion.Type)Random.Range(1, 3), amount);
                 switch (a.cardType)
                 {
@@ -97,7 +97,7 @@ public class RewardManager : MonoBehaviour {
             case RewardType.NewCharacter:
                 GameManager.instance.AddCharacterCard(info.characterId, info.amount);
                 break;
-            case RewardType.Card:
+            case RewardType.Potion:
                 GameManager.instance.AddPotion(new Potion(info.cardType, info.amount));
                 break;
             default:
@@ -108,7 +108,7 @@ public class RewardManager : MonoBehaviour {
 }
 public enum RewardType
 {
-    UpgradeCard, Coin, Gem, Card,NewCharacter
+    UpgradeCard, Coin, Gem, Potion,NewCharacter
 }
 
 [System.Serializable]

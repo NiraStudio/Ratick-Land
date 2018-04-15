@@ -40,6 +40,8 @@ public class BlockAlphaChanger : MainBehavior {
 
     void OnDrawGizmos()
     {
+        if (!sp)
+            return;
         Gizmos.color = Color.red;
         Vector2 t = transform.position;
         

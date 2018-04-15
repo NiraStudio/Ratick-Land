@@ -22,6 +22,8 @@ namespace Alpha.Localization
        public LocalizationDatabase data;
 
         #endregion
+
+        public GameObject languagePanel;
         //public Dictionary<string, string> LocalizationText = new Dictionary<string, string>();
         public Language LanguageCode;
         bool IsReady = false;
@@ -40,8 +42,16 @@ namespace Alpha.Localization
                 return null;
             }
         }
-        void Start()
+        IEnumerator Start()
         {
+            if (string.IsNullOrEmpty( PlayerPrefs.GetString("language")) )
+            {
+                yield return new WaitUntil(() => !string.IsNullOrEmpty(PlayerPrefs.GetString("language")));
+
+            }
+            languagePanel.SetActive(false);
+
+            LanguageCode = (Language) System.Enum.Parse(typeof(Language), PlayerPrefs.GetString("language"));
             LoadData(LanguageCode);
         }
         public void LoadData(Language language)
@@ -101,6 +111,10 @@ namespace Alpha.Localization
              else
                  Debug.LogError("Cannot Find Data");*/
             #endregion
+        }
+        public void ChangeLanguage(string Language)
+        {
+            PlayerPrefs.SetString("language", Language);
         }
         public static string GiveData(string Key,Language language)
         {

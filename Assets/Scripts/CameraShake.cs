@@ -41,12 +41,14 @@ public class CameraShake : MonoBehaviour {
         Duration =t= duration;
         Power = power;
         allow = true;
+        Handheld.Vibrate();
+
     }
 
     public void Shake()
     {
         Duration = t;
         allow = true;
-
+        Handheld.Vibrate();
     }
 }

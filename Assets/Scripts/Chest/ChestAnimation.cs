@@ -20,9 +20,7 @@ public class ChestAnimation : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
-		
-	}
+
     public void buttonDown()
     {
         
@@ -44,7 +42,7 @@ public class ChestAnimation : MonoBehaviour {
                         Destroy(CardHolder.transform.GetChild(i).gameObject);
                     }
                     allow = false;
-                    if (Adcard&&InternetChecker.Instance.internetConnectBool&&InformationPanel.Instance.AdPanelScript.HaveAd)
+                    if (Adcard&&InternetChecker.Instance.internetConnectBool)
                     {
                         InformationPanel.Instance.OpenADRewardPanel("میخوایی یه جایزه دیگه بگیری؟","Do you want a another Reward?",PanelColor.Succuss);
                     }
