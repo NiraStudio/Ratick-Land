@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212793069116856686}
   - component: {fileID: 114914728730502314}
   - component: {fileID: 58108360255043944}
+  - component: {fileID: 114366012075968538}
   m_Layer: 0
   m_Name: Cactus 2
   m_TagString: Untagged
@@ -57,6 +58,19 @@ CircleCollider2D:
   m_Offset: {x: 0.012172699, y: 0.06919336}
   serializedVersion: 2
   m_Radius: 0.17201614
+--- !u!114 &114366012075968538
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1927259734125368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd4b365d9d6e512489cb9517ec357677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Distance: 0
+  sp: {fileID: 0}
 --- !u!114 &114914728730502314
 MonoBehaviour:
   m_ObjectHideFlags: 1

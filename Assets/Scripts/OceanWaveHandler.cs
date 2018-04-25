@@ -3,23 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class OceanWaveHandler : MonoBehaviour {
-    Vector2 center;
-    Vector2 MovePos;
+    Vector3 center;
+    Vector3 MovePos;
     public float speed,MaxY,MaxX;
 
     int down;
+    bool allow;
 	// Use this for initialization
-	void Start () {
+	IEnumerator Start () {
+        yield return new WaitForSeconds(0.1f);
         center = transform.position;
         down = Random.Range(0, 2);
         StartCoroutine(chooseMovePose());
+        allow = true;
     }
 
     // Update is called once per frame
     void Update () {
-		if((Vector2)transform.position!=MovePos)
+        if (!allow)
+            return;
+		if(transform.position!=MovePos)
         {
-            transform.position = Vector2.Lerp(transform.position, MovePos, speed * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, MovePos, speed * Time.deltaTime);
         }
 	}
     public IEnumerator chooseMovePose()
