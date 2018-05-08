@@ -3,13 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MapClass : MonoBehaviour {
-    public List<GameObject> WavePoints = new List<GameObject>();
-    public List<GameObject> freeBossPoints = new List<GameObject>();
-    public List<GameObject> CagePoints = new List<GameObject>();
-    public GameObject startPoint;
-    public GameObject[] blocks;
-    public Sprite bg;
-    public PolygonCollider2D Bounds;
+    public List<WavePoint> WavePoints = new List<WavePoint>();
+    public List<BossPointHolder> freeBossPoints = new List<BossPointHolder>();
+    public List<CagePointHolder> CagePoints = new List<CagePointHolder>();
     void Start()
     {
         GameObject g = new GameObject();
@@ -18,6 +14,7 @@ public class MapClass : MonoBehaviour {
     public List<Vector2> points(PointsType pointType)
     {
         List<Vector2> t = new List<Vector2>();
+        
         switch (pointType)
         {
             case PointsType.Wave:
@@ -43,13 +40,7 @@ public class MapClass : MonoBehaviour {
         }
         return t;
     }
-    public Vector2 StartPoint
-    {
-        get
-        {
-            return startPoint.transform.position; 
-        }
-    }
+    
     public void DestroyGameObjects()
     {
         foreach (var item in WavePoints.ToArray())
@@ -70,7 +61,6 @@ public class MapClass : MonoBehaviour {
             Destroy(item);
         }
         
-        Destroy(startPoint);
 
     }
     

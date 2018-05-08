@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     public EnemyData data;
     public IntRange timeForMove=new IntRange(2,5);
     public GameObject centerPoint;
-    public bool Gurdian,right;
+    public bool right;
 
     protected ObscuredFloat speedMultiPly;
     protected ObscuredFloat attackSpeed;
@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     [SerializeField]
     GameObject coinObject;
     GameObject aim;
-    LevelController LC;
+    GamePlayManager GPM;
     protected Collider2D detectedCharacter;
     protected GameObject DmgPopUp;
     bool detect,move;
@@ -33,27 +33,28 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     GameObject text;
     Vector2 tt,direction,diffrences;
     [HideInInspector]
+    public bool released;
 	// Use this for initialization
     public virtual void Start()
     {
-        gameObject.layer = 0;
-        LC = LevelController.instance;
+        gameObject.layer = 15;
+        GPM = GamePlayManager.instance;
         aim = GameObject.FindWithTag("Aim");
         rg = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         RenewData();
-        if (!Gurdian)
-            StartCoroutine(Move());
         DmgPopUp = Resources.Load("DmgPopUp", typeof(GameObject)) as GameObject;
-        StartCoroutine(LayerChanger());
-
+        StartCoroutine(Entrance());
 
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (LC.gameState != GamePlayState.Playing)
+        if (released == false)
+            return;
+
+        if (GPM.gameState != GamePlayState.Playing)
         {
             rg.velocity = Vector2.zero;
             return;
@@ -117,44 +118,25 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
     void RenewData()
     {
         speedMultiPly = data.speed;
-        attackSpeed = data.attackSpeed*LC.WorldAttackMultiPly;
+        attackSpeed = data.attackSpeed*GPM.WorldAttackMultiPly;
         speed = data.speed;
         hitPoint = data.hitPoint;
-        damage = data.damage*LC.EnemyDamageMultiPly;
+        damage = data.damage*GPM.EnemyDamageMultiPly;
         range = data.range;
-        coin = data.coin * LC.WorldCoinMultiply;
+        coin =(int)( data.coin * GPM.WorldCoinMultiply);
     }
     IEnumerator Move()
     {
         yield return new WaitUntil(() => detectedCharacter == null);
 
         yield return new WaitForSeconds(timeForMove.Random);
-        IntRange a = new IntRange(0, 100);
         move = true;
-        if (Vector2.Distance(transform.position, aim.transform.position) < 5)
-        {
-
-            if (a.Random <= 60)
-            {
-                Vector2 t = aim.transform.position - transform.position;
-                t = t.normalized;
-
-                direction = t;
 
 
-            }
-            else
-            {
-                direction = GiveRandomMoveDiretion();
+        Vector2 t = Camera.main.transform.position - transform.position;
+        t = t.normalized;
 
-            }
-        }
-        else
-        {
-            Vector2 t = GiveRandomMoveDiretion();
-            rg.velocity = t * speed;
-            direction = t;
-        }
+        direction = t;
 
         yield return new WaitForSeconds(timeForMove.Random);
         rg.velocity = Vector2.zero;
@@ -164,7 +146,33 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
         StartCoroutine(Move());
     }
        
-    
+    public IEnumerator Entrance()
+    {
+        Vector2 direction = Vector2.zero - (Vector2)transform.position;
+        direction.Normalize();
+        Vector2 Orgin = transform.position;
+        if (direction.x > 0 && !right)
+            Flip();
+        else if (direction.x < 0 && right)
+            Flip();
+
+        anim.SetBool("Moving", true);
+
+
+        while (Vector2.Distance(transform.position,Orgin)<=11)
+        {
+            rg.velocity = direction * (5);
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        anim.SetBool("Moving", false);
+
+
+        released = true;
+        LayerChanger();
+        StartCoroutine(Move());
+    }
 
 
     public virtual void Attack()
@@ -183,11 +191,14 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
 
     public void Die()
     {
-        LevelUIManager.Instance.MakeGoldBrust(transform.position,coin);
-        LC.ChangeCoin(coin);
-        KeyManager.Instance.ChangeKeyPart(1);
+        if (GPM.gameState != GamePlayState.Finish)
+        {
+            GPM.ChangeCoin(coin);
+            XpController.Instance.AddXp(coin);
+            // KeyManager.Instance.ChangeKeyPart(1);
+            GameAnalyticsManager.SendCustomEvent("Enemy:" + data.enemyName);
+        }
         Lean.Pool.LeanPool.Despawn(gameObject);
-        GameAnalyticsManager.SendCustomEvent("Enemy:"+data.enemyName);
     }
     void OnDrawGizmos()
     {
@@ -234,10 +245,11 @@ public class Enemy : MonoBehaviour,IHitable,IAttackable {
         GetComponent<Rigidbody2D>().gravityScale = 0;
         GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
         GetComponent<IsoMetricHandler>().Center = gameObject;
+        gameObject.layer = 15;
+
     }
-    public IEnumerator LayerChanger()
+    public void LayerChanger()
     {
-        yield return new WaitForSeconds(0.7f);
         gameObject.layer = 8;
     }
 

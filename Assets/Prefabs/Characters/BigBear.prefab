@@ -1049,7 +1049,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 1931649566722250}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 4ed62c550975c3341a8648faf456ab66, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -1085,6 +1085,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Manager: 0
+  PlayOnStart: 
   sounds:
   - ClipId: Splash
     Clip: {fileID: 8300000, guid: 02f020b3f845ce54aa91917ad7bd42cb, type: 3}

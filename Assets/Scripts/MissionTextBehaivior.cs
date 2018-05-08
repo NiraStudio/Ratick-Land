@@ -26,6 +26,6 @@ public class MissionTextBehaivior : MonoBehaviour {
     public void Finish()
     {
         gameObject.SetActive(false);
-        LevelController.instance.gameState = GamePlayState.Playing;
+        GamePlayManager.instance.gameState = GamePlayState.Playing;
     }
 }

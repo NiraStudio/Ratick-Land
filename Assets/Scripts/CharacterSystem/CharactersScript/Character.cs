@@ -13,7 +13,7 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
     public bool right;
     protected SkinManager skinManager;
     protected GameObject Aimer;
-    protected LevelController LC;
+    protected GamePlayManager GPM;
     protected GamePlayInput GPI;
     protected Rigidbody2D rg;
     protected Animator anim;
@@ -27,7 +27,7 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
     protected ObscuredFloat speed;
     protected ObscuredFloat attackRange;
     protected Collider2D detectedEnemy;
-    protected bool Attacking;
+    public bool Attacking,Gathering;
     protected bool isLeader=false;
     protected GameObject DmgPopUp;
 
@@ -42,12 +42,13 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
     float MaxHp;
     CharacterMoveState situation;
     KeyManager keyManager;
+    XpController XPC;
     public void Awake()
     {
-        LC = LevelController.instance;
+        GPM = GamePlayManager.instance;
         GPI = GamePlayInput.Instance;
-        keyManager = KeyManager.Instance;
-        if (LC == null)
+        XPC = XpController.Instance;
+        if (GPM == null)
         {
             this.enabled = false;
             GetComponent<IsoMetricHandler>().enabled = false;
@@ -76,22 +77,26 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
         if (!free)
             return;
 
-        if (LC.gameState != GamePlayState.Playing)
+        if (GPM.gameState != GamePlayState.Playing)
+        {
+            rg.velocity = Vector2.zero;
             return;
+        }
 
         #region Move
 
-
-        if (GPI.Move && !Attacking)
+        if (!Gathering)
         {
-            rg.bodyType = RigidbodyType2D.Dynamic;
 
-            tt = (Aimer.transform.position - transform.position);
-            tt.Normalize();
-            tt = tt * speed;
-            rg.velocity = tt;
-            if (Vector2.Distance(transform.position, Aimer.transform.position) > 0.1f)
+            if (GPI.Move && !Attacking)
             {
+
+                rg.bodyType = RigidbodyType2D.Dynamic;
+
+                tt = GPI.Direction;
+                tt = tt * speed * GPM.WorldSpeedMultiPly;
+                rg.velocity = tt;
+
                 if (tt.x > 0 && !right)
                 {
                     Flip();
@@ -101,51 +106,77 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
                     Flip();
 
                 }
-            }
 
-        }
-        else
-        {
-            if (detectedEnemy != null)
+
+
+            }
+            else
             {
-                tt = (detectedEnemy.transform.position - transform.position);
-                if (tt.x > 0 && !right)
+                if (detectedEnemy != null)
                 {
-                    Flip();
-                }
-                else if (tt.x < 0 && right)
-                {
-                    Flip();
+                    tt = (detectedEnemy.transform.position - transform.position);
+                    if (tt.x > 0 && !right)
+                    {
+                        Flip();
+                    }
+                    else if (tt.x < 0 && right)
+                    {
+                        Flip();
 
+                    }
                 }
+                if (rg.bodyType != RigidbodyType2D.Static)
+                    rg.velocity = Vector2.zero;
+                rg.bodyType = RigidbodyType2D.Static;
             }
-            rg.velocity = Vector2.zero;
-            rg.bodyType = RigidbodyType2D.Static;
         }
-
         #endregion
 
         #region Attack
-        if (keyManager.keyCount > 0)
             detectedEnemy = Physics2D.OverlapCircle(CenterPoint.transform.position, attackRange, CageLayer);
-        else
-            detectedEnemy = null;
         if (detectedEnemy == null)
             detectedEnemy = Physics2D.OverlapCircle(CenterPoint.transform.position, attackRange, EnemyLayer);
 
-        if (waitTime > attackSpeed && detectedEnemy != null && !Attacking)
+        if (waitTime > attackSpeed / GPM.WorldSpeedMultiPly && detectedEnemy != null && !Attacking)
             AttackAnimation();
 
         waitTime += Time.deltaTime;
-
-
         #endregion
 
         if (anim)
+        {
             anim.SetBool("Moving", GPI.Move);
+            anim.speed = GPM.WorldSpeedMultiPly;
+        }
     }
 
+    public void StartGathering()
+    {
+        if (gameObject.tag == "Leader")
+            return;
+        Gathering = true;
+        StartCoroutine(Gather());
+    }
+    public IEnumerator Gather()
+    {
 
+        Vector2 direction;
+        Collider2D detectedAlly;
+        Transform leader = GameObject.FindWithTag("Leader").transform;
+
+        while (Vector2.Distance(transform.position, leader.position) > 0.2f)
+        {
+            detectedAlly= detectedEnemy = Physics2D.OverlapCircle(CenterPoint.transform.position, attackRange, CharacterLayer);
+            if (detectedAlly && Vector2.Distance(transform.position, leader.position) < GPM.CharacterAmount*0.04f)
+                break;
+            rg.bodyType = RigidbodyType2D.Dynamic;
+            direction = leader.position - transform.position;
+            direction.Normalize();
+            rg.velocity = direction * speed * GPM.WorldSpeedMultiPly;
+            yield return null;
+        }
+        Gathering = false;
+    }
    
     void RenewData()
     {
@@ -153,8 +184,8 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
         attackSpeed = data.attackSpeed;
         hitPoint = data.hitPoint;
         damage = new IntRange(0,0);
-        damage.m_Max = data.damage * LC.WorldAttackMultiPly;
-        damage.m_Min=(int)( data.damage-(data.damage*0.2f)) * LC.WorldAttackMultiPly;
+        damage.m_Max =(int)( data.damage * GPM.WorldAttackMultiPly);
+        damage.m_Min=(int)(( data.damage-(data.damage*0.2f)) * GPM.WorldAttackMultiPly);
         attackRange = data.attackRange;
     }
 
@@ -178,17 +209,18 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
     {
         if (detectedEnemy != null)
         {
-            int f = damage.Random;
+            float f = damage.Random;
+            f = f + (f * XPC.AttackIncrease);
             try
             {
-                detectedEnemy.SendMessage("GetHit", (float)f);
+                detectedEnemy.SendMessage("GetHit", f);
             }
             catch (Exception)
             {
 
                 throw;
             }
-            Instantiate(DmgPopUp, detectedEnemy.transform.position, Quaternion.identity).GetComponent<DmgPopUpBehaivior>().RePaint(f.ToString(), DmgPopUpBehaivior.AttackType.playerAttack, detectedEnemy.gameObject.transform.position);
+            Instantiate(DmgPopUp, detectedEnemy.transform.position, Quaternion.identity).GetComponent<DmgPopUpBehaivior>().RePaint(((int)f).ToString(), DmgPopUpBehaivior.AttackType.playerAttack, detectedEnemy.gameObject.transform.position);
         }
         waitTime = 0;
         Attacking = false;
@@ -203,11 +235,15 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
         if (hitPoint <= 0)
             Die();
     }
+    public void RecoverHp()
+    {
+        hitPoint = MaxHp;
+    }
 
     public virtual void Die()
     {
         //animation
-        LC.RemoveCharacter(gameObject);
+        GPM.RemoveCharacter(gameObject);
         Destroy(gameObject);
     }
 

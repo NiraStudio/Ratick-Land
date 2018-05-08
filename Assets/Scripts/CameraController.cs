@@ -7,7 +7,7 @@ public class CameraController : MonoBehaviour {
     public static CameraController Instance;
     public Vector3 offSet;
     [SerializeField]
-    List<GameObject> Targets;
+    List<GameObject> Targets = new List<GameObject>();
 
     public float minZoom = 10f;
     public float maxZoom = 40f;
@@ -22,7 +22,6 @@ public class CameraController : MonoBehaviour {
     }
     void Start()
     {
-        Targets = new List<GameObject>();
         cam=GetComponent<CinemachineVirtualCamera>();
         offSet.z -= 50;
     }

@@ -1198,7 +1198,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 1446071399809942}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 4ed62c550975c3341a8648faf456ab66, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -1267,12 +1267,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 7065cbc80beab2148b70ce01267350be, type: 2}
   timeForMove:
-    m_Min: 2
-    m_Max: 5
+    m_Min: 1
+    m_Max: 3
   centerPoint: {fileID: 1803702997735148}
-  Gurdian: 0
   right: 1
   coinObject: {fileID: 0}
+  released: 0
   bullet: {fileID: 1297201210110852, guid: c880e83545953d34e873d862c2e7770a, type: 2}
   ShootPos: {fileID: 1143198324215666}
 --- !u!114 &114163108650943688
@@ -1410,6 +1410,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Manager: 0
+  PlayOnStart: 
   sounds:
   - ClipId: Attack
     Clip: {fileID: 8300000, guid: 62a8ca27338bfe54ebd5509e23e32dc4, type: 3}

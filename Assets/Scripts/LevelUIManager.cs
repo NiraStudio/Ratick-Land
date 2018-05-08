@@ -9,9 +9,9 @@ public class LevelUIManager : MonoBehaviour {
     public static LevelUIManager Instance;
 
     public Slider mainHpSlider,KeySlider;
-    public LocalizedDynamicText CoinText,MainHpText,KeyAmount;
+    public LocalizedDynamicText MainHpText,KeyAmount,timerText;
     public GameObject GoldBrust,GoldBrustTarget;
-    LevelController LC;
+    GamePlayManager GPM;
     KeyManager KM;
     float coinTemp,lerp;
     public int maxMainHp;
@@ -23,7 +23,7 @@ public class LevelUIManager : MonoBehaviour {
     }
 	// Use this for initialization
 	void Start () {
-        LC = GetComponent<LevelController>();
+        GPM = GetComponent<GamePlayManager>();
         KM = GetComponent<KeyManager>();
 	}
 	
@@ -31,18 +31,25 @@ public class LevelUIManager : MonoBehaviour {
 	void FixedUpdate ()
     {
 
+        #region Timer
+        double tt = GPM.remainingTime;
+        string r = "";
+        tt -= ((int)tt / 3600) * 3600;
+        r += ((int)tt / 60).ToString("00") + ":";
+        r += (tt % 60).ToString("00");
+        timerText.Number = r;
+        #endregion
 
         #region Coin
 
-        if (coinTemp !=LC.CoinAmount)
+        if (coinTemp !=GPM.CoinAmount)
         {
             lerp += Time.deltaTime / 1;
-            coinTemp = Mathf.Lerp(coinTemp, LC.CoinAmount, lerp);
+            coinTemp = Mathf.Lerp(coinTemp, GPM.CoinAmount, lerp);
         }
         else
             lerp = 0;
 
-        CoinText.Number ="X"+ ((int)coinTemp).ToString();
         #endregion
 
 

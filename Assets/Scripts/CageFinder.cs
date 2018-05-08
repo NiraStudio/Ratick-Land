@@ -33,7 +33,12 @@ public class CageFinder : MonoBehaviour {
     void Update()
     {
         if (!cage)
+        {
+            img.gameObject.SetActive(false);
+
+            meterText.gameObject.SetActive(false);
             return;
+        }
 
 
         CameraPos = Camera.main.transform.position;

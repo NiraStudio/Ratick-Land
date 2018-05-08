@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1072446554344414}
+  m_IsPrefabParent: 1
+--- !u!1 &1072446554344414
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4965034125264386}
+  - component: {fileID: 114298689371703296}
+  - component: {fileID: 114715785652013272}
+  m_Layer: 0
+  m_Name: CageHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4965034125264386
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1072446554344414}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -219.64552, y: -27.721039, z: 0}
+  m_LocalScale: {x: 0.5714285, y: 0.5714285, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114298689371703296
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1072446554344414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdc3d34209435894c860ac320944360a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Center: {fileID: 4965034125264386}
+  lineColor: {r: 1, g: 0, b: 0, a: 1}
+  CircleColor: {r: 1, g: 1, b: 1, a: 1}
+  BoxColor: {r: 1, g: 0, b: 0, a: 1}
+  CubeColor: {r: 1, g: 1, b: 1, a: 1}
+  SphereColor: {r: 0, g: 1, b: 0.33793116, a: 1}
+  Line: 0
+  Circle: 0
+  Box: 0
+  Cube: 0
+  Sphere: 1
+  radius: 0.5
+  BoxSize: {x: 7.41, y: 11.38}
+  CubeSize: {x: 0, y: 0, z: 0}
+  distance: 4.1
+  Direction: {x: 1.82, y: 11.1}
+  Aim: {fileID: 0}
+  lineStyle: 0
+--- !u!114 &114715785652013272
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1072446554344414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0231facdd9153e84da3472627a9ffe16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Object: {fileID: 0}
+  created: 0

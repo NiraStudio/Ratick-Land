@@ -34,7 +34,7 @@ public class DemoBoss : Boss {
         {
             PlayerPrefs.SetInt("BossKilled", 1);
         }
-        LevelController.instance.FinishTheGame("Victory");
+        GamePlayManager.instance.FinishTheGame("Victory");
         GameAnalyticsManager.SendCustomEvent("Boss Killed:BossDefeated");
         base.Die();
     }

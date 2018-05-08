@@ -81,8 +81,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f33e6a2fa7af494eadd69d51bb539fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Gurdian: 1
-  currentEnemies: []
+  Guradian: 1
   Enemies:
   - type: 0
     Enemy: {fileID: 1925284352126916, guid: 85013320e4980144fb8fab2f82461162, type: 2}
@@ -90,7 +89,6 @@ MonoBehaviour:
     Enemy: {fileID: 1579091908569202, guid: 56b1a2ad5616aa345b9f6d79be21a19c, type: 2}
   - type: 2
     Enemy: {fileID: 1446071399809942, guid: c573f23b4e42b60419c0728f36b928ac, type: 2}
-  SpawnedEnemies: []
   FirstArrange:
     m_PersistentCalls:
       m_Calls:
@@ -174,3 +172,5 @@ MonoBehaviour:
   FormulaChanger: 1.15
   powerRate: 70
   enemyNumber: 0
+  created: 0
+  wph: {fileID: 0}

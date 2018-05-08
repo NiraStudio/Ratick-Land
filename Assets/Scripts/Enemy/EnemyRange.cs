@@ -7,7 +7,7 @@ public class EnemyRange : Enemy {
     public override void Attack()
     {
         if (detectedCharacter != null)
-            Instantiate(bullet, ShootPos.transform.position, Quaternion.identity).GetComponent<AimedProjectile>().Spawn(detectedCharacter.gameObject, damage);
+            Instantiate(bullet, ShootPos.transform.position, Quaternion.identity).GetComponent<TargetProjectile>().Spawn(detectedCharacter.gameObject.transform.position, damage);
 
         Attacking = false;
         time = 0;

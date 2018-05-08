@@ -20,41 +20,69 @@ public class GamePlayInput : MonoBehaviour {
     public bool Move=true;
     Vector2 t;
     Touch[] touches;
-    GameObject leader;
     SFX sfx;
-    LevelController LC;
+    GamePlayManager LC;
+    Rigidbody2D aimerRG;
 	// Use this for initialization
 	void Start () {
         sfx = GetComponent<SFX>();
-        LC = GetComponent<LevelController>();
-        leader = GameObject.FindWithTag("Leader");
+        LC = GetComponent<GamePlayManager>();
+
+        aimerRG = aimer.GetComponent<Rigidbody2D>();
         JoyStickTurnOff();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (leader == null)
-            leader = GameObject.FindWithTag("Leader");
-        if (LC.gameState!=GamePlayState.Playing)
+
+    // Update is called once per frame
+    void Update()
+    {
+
+        if (LC.gameState == GamePlayState.Finish)
             return;
 
         #region inputs
         if (Application.isMobilePlatform)
         {
+            
             touches = Input.touches;
+            foreach (var item in touches)
+            {
+                print(item.tapCount);
+            }
             if (touches.Length == 1)
                 switch (touches[0].phase)
                 {
                     case TouchPhase.Began:
-                        JoyStickTurnOn(Camera.main.ScreenToWorldPoint(touches[0].position));
+                        if (touches[0].tapCount ==1)
+                            JoyStickTurnOn(Camera.main.ScreenToWorldPoint(touches[0].position));
                         break;
                     case TouchPhase.Ended:
+                        if (touches[0].tapCount >= 2)
+                            GatherCharacters();
                         JoyStickTurnOff();
                         break;
                 }
         }
         else if (Application.isEditor)
         {
+
+            touches = Input.touches;
+
+            if (touches.Length == 1)
+            {
+                switch (touches[0].phase)
+                {
+                    case TouchPhase.Began:
+                        if (touches[0].tapCount == 1)
+                            JoyStickTurnOn(Camera.main.ScreenToWorldPoint(touches[0].position));
+                        break;
+                    case TouchPhase.Ended:
+                        if (touches[0].tapCount >= 2)
+                            GatherCharacters();
+                        JoyStickTurnOff();
+                        break;
+                }
+            }
+
             if (Input.GetMouseButtonDown(0))
                 JoyStickTurnOn(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             else if (Input.GetMouseButtonUp(0))
@@ -62,19 +90,28 @@ public class GamePlayInput : MonoBehaviour {
         }
         #endregion
 
-
-        //Aimer Moves
-        #region LeaderMove
         Direction = JS.direction;
-        if (Move)
+
+        /* //Aimer Moves
+         #region LeaderMove
+         if (Move)
+         {
+             Direction = JS.direction;
+             aimerRG.velocity = Direction * speed;
+         }
+         else
+             aimer.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+         #endregion
+     */
+    }
+    public void GatherCharacters()
+    {
+        Character[] c = GameObject.FindObjectsOfType<Character>();
+        foreach (var item in c)
         {
-            t = aimer.transform.position;
-            t.x += Direction.x * (JS.speed * speed) * Time.deltaTime;
-            t.y += Direction.y * (JS.speed * speed) * Time.deltaTime;
-            aimer.transform.position = t;
-        }else
-        aimer.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        #endregion
+            print(item.data.characterName);
+            item.StartGathering();
+        }
     }
     public void JoyStickTurnOn(Vector2 pos)
     {
@@ -98,5 +135,8 @@ public class GamePlayInput : MonoBehaviour {
             aimer.transform.GetChild(i).gameObject.SetActive(false);
         }
     }
+
+
+    
 
 }

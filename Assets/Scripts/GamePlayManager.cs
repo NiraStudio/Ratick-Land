@@ -9,114 +9,97 @@ using Cinemachine;
 [RequireComponent(typeof(KeyManager))]
 [RequireComponent(typeof(GamePlayInput))]
 
-public class LevelController : MainBehavior
+public class GamePlayManager : MainBehavior
 {
-    public static LevelController instance;
+    #region Singleton
+    public static GamePlayManager instance;
+    void Awake()
+    {
+        instance = this;
+    }
+#endregion
+
+
     public CharacterDataBase characterDataBase;
-    public string PersianMissionText, EnglishMissionText;
-    public int WorldCoinMultiply=1,WorldAttackMultiPly=1,maxWave;
+    public float WorldCoinMultiply = 1, WorldAttackMultiPly = 1,WorldSpeedMultiPly=1;
     public float EnemyDamageMultiPly=1;
-    public MissionTextBehaivior missionText;
+    public float MatchTime;
     public BGM bgm;
-    public GameObject PausePanel;
-    [Range(0,100)]
-    public float ChanceToRespawnSecretMap;
-
-    [Header("Map Parameters")]
-    public GameObject cage,Boss;
-    public GameObject[] Blocks,Maps;
-    public GameObject SecretMap,wave;
-    public IntRange BlockAmount;
-
+    public Transform StartPoint;
+    public Wave[] WavePoints;
     public GamePlayState gameState;
     public int CoinAmount
     { get { return coinAmount; } }
+    public int CharacterAmount
+    {
+        get { return characters.Count; }
+    }
 
 
-
-    List<GameObject> currentWaves=new List<GameObject>();
-    List<Vector2> WavePoints = new List<Vector2>();
-    List<Vector2> BossSpots = new List<Vector2>();
-    public List<Vector2> CagePoints = new List<Vector2>();
     List<GameObject> characters=new List<GameObject>();
     SlotContainer sc = new SlotContainer();
     GameObject aimer;
     CameraController cameraController;
     ObscuredInt coinAmount;
     GameManager GM;
-    Vector2 t,startPos;
-    Touch[] touches;
+    Vector2 t;
     int _CageBroken=-1;
-    bool move;
-    MapClass map;
-    public bool Allow;
     CinemachineConfiner cinemachine;
+
+    [HideInInspector]
+    public float remainingTime;
+
+
     public int BrokenCage
     {
         get { return _CageBroken; }
     }
 
-    void Awake()
+   
+    void Start()
     {
-        instance = this;
-    }
-    IEnumerator Start()
-    {
-        gameState = GamePlayState.Pause;
+        //gameState = GamePlayState.Pause;
         //start Text
-        
-        GM=GameManager.instance;
+
+        GM = GameManager.instance;
         //Camera
         cameraController = CameraController.Instance;
         cinemachine = cameraController.GetComponent<CinemachineConfiner>();
         aimer = GetComponent<GamePlayInput>().aimer;
-       
-        //designing the map  (Blocks , map &...)
-        designMap();
+        remainingTime = MatchTime;
+
+        StartSpawningEnemies();
+        //character spawns
         sc = GM.SlotData;
         spawnCharacters();
 
-
         //making FirstCage
-        MakeCage();
-        
-        //start Spawning the Waves
-        StartCoroutine(SpawnWaves());
+
 
 
         //Use Card
-        UseCard(GM.SlotData.porion);
+        UsePotion(GM.SlotData.porion);
 
         //Starting the game
         OpenScreen();
         bgm = GetComponent<BGM>();
         bgm.PlaySound(BGM.State.Main);
-        yield return new WaitForSeconds(1);
-        missionText.MakeText(PersianMissionText, EnglishMissionText);
         GameAnalyticsManager.SendCustomEvent("PlayGame");
-        
+
     }
 
-   
+    void Update()
+    {
+        if (gameState == GamePlayState.Finish)
+            return;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        remainingTime -= Time.deltaTime;
+        
+        if (remainingTime <= 0)
+        {
+            FinishTheGame("Victory");
+        }
+    }
 
     public void RemoveCharacter(GameObject character)
     {
@@ -128,31 +111,15 @@ public class LevelController : MainBehavior
         characters.Add(character);
         cameraController.ChangeTargets(characters);
     }
-    
-    public void MakeCage()
-    {
-        Vector2 a;
-        a = giveMapPos(10,CagePoints);
-        GameObject g = Instantiate(cage,map.gameObject.transform);
-        g.transform.localPosition = a;
-        g.transform.SetParent(null);
-
-        CageFinder.Instance.ChangeTarget(g);
-        _CageBroken++;
-        if(_CageBroken<=10)
-        EnemyDamageMultiPly = 1 + (_CageBroken * 0.15f);
-    }
-
-    
     void spawnCharacters()
     {
         GameObject p = new GameObject("Characters");
-        p.transform.position = startPos;
+        p.transform.position = StartPoint.position;
         if (sc.mainId >= 0)
         {
             CharacterData c = characterDataBase.GiveByID(sc.mainId);
             GameObject a = Instantiate(c.prefab, p.transform);
-            a.transform.position = startPos;
+            a.transform.position = StartPoint.position;
             a.GetComponent<Character>().Release(true);
             AddCharacters(a);
             GetComponent<LevelUIManager>().GetMain(a.GetComponent<Character>());
@@ -161,7 +128,7 @@ public class LevelController : MainBehavior
         {
             CharacterData c = characterDataBase.GiveByID(item);
             GameObject a = Instantiate(c.prefab, p.transform);
-            a.transform.position =startPos+ Random.insideUnitCircle * 1.5f;
+            a.transform.position = (Vector2)StartPoint.position + Random.insideUnitCircle * 1.5f;
             a.GetComponent<Character>().Release(true);
             AddCharacters(a);
 
@@ -173,7 +140,7 @@ public class LevelController : MainBehavior
             for (int i = 0; i < a; i++)
             {
                 GameObject b = Instantiate(c.prefab, p.transform);
-                b.transform.position =startPos+ Random.insideUnitCircle * 1.5f;
+                b.transform.position =(Vector2) StartPoint.position + Random.insideUnitCircle * 1.5f;
                 b.GetComponent<Character>().Release(true);
                 AddCharacters(b);
             }
@@ -182,7 +149,7 @@ public class LevelController : MainBehavior
         {
             CharacterData c = characterDataBase.GiveByID(sc.supportId);
             GameObject a = Instantiate(c.prefab, p.transform);
-            a.transform.position =startPos+ Random.insideUnitCircle * 1.5f;
+            a.transform.position =(Vector2) StartPoint.position + Random.insideUnitCircle * 1.5f;
             a.GetComponent<Character>().Release(true);
             AddCharacters(a);
 
@@ -192,36 +159,30 @@ public class LevelController : MainBehavior
 
         
     }
-    void designMap()
-    {
-        int a = Random.Range(0, 100);
-        GameObject g;
-        if (a < ChanceToRespawnSecretMap)
-        {
-            g = Instantiate(SecretMap, Vector2.zero, Quaternion.identity);
-        }
-        else
-        {
-            g = Instantiate(Maps[Random.Range(0, Maps.Length)], Vector2.zero, Quaternion.identity);
-        }
-        map = g.GetComponent<MapClass>();
 
-        WavePoints = map.points(PointsType.Wave);
-        BossSpots = map.points(PointsType.Boss);
-        CagePoints = map.points(PointsType.Cage);
-
-        startPos =map.startPoint.transform.position;
-        GameObject.FindWithTag("Aim").transform.position = startPos;
-        map.DestroyGameObjects();
-        cinemachine.m_BoundingShape2D = map.Bounds;
-        MakeBoss();
-    }
-    void MakeBoss()
+    void StartSpawningEnemies()
     {
-        Instantiate(Boss, BossSpots[Random.Range(0, BossSpots.Count)], Quaternion.identity);
+        for (int i = 0; i < WavePoints.Length; i++)
+        {
+            WavePoints[i].Spawn();
+        }
+        StartCoroutine(SpanwEnemy());
     }
 
-    void UseCard(Potion card)
+    IEnumerator SpanwEnemy()
+    {
+        if (gameState != GamePlayState.Finish)
+        {
+            yield return new WaitForSeconds(10f);
+            for (int i = 0; i < WavePoints.Length; i++)
+            {
+                WavePoints[i].Spawn();
+            }
+            StartCoroutine(SpanwEnemy());
+        }
+    }
+
+    void UsePotion(Potion card)
     {
         if (card == null)
             return;
@@ -230,41 +191,17 @@ public class LevelController : MainBehavior
         GM.SlotData.porion = null;
         GM.SaveMainData();
         GameAnalyticsManager.SendCustomEvent(card.cardType.ToString());
-    }
-    Vector2 giveMapPos(List<Vector2> poses)
-    {
-        return poses[Random.Range(0, poses.Count)];
-    }
-    Vector2 giveMapPos(float distance,List<Vector2> poses)
-    {
-        Vector2 t = new Vector2();
-         do
-        {
-            t = poses[Random.Range(0, poses.Count)];
-        } while (Vector2.Distance(t, Camera.main.transform.position) < distance);
-         return t;
-    }
-
-    
-    IEnumerator SpawnWaves()
-    {
-        if (currentWaves.Count < maxWave)
-        {
-            while (currentWaves.Count < maxWave)
-            {
-                GameObject g = Instantiate(wave.gameObject, giveMapPos(7,WavePoints), Quaternion.identity);
-               currentWaves.Add(g);
-            }
-        }
-        yield return new WaitForSeconds(2);
-        StartCoroutine(SpawnWaves());
-
-    }
+    }   
     public void FinishTheGame(string State)
     {
         if (gameState != GamePlayState.Finish)
         {
             gameState = GamePlayState.Finish;
+            Enemy[] enemies = GameObject.FindObjectsOfType<Enemy>();
+            foreach (var item in enemies)
+            {
+                item.Die();
+            }
             GM.ChangeCoin(coinAmount);
             if (PlayerPrefs.GetInt("Tutorial") == 1)
             {
@@ -287,16 +224,13 @@ public class LevelController : MainBehavior
             InformationPanel.Instance.OpenFinshPanel(State,State=="Victory"?PanelColor.Succuss:PanelColor.Alert, coinAmount, () =>
               {
                   GoToScene("MainMenu");
+                  print("Here");
               });
             
         }
         bgm.stopSound();
     }
-    public void RemoveWave(GameObject go)
-    {
-        currentWaves.Remove(go);
-    }
-
+   
 
     public void ChangeCoin(int Amount)
     {
@@ -305,25 +239,7 @@ public class LevelController : MainBehavior
     }
     
 
-
-    public void Pause()
-    {
-        PausePanel.SetActive(true);
-        gameState = GamePlayState.Pause;
-        GamePlayInput.Instance.JoyStickTurnOff();
-        Time.timeScale = 0;
-    }
-    public void Resume()
-    {
-        Time.timeScale =1;
-        PausePanel.SetActive(false);
-        gameState = GamePlayState.Playing;
-    }
-    public void Exit()
-    {
-        Time.timeScale = 1;
-        FinishTheGame("Defeat");
-    }
+    
 
 
 

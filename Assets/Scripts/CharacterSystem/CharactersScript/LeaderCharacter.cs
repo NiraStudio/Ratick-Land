@@ -7,14 +7,14 @@ public class LeaderCharacter : Character {
     public override void Start()
     {
         base.Start();
-        if (LevelController.instance == null)
+        if (GamePlayManager.instance == null)
             DestroyImmediate(gameObject.GetComponent<AudioListener>());
     }
 
     public override void Die()
     {
         base.Die();
-        LC.FinishTheGame("Defeat");
+        GPM.FinishTheGame("Defeat");
     }
     
 

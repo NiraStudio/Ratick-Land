@@ -18,7 +18,7 @@ public class Boss : MainBehavior,IHitable,IAttackable {
 
 
     Transform aimer;
-    LevelController LC;
+    GamePlayManager LC;
     Collider2D[] temp;
     Animator anim;
     Vector2 ChoosedDirection;
@@ -36,7 +36,7 @@ public class Boss : MainBehavior,IHitable,IAttackable {
         RenewData();
         anim = GetComponent<Animator>();
         waitTime = attackCoolDown.Random;
-        LC = LevelController.instance;
+        LC = GamePlayManager.instance;
         aimer = GameObject.FindWithTag("Leader").transform;
         DmgPopUp = Resources.Load("DmgPopUp", typeof(GameObject)) as GameObject;
 

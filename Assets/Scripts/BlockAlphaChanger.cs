@@ -17,7 +17,7 @@ public class BlockAlphaChanger : MainBehavior {
         normal = sp.color;
         temp = normal;
         temp.a = .5f;
-        print(sp.bounds.extents.y);
+
         Distance = sp.bounds.extents.y;
         size=new Vector2(1, Distance * 1.5f);
     }

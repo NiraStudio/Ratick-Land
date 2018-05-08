@@ -223,7 +223,7 @@ public class ArrangeSceneManager : MainBehavior
         if (!CheckForRequirements())
             return;
         SaveSlot();
-        GoToScene("PlayScene");
+        GoToScene("ArenaScene");
         GM.bgm.stopSound();
     }
     public void SaveSlot()

@@ -57,6 +57,7 @@ public class SFX : MonoBehaviour
     {
         Mute = SettingManager.Instance.SFXMute;
         s = Mute;
+        if(!string.IsNullOrEmpty(PlayOnStart))
         PlaySound(PlayOnStart);
     }
     void FixedUpdate()
@@ -230,7 +231,7 @@ public class SFX : MonoBehaviour
         }
 
         if (found == false)
-            Debug.LogError("Sound Manager Error: ID Is Unrecognizable");
+            Debug.LogError("Sound Manager Error: ID "+ID+" Is Unrecognizable "+gameObject.name);
 
         return found;
     }

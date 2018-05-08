@@ -26,6 +26,7 @@ public class SkinManager : MonoBehaviour {
         RefreshSkins();
         GetDefSkin();
         SetSkin(defSkin);
+        LoadSkinByString("1");
     }
 
     /// <summary>

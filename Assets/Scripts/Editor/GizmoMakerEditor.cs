@@ -5,6 +5,7 @@ using UnityEditor;
 
 [CustomEditor(typeof(GizmoMaker))]
 [ExecuteInEditMode]
+[CanEditMultipleObjects]
 
 public class GizmoMakerEditor : Editor {
     

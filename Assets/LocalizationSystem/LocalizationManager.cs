@@ -26,7 +26,7 @@ namespace Alpha.Localization
         public GameObject languagePanel;
         //public Dictionary<string, string> LocalizationText = new Dictionary<string, string>();
         public Language LanguageCode;
-        bool IsReady = false;
+       public  bool IsReady = false;
 
         [SerializeField]
         public Font ENFont, FAFont;

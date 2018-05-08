@@ -31,11 +31,11 @@ public class Potion {
                 break;
             case Type.DoubleCoin:
                 Debug.Log("dOUBE Coin");
-                LevelController.instance.WorldCoinMultiply = 2;
+                GamePlayManager.instance.WorldCoinMultiply = 2;
                 break;
             case Type.DoubleATK:
                 Debug.Log("dOUBE Atk");
-                LevelController.instance.WorldAttackMultiPly = 2;
+                GamePlayManager.instance.WorldAttackMultiPly = 2;
 
                 break;
            

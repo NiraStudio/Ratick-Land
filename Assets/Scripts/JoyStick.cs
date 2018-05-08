@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,8 +7,7 @@ public class JoyStick : MainBehavior
     public GameObject handle;
     public bool spriteMethod;
     public float distance;
-    public float speed;
-    public Vector3 direction;
+    public Vector2 direction;
     Vector2 t;
     Vector2 mousePos;
 	// Use this for initialization
@@ -33,14 +32,15 @@ public class JoyStick : MainBehavior
             t = t.normalized;
             handle.transform.position = (Vector2)transform.position + t * distance;
         }
-        if (Vector2.Distance(transform.position, mousePos) >= distance / 4)
-            speed = (handle.transform.position - transform.position).magnitude / distance;
-        else
-            speed = 0;
+       
         direction = (handle.transform.position - transform.position);
         direction.Normalize();
+
     
     }
+
+
+    
     void UiMethod()
     {
         mousePos = Input.mousePosition;
@@ -52,7 +52,6 @@ public class JoyStick : MainBehavior
             t = t.normalized;
             handle.transform.position = (Vector2)transform.position + t * distance;
         }
-        speed = (handle.transform.position - transform.position).magnitude / distance;
         direction = (handle.transform.position - transform.position).normalized;
     
     }
