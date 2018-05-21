@@ -34,13 +34,17 @@ using System;
 public class OneSignalAndroid : OneSignalPlatform {
    private static AndroidJavaObject mOneSignal = null;
 
-   public OneSignalAndroid(string gameObjectName, string googleProjectNumber, string appId, OneSignal.OSInFocusDisplayOption displayOption, OneSignal.LOG_LEVEL logLevel, OneSignal.LOG_LEVEL visualLevel) {
-      mOneSignal = new AndroidJavaObject("com.onesignal.OneSignalUnityProxy", gameObjectName, googleProjectNumber, appId, (int)logLevel, (int)visualLevel);
+   public OneSignalAndroid(string gameObjectName, string googleProjectNumber, string appId, OneSignal.OSInFocusDisplayOption displayOption, OneSignal.LOG_LEVEL logLevel, OneSignal.LOG_LEVEL visualLevel, bool requiresUserConsent) {
+      mOneSignal = new AndroidJavaObject("com.onesignal.OneSignalUnityProxy", gameObjectName, googleProjectNumber, appId, (int)logLevel, (int)visualLevel, requiresUserConsent);
       SetInFocusDisplaying(displayOption);
    }
 
    public void SetLogLevel(OneSignal.LOG_LEVEL logLevel, OneSignal.LOG_LEVEL visualLevel) {
       mOneSignal.Call("setLogLevel", (int)logLevel, (int)visualLevel);
+   }
+
+   public void SetLocationShared(bool shared) {
+      mOneSignal.Call("setLocationShared", shared);
    }
 
    public void SendTag(string tagName, string tagValue) {
@@ -125,6 +129,18 @@ public class OneSignalAndroid : OneSignalPlatform {
 
    public void removeEmailSubscriptionObserver() {
       mOneSignal.Call("removeEmailSubscriptionObserver");
+   }
+
+   public void UserDidProvideConsent(bool consent) {
+      mOneSignal.Call("provideUserConsent", consent);
+   }
+
+   public bool UserProvidedConsent() {
+      return mOneSignal.Call<bool>("userProvidedPrivacyConsent");
+   }
+
+   public void SetRequiresUserPrivacyConsent(bool required) {
+      mOneSignal.Call("setRequiresUserPrivacyConsent", required);
    }
 
    public OSPermissionSubscriptionState getPermissionSubscriptionState() {

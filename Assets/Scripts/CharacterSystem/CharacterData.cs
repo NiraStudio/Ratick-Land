@@ -12,7 +12,7 @@ public class CharacterData:ScriptableObject
     public Type type;
     public int id;
     public int maxLevel;
-    public Sprite icon=new Sprite();
+    public Sprite icon = null;
     public float speed=3;
     public float attackSpeed;
     public float hitPoint;

@@ -88,21 +88,16 @@ public class GamePlayInput : MonoBehaviour {
             else if (Input.GetMouseButtonUp(0))
                 JoyStickTurnOff();
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            GatherCharacters();
+        }
         #endregion
 
         Direction = JS.direction;
 
-        /* //Aimer Moves
-         #region LeaderMove
-         if (Move)
-         {
-             Direction = JS.direction;
-             aimerRG.velocity = Direction * speed;
-         }
-         else
-             aimer.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-         #endregion
-     */
+       
     }
     public void GatherCharacters()
     {

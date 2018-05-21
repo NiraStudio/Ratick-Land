@@ -243,7 +243,7 @@ namespace GameAnalyticsSDK.Wrapper
 				Debug.Log ("gameAnalyticsEndSession()");
 			}
 		}
-			
+
 		#endif
 
 		public static void SetAvailableCustomDimensions01 (string list)
@@ -352,7 +352,7 @@ namespace GameAnalyticsSDK.Wrapper
 		{
 			setCustomDimension03 (customDimension);
         }
-		
+
 #if UNITY_IOS || UNITY_TVOS
 		public static void AddBusinessEvent(string currency, int amount, string itemType, string itemId, string cartType, string receipt)
 		{
@@ -372,7 +372,7 @@ namespace GameAnalyticsSDK.Wrapper
 		}
 #endif
 
-#if !UNITY_IOS && !UNITY_TVOS 
+#if !UNITY_IOS && !UNITY_TVOS
 		public static void AddBusinessEvent (string currency, int amount, string itemType, string itemId, string cartType)
 		{
 #if UNITY_EDITOR

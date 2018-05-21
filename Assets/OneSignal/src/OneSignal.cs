@@ -303,6 +303,15 @@ public class OneSignal : MonoBehaviour {
          OneSignal.Init();
       }
 
+      public UnityBuilder SetRequiresUserPrivacyConsent(bool required) {
+         System.Diagnostics.Debug.WriteLine("Did call setRequiresUserPrivacyConsent in OneSignal.cs");
+   #if ONESIGNAL_PLATFORM
+         OneSignal.requiresUserConsent = true;
+   #endif
+
+         return this;
+      }
+
    }
    internal static UnityBuilder builder = null;
 
@@ -313,6 +322,8 @@ public class OneSignal : MonoBehaviour {
 #if SUPPORTS_LOGGING
    private static LOG_LEVEL logLevel = LOG_LEVEL.INFO, visualLogLevel = LOG_LEVEL.NONE;
 #endif
+
+   internal static bool requiresUserConsent = false;
 
    internal static OnPostNotificationSuccess postNotificationSuccessDelegate = null;
    internal static OnPostNotificationFailure postNotificationFailureDelegate = null;
@@ -374,7 +385,7 @@ public class OneSignal : MonoBehaviour {
 
 #if ONESIGNAL_PLATFORM && UNITY_ANDROID
    private static void initAndroid() {
-      oneSignalPlatform = new OneSignalAndroid(gameObjectName, builder.googleProjectNumber, builder.appID, inFocusDisplayType, logLevel, visualLogLevel);
+      oneSignalPlatform = new OneSignalAndroid(gameObjectName, builder.googleProjectNumber, builder.appID, inFocusDisplayType, logLevel, visualLogLevel, requiresUserConsent);
    }
 #endif
 
@@ -388,7 +399,7 @@ public class OneSignal : MonoBehaviour {
          if (builder.iOSSettings.ContainsKey(kOSSettingsInAppLaunchURL))
             inAppLaunchURL = builder.iOSSettings[kOSSettingsInAppLaunchURL];
       }
-      oneSignalPlatform = new OneSignalIOS(gameObjectName, builder.appID, autoPrompt, inAppLaunchURL, inFocusDisplayType, logLevel, visualLogLevel);
+      oneSignalPlatform = new OneSignalIOS(gameObjectName, builder.appID, autoPrompt, inAppLaunchURL, inFocusDisplayType, logLevel, visualLogLevel, requiresUserConsent);
    }
 #endif
 
@@ -416,6 +427,13 @@ public class OneSignal : MonoBehaviour {
 #if SUPPORTS_LOGGING
       logLevel = inLogLevel; visualLogLevel = inVisualLevel;
 #endif
+   }
+
+   public static void SetLocationShared(bool shared) {
+      Debug.Log ("Called OneSignal.cs SetLocationShared");
+      #if ONESIGNAL_PLATFORM
+         oneSignalPlatform.SetLocationShared(shared);
+      #endif
    }
 
    // Tag player with a key value pair to later create segments on them at onesignal.com.
@@ -596,6 +614,28 @@ public class OneSignal : MonoBehaviour {
       state.subscriptionStatus = new OSSubscriptionState();
       return state;
 #endif
+   }
+
+   
+
+   public static void UserDidProvideConsent(bool consent) {
+#if ONESIGNAL_PLATFORM
+      oneSignalPlatform.UserDidProvideConsent(consent);
+#endif
+   }
+
+   public static bool UserProvidedConsent() {
+#if ONESIGNAL_PLATFORM
+      return oneSignalPlatform.UserProvidedConsent();
+#else
+      return true;
+#endif
+   }
+
+   public static void SetRequiresUserPrivacyConsent(bool required) {
+      #if ONESIGNAL_PLATFORM
+         OneSignal.requiresUserConsent = required;
+      #endif
    }
 
    /*** protected and private methods ****/

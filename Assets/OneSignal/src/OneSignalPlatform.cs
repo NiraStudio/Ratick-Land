@@ -42,12 +42,18 @@ public interface OneSignalPlatform {
    void PostNotification(Dictionary<string, object> data);
    void SyncHashedEmail(string email);
    void PromptLocation();
+   void SetLocationShared(bool shared);
 
    void SetEmail (string email);
    void SetEmail(string email, string emailAuthToken);
    void LogoutEmail();
 
    void SetInFocusDisplaying(OneSignal.OSInFocusDisplayOption display);
+
+   void UserDidProvideConsent(bool consent);
+   bool UserProvidedConsent();
+   void SetRequiresUserPrivacyConsent(bool required);
+
 
    void addPermissionObserver();
    void removePermissionObserver();
