@@ -90,7 +90,7 @@ public class AchievementManager : MonoBehaviour {
     public void OpenAttention(Achievement data)
     {
         AchivementAttention.SetTrigger("Open");
-        AchivementAttention.transform.GetChild(0).GetComponent<LocalizedDynamicText>().ChangeText(data.FatTitle, data.EnTitle, false, false);
+        AchivementAttention.transform.GetChild(0).GetComponent<LocalizedDynamicText>().Text(data.FatTitle, data.EnTitle);
         Repaint();
     }
     public void PanelState(bool State)

@@ -164,6 +164,7 @@ namespace Alpha.Localization
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
             }
+            
         }
 
         /* public LocalizationData localizationData;
@@ -267,7 +268,6 @@ namespace Alpha.Localization
 
             Key = EditorGUILayout.TextField("Key:", Key);
 
-
             for (int i = 0; i < System.Enum.GetValues(typeof(Language)).Length; i++)
             {
                 values[i] = EditorGUILayout.TextField((Language)i + " Value", values[i]);
@@ -276,6 +276,7 @@ namespace Alpha.Localization
             {
                 for (int i = 0; i < System.Enum.GetValues(typeof(Language)).Length; i++)
                 {
+                    Debug.Log("Jere");
                     if (!string.IsNullOrEmpty(Key))
                     {
                         dataBase.Add(this.Key, values[i], (Language)i);
@@ -283,9 +284,8 @@ namespace Alpha.Localization
                     }
                     else
                     {
-                        if (EditorUtility.DisplayDialog("Key", "Key is empty ", "Yes"))
+                        if (EditorUtility.DisplayDialog("Key", "Key is empty ", "OK"))
                         {
-                            this.Close();
                             break;
                         }
                     }

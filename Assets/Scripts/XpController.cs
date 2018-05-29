@@ -29,7 +29,7 @@ public class XpController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        levelText.Number = Lvl.ToString();
+        levelText.text = Lvl.ToString();
 	}
     public void Increase(int Type)
     {

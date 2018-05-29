@@ -182,7 +182,7 @@ public class DailyReward : MonoBehaviour
                     tt -= ((int)tt / 3600) * 3600;
                     r += ((int)tt / 60).ToString("00") + ":";
                     r += (tt % 60).ToString("00");
-                    timeLabel.Number = r;
+                    timeLabel.text = r;
                     //this is called once only
                     if (_value <= 0 && !_timerComplete)
                     {
@@ -196,7 +196,7 @@ public class DailyReward : MonoBehaviour
         else
         {
             OutOfNet.gameObject.SetActive(true);
-            timeLabel.Number = "";
+            timeLabel.text = "";
         }
     }
 

@@ -11,17 +11,17 @@ public class DmgPopUpBehaivior : MonoBehaviour {
     }
     public void RePaint(string text,AttackType attackType,Vector2 position)
     {
-        this.text.Number = text;
+        this.text.text = text;
         switch (attackType)
         {
             case AttackType.playerAttack:
-                this.text.Text.color = PlayerAttackColor;
+                this.text.textMesh.color = PlayerAttackColor;
                 break;
             case AttackType.EnemyAttack:
-                this.text.Text.color = EnemyAttackColor;
+                this.text.textMesh.color = EnemyAttackColor;
                 break;
             case AttackType.PlayerHeal:
-                this.text.Text.color = PlayerHealColor;
+                this.text.textMesh.color = PlayerHealColor;
                 break;
         }
         gameObject.transform.position = position;

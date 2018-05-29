@@ -34,6 +34,7 @@ public class LoadingScreenManager : MonoBehaviour
         anim.SetTrigger(OpenId);
         sfx.PlaySound("Stone");
         DisableSceen.SetActive(false);
+        print("Open Loading");
     }
     public void GoToScene(string SceneName)
     {

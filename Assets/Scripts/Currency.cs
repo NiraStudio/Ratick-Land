@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Currency 
+public class Currency
 {
     public int Amount;
     public Type type;
@@ -13,4 +14,3 @@ public class Currency
         coin
     }
 }
-

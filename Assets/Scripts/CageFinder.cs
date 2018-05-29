@@ -62,7 +62,7 @@ public class CageFinder : MonoBehaviour {
         transform.position =(Vector2)CameraPos+ t;
         var angle = Mathf.Atan2(t.y, t.x) * Mathf.Rad2Deg;
         img.gameObject.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        meterText.Number = ((int)t.magnitude*10) + " M";
+        meterText.text = ((int)t.magnitude*10) + " M";
 
 
         #region PreviousMethod

@@ -19,11 +19,11 @@ public class CampaignDetailPanelBehaivior : MonoBehaviour {
     {
         CharacterName.Key = data.characterName;
         state = GM.CharacterState(data);
-        levelText.ChangeText("مرحله " + GM.CharacterLevel(data.id), "Level " + GM.CharacterLevel(data.id), false, true);
-        AttackDamage.Number = state.AttackDamage.ToString();
+        levelText.Text("مرحله " + GM.CharacterLevel(data.id), "Level " + GM.CharacterLevel(data.id));
+        AttackDamage.text = state.AttackDamage.ToString();
         float a = 3 - state.AttackSpeed;
         SpeedBar.value = a;
-        HitPoint.Number = state.HitPint.ToString();
+        HitPoint.text = state.HitPint.ToString();
     }
 }
 [System.Serializable]

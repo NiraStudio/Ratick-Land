@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Alpha.Localization;
 
-public class CampaignMenuManager : MonoBehaviour {
+public class CampaignMenuManager : MainBehavior {
     #region Singleton
     public static CampaignMenuManager Instance;
     void Awake()
@@ -15,9 +15,10 @@ public class CampaignMenuManager : MonoBehaviour {
 
 
 
-    public List<CharacterData> PlayerCharacter = new List<CharacterData>();
-    public ScrollRectSnap CharacterScroll,SkinScroll;
-    public GameObject characterInstansiatePos,CampaignCard,CampaignSkinCard;
+    public List<CharacterData> PlayerCharacters = new List<CharacterData>();
+    public ScrollRectSnap CharacterScroll;//,SkinScroll;
+    public GameObject characterInstansiatePos, CampaignCard;//,CampaignSkinCard;
+    public Animator doorAnimation;
     public Button UpgradeButton;
     public CharacterCampaignCard[] cardHolders;
     GameManager GM;
@@ -30,14 +31,17 @@ public class CampaignMenuManager : MonoBehaviour {
     List<SkinData> skinData = new List<SkinData>();
     CharacterData CurrentCharacter;
 	// Use this for initialization
-	void Start () {
+	IEnumerator Start () {
         GM = GameManager.instance;
         RenewPlayer();
-        UpgradeButton.onClick.AddListener(UpgradeCharacter);
+
+        yield return new WaitUntil(() => characterInstansiatePos.transform.childCount > 0);
+        LoadingScreenManager.Instance.Open();
+       // UpgradeButton.onClick.AddListener(UpgradeCharacter);
 	}
 
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {
         if (CurrentCharacter != null)
         {
@@ -59,13 +63,13 @@ public class CampaignMenuManager : MonoBehaviour {
 
                 }
 
-                UpgradeButton.transform.GetChild(2).GetComponent<LocalizedDynamicText>().Number = a;
+                UpgradeButton.transform.GetChild(2).GetComponent<LocalizedDynamicText>().text = a;
                 UpgradeButton.interactable = false;
             }
             else
             {
 
-                UpgradeButton.transform.GetChild(2).GetComponent<LocalizedDynamicText>().Number = GM.CharacterUpgradeCost(CurrentCharacter.id).ToString();
+                UpgradeButton.transform.GetChild(2).GetComponent<LocalizedDynamicText>().text = GM.CharacterUpgradeCost(CurrentCharacter.id).ToString();
                 UpgradeButton.transform.GetChild(1).gameObject.SetActive(true);
 
                 UpgradeButton.interactable = true;
@@ -75,7 +79,7 @@ public class CampaignMenuManager : MonoBehaviour {
         {
             UpgradeButton.gameObject.SetActive(false);
         }
-    }
+    }*/
 
     public void RenewPlayer()
     {
@@ -84,25 +88,31 @@ public class CampaignMenuManager : MonoBehaviour {
         {
             Destroy(CharacterScroll.Content.transform.GetChild(i).gameObject);
         }
-        PlayerCharacter = GM.PlayerCharacters;
-        cardHolders = new CharacterCampaignCard[PlayerCharacter.Count];
-        for (int i = 0; i < PlayerCharacter.Count; i++)
+        PlayerCharacters = GM.PlayerCharacters;
+        cardHolders = new CharacterCampaignCard[GM.characterDB.Count];
+        for (int i = 0; i < GM.characterDB.Count; i++)
         {
             cardHolders[i]= Instantiate(CampaignCard, CharacterScroll.Content.transform).GetComponent<CharacterCampaignCard>();
-            if (PlayerCharacter[i].type == CharacterData.Type.Leader)
+            if (GM.characterDB.DataBase[i].type == CharacterData.Type.Leader)
             {
-                ChangeCurrentCharacter(PlayerCharacter[i]);
+                ChangeCharacter(GM.characterDB.DataBase[i]);
                 aa = i+1;
-
-
             }
 
-            cardHolders[i].Repaint(PlayerCharacter[i]);
+            cardHolders[i].Repaint(GM.characterDB.DataBase[i]);
         }
         CharacterScroll.StartArrange(aa);
-        RenewSkins();
     }
-    public void RenewSkins()
+
+    public void ChangeCharacter(CharacterData data)
+    {
+        CurrentCharacter = data;
+        doorAnimation.SetTrigger("Close");
+        print("Changed 1");
+
+    }
+
+    /*public void RenewSkins()
     {
         skinData = new List<SkinData>();
         SD = new List<string>();
@@ -132,7 +142,7 @@ public class CampaignMenuManager : MonoBehaviour {
 
             }
         }
-    }
+    }*/
 
     public void ChangeModelSkin(string s)
     {
@@ -152,22 +162,32 @@ public class CampaignMenuManager : MonoBehaviour {
             CharacterScroll.Content.transform.GetChild(i).SendMessage("RepaintCheck");
         }
     }
-    public void ChangeCurrentCharacter(CharacterData data)
+    public void ChangeCurrentCharacter()
     {
-        UpgradeButton.gameObject.SetActive(true);
+       // UpgradeButton.gameObject.SetActive(true);
 
         if (characterInstansiatePos.transform.childCount > 0)
             for (int i = 0; i < characterInstansiatePos.transform.childCount; i++)
                 Destroy(characterInstansiatePos.transform.GetChild(i).gameObject);
 
-
-        CurrentCharacter = data;
-        GameObject g = Instantiate(data.prefab, characterInstansiatePos.transform.position, Quaternion.identity);
-        Vector3 aa = g.transform.localScale; 
+        bool a=false;
+        foreach (var item in PlayerCharacters.ToArray())
+        {
+            if (item.id == CurrentCharacter.id)
+            {
+                a = true;
+                break;
+            }
+        }
+        GameObject g = Instantiate(CurrentCharacter.prefab, characterInstansiatePos.transform.position, Quaternion.identity);
+        Vector3 aa = g.transform.localScale;
+        if (!a) g.SendMessage("SetBlack");
         g.transform.SetParent(characterInstansiatePos.transform);
         g.GetComponent<Character>().enabled = false;
         g.transform.localScale = aa;
-        detailHolder.RePaint(data);
+        doorAnimation.SetTrigger("Open");
+        print("Changed");
+       // detailHolder.RePaint(data);
 
     }
 }

@@ -72,7 +72,7 @@ public class RewardManager : MonoBehaviour {
                         t.RewardName = DoubleAttackName;
                         break;
                 }
-                t.cardType = a.cardType;
+                t.potionType = a.cardType;
                 t.amount = amount;
                 
                 break;
@@ -98,7 +98,7 @@ public class RewardManager : MonoBehaviour {
                 GameManager.instance.AddCharacterCard(info.characterId, info.amount);
                 break;
             case RewardType.Potion:
-                GameManager.instance.AddPotion(new Potion(info.cardType, info.amount));
+                GameManager.instance.AddPotion(new Potion(info.potionType, info.amount));
                 break;
             default:
                 break;
@@ -117,7 +117,7 @@ public class RewardInfo
     public string RewardName;
     public Sprite Icon;
     public RewardType type;
-    public Potion.Type cardType;
+    public Potion.Type potionType;
     public int amount;
     public int characterId;
 }

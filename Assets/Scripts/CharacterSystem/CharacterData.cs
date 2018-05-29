@@ -49,6 +49,6 @@ public class CharacterData:ScriptableObject
 
     public enum Type
     {
-        Minion,Hero,Leader,Support
+        Minion,Hero,Leader,Support,Deploy
     }
 }

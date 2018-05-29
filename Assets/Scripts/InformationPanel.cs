@@ -49,7 +49,7 @@ public class InformationPanel : MonoBehaviour {
                         break;
 
                 }
-                item.text.ChangeText(Persian, English,false, changeNumbers);
+                item.text.Text(Persian, English);
                 item.buttons[0].onClick.RemoveAllListeners();
                 if(OkAction!=null)
                 item.buttons[0].onClick.AddListener(OkAction);
@@ -134,7 +134,7 @@ public class InformationPanel : MonoBehaviour {
                 item.Panel.transform.GetChild(0).GetComponent<Image>().color = item.Panel.transform.GetChild(1).GetComponent<Image>().color = Color.yellow;
                 item.Panel.transform.GetChild(2).GetChild(0).GetComponent<LocalizedKeyText>().Key = StateKey;
                 t = item.text;
-                t.Number = "0";
+                t.Text("0","0");
                 item.buttons[0].onClick.AddListener(AnimationClose);
             }
         }
@@ -166,7 +166,7 @@ public class InformationPanel : MonoBehaviour {
             coinTemp = Mathf.Lerp(coinTemp, amount, lerp);
 
 
-            text.Number = ((int)coinTemp).ToString();
+            text.text = ((int)coinTemp).ToString();
         }
     }
     public void OpenADRewardPanel(string PrText,string EnText,PanelColor color)
@@ -192,8 +192,7 @@ public class InformationPanel : MonoBehaviour {
                         break;
 
                 }
-                item.text.ChangeText(PrText, EnText, false, false);
-                //item.buttons[0].onClick.AddListener(Close);
+                item.text.Text(PrText, EnText);
             }
         }
         PanelAnimator.gameObject.SetActive(true);

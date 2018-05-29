@@ -139,8 +139,8 @@ public class ArrangeSceneManager : MainBehavior
         }
 
 
-        PotionDoubleAttackText.Number = "X" + PotionDoubleAttack;
-        PotionDoubleCoinText.Number = "X" + PotionDoubleCoin;
+        PotionDoubleAttackText.text = "X" + PotionDoubleAttack;
+        PotionDoubleCoinText.text = "X" + PotionDoubleCoin;
     }
     public void CloseCardPanel(Potion potion)
     {

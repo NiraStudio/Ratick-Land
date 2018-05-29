@@ -59,7 +59,7 @@ public class Chest : MonoBehaviour {
 
         foreach (var item in rewards.ToArray())
         {
-            print(item.type + " " + item.amount + " " + item.cardType + " " + item.characterId);
+            print(item.type + " " + item.amount + " " + item.potionType + " " + item.characterId);
             RewardManager.Instance.AddReward(item);
         }
         #endregion

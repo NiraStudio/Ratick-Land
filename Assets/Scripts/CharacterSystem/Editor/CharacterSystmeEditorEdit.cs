@@ -73,7 +73,7 @@ public class CharacterSystmeEditorEdit : EditorWindow
 
         GUILayout.Label("Search Character name or ID:");
         searchName = GUILayout.TextField(searchName);
-        GUILayout.Label("Character Count :" + dataBase.Length);
+        GUILayout.Label("Character Count :" + dataBase.Count);
         GUILayout.EndVertical();
 
 
@@ -83,7 +83,7 @@ public class CharacterSystmeEditorEdit : EditorWindow
         if (string.IsNullOrEmpty(searchName))
             db = dataBase;
         else
-            for (int i = 0; i < dataBase.Length; i++)
+            for (int i = 0; i < dataBase.Count; i++)
             {
                 if (dataBase.GiveByIndex(i).characterName.Contains(searchName) || dataBase.GiveByIndex(i).id.ToString().Contains(searchName))
                     db.AddCharacter(dataBase.GiveByIndex(i));
@@ -92,7 +92,7 @@ public class CharacterSystmeEditorEdit : EditorWindow
 
 
         //Making Buttons
-        for (int i = 0; i < db.Length; i++)
+        for (int i = 0; i < db.Count; i++)
         {
             GUILayout.BeginHorizontal("Box");
             if (db.GiveByIndex(i).icon != null)

@@ -29,7 +29,7 @@ public class RewardCard : MonoBehaviour {
             img.color = c;
         }
         CardImage.sprite = Reward.Icon;
-        CardAmount.Number = "X " + Reward.amount;
+        CardAmount.text = "X " + Reward.amount;
         CardName.Key = Reward.RewardName;
         
        

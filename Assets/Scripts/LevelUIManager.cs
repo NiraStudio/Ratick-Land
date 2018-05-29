@@ -37,7 +37,7 @@ public class LevelUIManager : MonoBehaviour {
         tt -= ((int)tt / 3600) * 3600;
         r += ((int)tt / 60).ToString("00") + ":";
         r += (tt % 60).ToString("00");
-        timerText.Number = r;
+        timerText.text = r;
         #endregion
 
         #region Coin
@@ -58,13 +58,13 @@ public class LevelUIManager : MonoBehaviour {
         {
             mainHpSlider.maxValue = maxMainHp;
             mainHpSlider.value = main.HP;
-            MainHpText.Number = main.HP + "/" + maxMainHp;
+            MainHpText.text = main.HP + "/" + maxMainHp;
         }
         #endregion
 
         #region Key
 
-        KeyAmount.Number = "X " + KM.keyCount ;
+        KeyAmount.text = "X " + KM.keyCount ;
         KeySlider.maxValue = KM.KeyPartNeeded;
         KeySlider.value = KM.KeyPartGeted;
 

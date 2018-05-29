@@ -31,7 +31,22 @@ namespace Alpha.Localization {
             foreach (var item in Languages.ToArray())
             {
                 if (item.language == language)
+                {
                     item.data.Data.Add(a);
+                    return;
+                }
+            }
+            LocalizationDataByLanguage tt = new LocalizationDataByLanguage();
+            tt.language = language;
+            tt.data = new LocalizationData();
+            Languages.Add(tt);
+            foreach (var item in Languages.ToArray())
+            {
+                if (item.language == language)
+                {
+                    item.data.Data.Add(a);
+                    return;
+                }
             }
         }
         public string GiveValue(string key, Language language)

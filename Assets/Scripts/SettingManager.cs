@@ -13,6 +13,7 @@ public class SettingManager : MonoBehaviour {
     }
     #endregion
     public bool SFXMute, BGMMute;
+    public Language l;
     void Start()
     {
         bool.TryParse( PlayerPrefs.GetString("SFXMute"), out SFXMute);
@@ -20,6 +21,10 @@ public class SettingManager : MonoBehaviour {
         bool.TryParse( PlayerPrefs.GetString("BGMMute"), out BGMMute);
     }
     // Use this for initialization
+    void Update()
+    {
+        l = LocalizationManager.Instance.LanguageCode;
+    }
 
     public void ChangeSFX(bool state)
     {

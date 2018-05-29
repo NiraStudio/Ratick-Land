@@ -2,30 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UPersian.Components;
- 
+using TMPro;
 namespace Alpha.Localization
 {
     public class LocalizedKeyText : MonoBehaviour
     {
         [SerializeField]
         string key;
-        public RtlText Text;
-        public bool DefultSize;
-        public bool UseCurrentParameters;
-        public int PersianSize, EnglishSize;
+        public TextMeshProUGUI textMesh;
+        void Awake()
+        {
+            LM = LocalizationManager.Instance;
+        }
         public string Key
         {
             set
             {
                 key = value;
+                
+                textMesh.text = LM.GetLocalizationValue(key).faConvert();
             }
             get
             {
                 return key;
             }
         }
-
+        Language lang;
         LocalizationManager LM;
         bool Allow;
         int a;
@@ -33,50 +35,35 @@ namespace Alpha.Localization
         void Start()
         {
             LM = LocalizationManager.Instance;
-            Text = GetComponent<RtlText>();
+            lang = LM.LanguageCode;
+            textMesh = GetComponent<TextMeshProUGUI>();
             if (!string.IsNullOrEmpty(key))
-                Text.text = LM.GetLocalizationValue(key);
-
+                textMesh.text = LM.GetLocalizationValue(key).faConvert();
             Allow = true;
-            Text.font = LM.Font;
+            textMesh.font = LM.Font;
         }
 
-        void FixedUpdate()
+        void Update()
         {
             if (!Allow)
                 return;
 
 
-            Text.text = string.Concat(LM.GetLocalizationValue(key));
-            if (UseCurrentParameters)
+            if (lang != LM.LanguageCode)
             {
-                switch (LM.LanguageCode)
-                {
-                    case Language.EN:
-                        Text.resizeTextMaxSize = EnglishSize;
-                        break;
-                    case Language.FA:
-                        Text.resizeTextMaxSize = PersianSize;
 
-                        break;
-                }
+                if (LM.LanguageCode == Language.FA)
+                    textMesh.text = LM.GetLocalizationValue(key).faConvert();
+                else
+                    textMesh.text = LM.GetLocalizationValue(key);
+
+
+
+
+                textMesh.font = LM.Font;
+                lang = LM.LanguageCode;
+
             }
-            else if (DefultSize)
-            {
-                switch (LM.LanguageCode)
-                {
-                    case Language.EN:
-                        Text.resizeTextMaxSize = 20;
-                        break;
-                    case Language.FA:
-                        Text.resizeTextMaxSize = 25;
-
-                        break;
-                }
-            }
-        
-            Text.font = LM.Font;
-
         }
 
         void Reset()
@@ -87,14 +74,14 @@ namespace Alpha.Localization
             }
             if (gameObject.GetComponent<Text>() == null)
             {
-                Text = gameObject.AddComponent<RtlText>();
+                textMesh = gameObject.AddComponent<TextMeshProUGUI>();
             }
             else
             {
-                Text = gameObject.GetComponent<RtlText>();
+                textMesh = gameObject.GetComponent<TextMeshProUGUI>();
             }
-            Text.resizeTextForBestFit = true;
-            Text.alignment = TextAnchor.MiddleCenter;
+            textMesh.enableAutoSizing = true;
+            textMesh.alignment = TextAlignmentOptions.Center;
             
         }
        

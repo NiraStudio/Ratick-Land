@@ -42,7 +42,7 @@ public class ArrangeIcon : MonoBehaviour {
         ID = data.id;
         characterName.Key = data.characterName;
         Level= GameManager.instance.CharacterLevel(ID); ;
-        LevelText.ChangeText("مرحله " + GameManager.instance.CharacterLevel(ID), "Level "+ GameManager.instance.CharacterLevel(ID),false,false);
+        LevelText.Text("مرحله " + GameManager.instance.CharacterLevel(ID), "Level "+ GameManager.instance.CharacterLevel(ID));
         PS.gameObject.SetActive(true);
 
     }
@@ -62,7 +62,7 @@ public class ArrangeIcon : MonoBehaviour {
         ID = data.id;
         characterName.Key = data.characterName;
         this.Level = level;
-        LevelText.ChangeText("مرحله " + level, "Level " + level, false, false);
+        LevelText.Text("مرحله " + level, "Level " + level);
 
     }
     public void Clean()
@@ -74,7 +74,7 @@ public class ArrangeIcon : MonoBehaviour {
         data = null;
         ID = -1;
         characterName.Key = "";
-        LevelText.ChangeText ( "","",false,false);
+        LevelText.Text ( "","");
     }
 
 }

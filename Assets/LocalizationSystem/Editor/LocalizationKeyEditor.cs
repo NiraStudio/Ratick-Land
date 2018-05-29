@@ -23,18 +23,18 @@ public class LocalizationKeyEditor : Editor {
         if (GUILayout.Button("Get English The Text"))
         {
             if (t.Key != null)
-                t.Text.text = LocalizationManager.GiveData(t.Key, Language.EN);
+                t.textMesh.text = LocalizationManager.GiveData(t.Key, Language.EN);
 
-            t.Text.font = GameObject.FindWithTag("GameManager").GetComponent<LocalizationManager>().ENFont;
+            t.textMesh.font = GameObject.FindWithTag("GameManager").GetComponent<LocalizationManager>().ENFont;
 
         }
         if (GUILayout.Button("Get Persian The Text"))
         {
             if (t.Key != null)
-                t.Text.text = LocalizationManager.GiveData(t.Key, Language.FA);
+                t.textMesh.text = LocalizationManager.GiveData(t.Key, Language.FA);
 
 
-            t.Text.font = GameObject.FindWithTag("GameManager").GetComponent<LocalizationManager>().FAFont;
+            t.textMesh.font = GameObject.FindWithTag("GameManager").GetComponent<LocalizationManager>().FAFont;
         }
         base.OnInspectorGUI();
     }

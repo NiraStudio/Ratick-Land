@@ -20,7 +20,7 @@ public class MissionTextBehaivior : MonoBehaviour {
 	}
     public void MakeText(string Persian,string English)
     {
-        text.ChangeText(Persian, English, false, false);
+        text.Text(Persian, English);
         gameObject.SetActive(true);
     }
     public void Finish()

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using TMPro;
 namespace Alpha.Localization
 {
     public class LocalizationManager : MonoBehaviour
@@ -18,7 +19,6 @@ namespace Alpha.Localization
         public const string FOLDER_NAME = "DataBase";
         public const string FILE_NAME = "LocalizationDataBase.asset";
         public const string FULL_PATH = @"Assets/" + FOLDER_NAME + "/" + FILE_NAME;
-        [HideInInspector]
        public LocalizationDatabase data;
 
         #endregion
@@ -26,11 +26,11 @@ namespace Alpha.Localization
         public GameObject languagePanel;
         //public Dictionary<string, string> LocalizationText = new Dictionary<string, string>();
         public Language LanguageCode;
-       public  bool IsReady = false;
+        bool IsReady = false;
 
         [SerializeField]
-        public Font ENFont, FAFont;
-        public Font Font
+        public TMP_FontAsset ENFont, FAFont;
+        public TMP_FontAsset Font
         {
             get
             {
@@ -44,15 +44,17 @@ namespace Alpha.Localization
         }
         IEnumerator Start()
         {
-            if (string.IsNullOrEmpty( PlayerPrefs.GetString("language")) )
+            if (string.IsNullOrEmpty(PlayerPrefs.GetString("language")))
             {
                 yield return new WaitUntil(() => !string.IsNullOrEmpty(PlayerPrefs.GetString("language")));
 
             }
             languagePanel.SetActive(false);
 
-            LanguageCode = (Language) System.Enum.Parse(typeof(Language), PlayerPrefs.GetString("language"));
+            LanguageCode = (Language)System.Enum.Parse(typeof(Language), PlayerPrefs.GetString("language"));
             LoadData(LanguageCode);
+
+
         }
         public void LoadData(Language language)
         {
@@ -140,13 +142,16 @@ namespace Alpha.Localization
             else
                 return "Localization Text Not Find";
 #endif
-            return "";
         }
 
         void Reset()
         {
+            CheckForDataBase();
+        }
+        void CheckForDataBase()
+        {
 #if UNITY_EDITOR
-            data = UnityEditor. AssetDatabase.LoadAssetAtPath(FULL_PATH, typeof(LocalizationDatabase)) as LocalizationDatabase;
+            data = UnityEditor.AssetDatabase.LoadAssetAtPath(FULL_PATH, typeof(LocalizationDatabase)) as LocalizationDatabase;
 
             if (data == null)
             {
@@ -162,7 +167,6 @@ namespace Alpha.Localization
 
 #endif
         }
-        
 
 
 

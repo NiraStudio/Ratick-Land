@@ -3,66 +3,79 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Alpha.Localization;
-using UPersian.Components;
-
+using TMPro;
 public class LocalizedDynamicText : MonoBehaviour {
 
+    public TextMeshProUGUI textMesh;
     [SerializeField]
-    public bool Checkable,NumberText;
-
-    public RtlText Text;
     string PersianText, EnglishText;
 
+    public string text {
+        set
+        {
+            _text = value;
+            oneTexted = true;
+            textMesh.text = _text;
+        }
+    }
+
+    string _text;
+    bool oneTexted;
     LocalizationManager LM;
     bool Allow;
+    Language lang;
     // Use this for initialization
     void Start()
     {
-        //yield return new WaitUntil(() => LocalizationManager.Instance.GetIsReady);
         LM = LocalizationManager.Instance;
-        Text = GetComponent<RtlText>();
+        lang = LM.LanguageCode;
+        textMesh.font = LM.Font;
+        textMesh = GetComponent<TextMeshProUGUI>();
         Allow = true;
 
     }
 
     // Update is called once per frame
-    void FixedUpdate () {
+    void Update() {
         if (!Allow)
             return;
+        if (lang != LM.LanguageCode)
+        {
+            if(oneTexted==false)
+            check();
+            else
+            {
+                textMesh.font = LM.Font;
+                lang = LM.LanguageCode;
+            }
 
+
+        }
+
+    }
+
+    void check()
+    {
         switch (LM.LanguageCode)
         {
             case Language.EN:
-                Text.text = EnglishText;
+                textMesh.text = EnglishText;
                 break;
             case Language.FA:
-                Text.text = PersianText;
+                textMesh.text = PersianText.faConvert();
                 break;
-            
-        }
-        if (NumberText)
-            Text.text = NumberText.ToString();
-        Text.font = LM.Font;
 
+        }
+        textMesh.font = LM.Font;
+        lang = LM.LanguageCode;
     }
-    public void ChangeText(string persian,string english,bool checkable,bool ChangeNumbers)
+    public void Text(string persian,string english)
     {
-        if (ChangeNumbers)
-            PersianText = LocalizationManager.Instance.LastChanger(persian);
-        else
-            PersianText = change(persian);
-        
+        PersianText = persian;
         EnglishText = english;
-        Checkable = checkable;
+        oneTexted = false;
+    }
 
-    }
-    public string Number
-    {
-        set
-        {
-            PersianText = EnglishText = LocalizationManager.Instance.LastChanger(value);
-        }
-    }
     void Reset()
     {
         if (gameObject.GetComponent<Text>() != null)
@@ -71,14 +84,14 @@ public class LocalizedDynamicText : MonoBehaviour {
         }
         if (gameObject.GetComponent<Text>() == null)
         {
-            Text = gameObject.AddComponent<RtlText>();
+            textMesh = gameObject.AddComponent<TextMeshProUGUI>();
         }
         else
         {
-            Text = gameObject.GetComponent<RtlText>();
+            textMesh = gameObject.GetComponent<TextMeshProUGUI>();
         }
-        Text.resizeTextForBestFit = true;
-        Text.alignment = TextAnchor.MiddleCenter;
+        textMesh.enableAutoSizing = true;
+        textMesh.alignment = TextAlignmentOptions.Center;
 
     }
     string change(string text)

@@ -50,6 +50,7 @@ public class ScrollRectSnap : MonoBehaviour, IEndDragHandler, IBeginDragHandler
 
         if (AutoStart)
             StartArrange(0);
+
     }
 
 
@@ -136,6 +137,7 @@ public class ScrollRectSnap : MonoBehaviour, IEndDragHandler, IBeginDragHandler
 
 
         ChangeFocus(Focus);
+        ChangeEvent.Invoke();
         wait = false;
     }
 
@@ -186,6 +188,7 @@ public class ScrollRectSnap : MonoBehaviour, IEndDragHandler, IBeginDragHandler
     public void OnEndDrag(PointerEventData eventData)
     {
         dragging = false;
+        int tt = MinElementNumber;
         float t = Mathf.Min(distances);
         if (Negetive)
         {
@@ -209,6 +212,7 @@ public class ScrollRectSnap : MonoBehaviour, IEndDragHandler, IBeginDragHandler
                 }
             }
         }
+        if(MinElementNumber!=tt)
         ChangeEvent.Invoke();
     }
 
@@ -218,10 +222,17 @@ public class ScrollRectSnap : MonoBehaviour, IEndDragHandler, IBeginDragHandler
     }
     public void ChangeCharacter()
     {
-        CampaignMenuManager.Instance.ChangeCurrentCharacter(childTransforms[MinElementNumber].GetComponent<CharacterCampaignCard>().data);
+        CampaignMenuManager.Instance.ChangeCharacter(childTransforms[MinElementNumber].GetComponent<CharacterCampaignCard>().data);
     }
-    public void ChangeSkin()
+   public void ChangeOpticy()
     {
-
+        Color a = new Color(.5f, .5f, .5f, 1f);
+        foreach (var item in childTransforms)
+        {
+            item.GetComponent<Image>().color = a;
+            item.GetComponent<Canvas>().sortingOrder = 1;
+        }
+        childTransforms[MinElementNumber].GetComponent<Image>().color = new Color(1,1,1,1);
+        childTransforms[MinElementNumber].GetComponent<Canvas>().sortingOrder = 2;
     }
 }

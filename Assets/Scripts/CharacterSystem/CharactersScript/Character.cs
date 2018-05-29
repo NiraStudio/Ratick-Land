@@ -150,6 +150,14 @@ public class Character : MainBehavior,IAttackable,IHitable,IHealable
         }
     }
 
+    public void SetBlack()
+    {
+        Transform a = transform.GetChild(0);
+        for (int i = 0; i < a.childCount; i++)
+        {
+            a.GetChild(i).GetComponent<Anima2D.SpriteMeshInstance>().color = Color.black;
+        }
+    }
     public void StartGathering()
     {
         if (gameObject.tag == "Leader")

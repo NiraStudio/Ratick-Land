@@ -25,6 +25,6 @@ public class HUDManager : MonoBehaviour {
         else
             lerp = 0;
 
-        CoinAmountText.Number = ((int)coinTemp).ToString();
+        CoinAmountText.text = ((int)coinTemp).ToString();
     }
 }

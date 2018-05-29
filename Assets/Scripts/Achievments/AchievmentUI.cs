@@ -15,14 +15,14 @@ public class AchievmentUI : MonoBehaviour {
     public void Repaint(Achievement d)
     {
         data = d;
-        AchiveName.ChangeText(data.FatTitle, data.EnTitle, false, false);
-        AchiveDes.ChangeText(data.FaDes, data.EnDes, false, false);
-        SliderText.Number = data.currentObject + "/" + data.goalObject;
+        AchiveName.Text(data.FatTitle, data.EnTitle);
+        AchiveDes.Text(data.FaDes, data.EnDes);
+        SliderText.text = data.currentObject + "/" + data.goalObject;
         slider.maxValue = data.goalObject;
         slider.value = data.currentObject;
         if (data.achievementType == AchievementType.Specific)
             slider.gameObject.SetActive(false);
-        RewardAmount.Number = data.rewardAmount.ToString();
+        RewardAmount.text = data.rewardAmount.ToString();
         RewardInfo a = RewardManager.Instance.MakeReward(data.rewardType, data.rewardAmount);
         Icon.sprite = a.Icon;
         if (data.RewardGained)
@@ -40,14 +40,14 @@ public class AchievmentUI : MonoBehaviour {
     }
     public void RePaint()
     {
-        AchiveName.ChangeText(data.FatTitle, data.EnTitle, false, false);
-        AchiveDes.ChangeText(data.FaDes, data.EnDes, false, false);
-        SliderText.Number = data.currentObject + "/" + data.goalObject;
+        AchiveName.Text(data.FatTitle, data.EnTitle);
+        AchiveDes.Text(data.FaDes, data.EnDes);
+        SliderText.text = data.currentObject + "/" + data.goalObject;
         slider.maxValue = data.goalObject;
         slider.value = data.currentObject;
         if (data.achievementType == AchievementType.Specific)
             slider.gameObject.SetActive(false);
-        RewardAmount.Number = data.rewardAmount.ToString();
+        RewardAmount.text = data.rewardAmount.ToString();
         RewardInfo a = RewardManager.Instance.MakeReward(data.rewardType, data.rewardAmount);
         Icon.sprite = a.Icon;
         if (data.RewardGained)

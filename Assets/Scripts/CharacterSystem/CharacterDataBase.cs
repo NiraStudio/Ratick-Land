@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharacterDataBase : ScriptableObject {
 
     public List<CharacterData> DataBase = new List<CharacterData>();
-    public int Length
+    public int Count
     {
         get { return DataBase.Count; }
     }

@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class SingleDoEvent : MonoBehaviour {
     public UnityEvent Action;
+
 	// Use this for initialization
 	public void DoAction()
     {

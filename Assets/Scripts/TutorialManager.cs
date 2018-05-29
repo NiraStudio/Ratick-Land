@@ -71,8 +71,8 @@ public class TutorialManager : MonoBehaviour {
     }
     public void ChangeMainCameraState(string state)
     {
-        Camera.main.GetComponent<MainMenuCamera>().CurrentState =(MainMenuCamera.CameraPos) System.Enum.Parse(typeof(MainMenuCamera.CameraPos), state);
-        Camera.main.GetComponent<MainMenuCamera>().ChangeByCurrentState();
+       // Camera.main.GetComponent<MainMenuCamera>().CurrentState =(MainMenuCamera.CameraPos) System.Enum.Parse(typeof(MainMenuCamera.CameraPos), state);
+       // Camera.main.GetComponent<MainMenuCamera>().ChangeByCurrentState();
     }
     public void Test()
     {

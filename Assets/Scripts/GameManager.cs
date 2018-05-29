@@ -122,7 +122,7 @@ public class GameManager : MainBehavior
 
         LoadFinished = true;
     }
-    public string giveeRandomRewardCode()
+    public string giveRandomRewardCode()
     {
         return RewardCodes.GiveRandom;
     }
